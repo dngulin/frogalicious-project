@@ -1,0 +1,21 @@
+# Unity specific ignore folders
+/[Uu]serSettings/
+/[Ll]ibrary/
+/[Ll]ogs/
+/[Tt]emp/
+/[Oo]bj/
+
+# Generated C# project files
+*.sln
+*.csproj
+
+# IDE specific folders
+/.idea/
+/.vscode/
+*.user
+
+# OS-specific metadata
+Thumbs.db
+Thumbs.db.meta
+*.DS_Store
+*.direcotry
