@@ -1,7 +1,9 @@
 {
     "name": "LevelEditor",
     "rootNamespace": "Frog",
-    "references": [],
+    "references": [
+        "Frog.Level"
+    ],
     "includePlatforms": [
         "Editor"
     ],

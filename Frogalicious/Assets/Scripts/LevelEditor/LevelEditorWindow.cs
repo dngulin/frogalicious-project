@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,9 +7,9 @@ namespace Frog.LevelEditor
     public class LevelEditorWindow : EditorWindow
     {
         [SerializeField]
-        private VisualTreeAsset _visualTreeAsset = default;
+        private VisualTreeAsset _visualTreeAsset;
 
-        [MenuItem("Window/UI Toolkit/LevelEditorWindow")]
+        [MenuItem("Window/Level Editor")]
         public static void ShowExample()
         {
             LevelEditorWindow wnd = GetWindow<LevelEditorWindow>();
@@ -19,7 +18,11 @@ namespace Frog.LevelEditor
 
         public void CreateGUI()
         {
-            rootVisualElement.Add(_visualTreeAsset.Instantiate());
+            var tree = _visualTreeAsset.Instantiate();
+
+            tree.Q<VisualElement>("Board").Add(new BoardView());
+
+            rootVisualElement.Add(tree);
         }
     }
 }
