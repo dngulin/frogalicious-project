@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Root" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="Board" style="flex-grow: 1;">
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="Scroller" style="align-items: flex-start; justify-content: flex-start; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Panel" style="flex-grow: initial; width: 350px; flex-shrink: initial; flex-basis: initial; flex-direction: column;">
+            <ui:EnumFlagsField label="Layers" name="Layers" type="Frog.Level.Primitives.BoardLayers, Frog.Level" />
+            <ui:EnumField label="TileType" type="Frog.Level.Primitives.BoardTileType, Frog.Level" name="TileType" />
+            <ui:EnumField label="Object Type" type="Frog.Level.Primitives.BoardObjectType, Frog.Level" name="ObjectType" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
