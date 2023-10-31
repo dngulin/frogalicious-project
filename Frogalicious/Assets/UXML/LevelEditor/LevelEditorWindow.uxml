@@ -13,7 +13,7 @@
         <ui:VisualElement name="Editor">
             <ui:ScrollView name="BoardScroll" mode="VerticalAndHorizontal" />
             <ui:VisualElement name="SidePanel" class="panel">
-                <uie:EnumFlagsField label="Layers" name="Layers" type="Frog.Level.Primitives.BoardLayers, Frog.Level" value="65535" />
+                <uie:EnumFlagsField label="Draw in Layers" name="Layers" type="Frog.Level.Primitives.BoardLayers, Frog.Level" />
                 <ui:EnumField label="TileType" type="Frog.Level.Primitives.BoardTileType, Frog.Level" name="TileType" />
                 <ui:EnumField label="Object Type" type="Frog.Level.Primitives.BoardObjectType, Frog.Level" name="ObjectType" />
             </ui:VisualElement>

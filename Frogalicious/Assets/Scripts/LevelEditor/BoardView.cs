@@ -23,6 +23,14 @@ namespace Frog.LevelEditor
             style.width = 64 * 9;
             style.height = 64 * 9;
         }
+
+        public void SetSprites(in BoardPoint point, in CellSprites sprites)
+        {
+            if (point.Y >= 0 && point.Y < _rows.Count)
+            {
+                _rows[point.Y].SetSprites(point.X, sprites);
+            }
+        }
     }
 
     public class BoardRowView : VisualElement
@@ -38,6 +46,14 @@ namespace Frog.LevelEditor
                 var cell = new BoardCellView();
                 _cells.Add(cell);
                 Add(cell);
+            }
+        }
+
+        public void SetSprites(int idx, in CellSprites sprites)
+        {
+            if (idx >= 0 && idx < _cells.Count)
+            {
+                _cells[idx].SetSprites(sprites);
             }
         }
     }

@@ -2,7 +2,13 @@ namespace Frog.Level.Primitives
 {
     public struct BoardPoint
     {
-        public ushort X;
-        public ushort Y;
+        public int X;
+        public int Y;
+
+        public BoardPoint(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }
