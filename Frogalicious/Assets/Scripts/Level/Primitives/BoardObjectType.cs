@@ -2,6 +2,8 @@ namespace Frog.Level.Primitives
 {
     public enum BoardObjectType
     {
-        Coin,
+        Nothing,
+        Obstacle,
+        Charge,
     }
 }
