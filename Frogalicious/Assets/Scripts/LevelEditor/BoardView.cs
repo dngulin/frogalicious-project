@@ -11,8 +11,7 @@ namespace Frog.LevelEditor
 
         public BoardView()
         {
-            style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.ColumnReverse);
-            style.flexShrink = new StyleFloat(0f);
+            AddToClassList("board");
 
             for (var i = 0; i < 9; i++)
             {
@@ -20,6 +19,9 @@ namespace Frog.LevelEditor
                 _rows.Add(row);
                 Add(row);
             }
+
+            style.width = 64 * 9;
+            style.height = 64 * 9;
         }
     }
 
@@ -29,8 +31,7 @@ namespace Frog.LevelEditor
 
         public BoardRowView()
         {
-            style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-            style.flexShrink = new StyleFloat(0f);
+            AddToClassList("board-row");
 
             for (var i = 0; i < 9; i++)
             {

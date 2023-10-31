@@ -1,0 +1,57 @@
+#Editor {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+#BoardScroll {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+#BoardScroll .unity-scroll-view__content-viewport {
+    align-self: center;
+}
+
+#BoardScroll .unity-scroll-view__content-container {
+    align-items: center;
+}
+
+#SidePanel {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 250px;
+    border-left-width: 1px;
+    border-color: var(--unity-colors-default-border);
+}
+
+.board {
+    flex-direction: column-reverse;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-color: var(--unity-colors-default-border);
+}
+
+.board-row {
+    flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.board-cell {
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-color: var(--unity-colors-default-border);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.board-cell {
+    width: 64px;
+    height: 64px;
+}
+
+.board-cell-image {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+}

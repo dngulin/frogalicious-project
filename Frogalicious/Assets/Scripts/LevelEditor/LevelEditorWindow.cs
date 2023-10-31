@@ -13,16 +13,16 @@ namespace Frog.LevelEditor
         public static void ShowExample()
         {
             LevelEditorWindow wnd = GetWindow<LevelEditorWindow>();
-            wnd.titleContent = new GUIContent("LevelEditorWindow");
+            wnd.titleContent = new GUIContent("Level");
         }
 
         public void CreateGUI()
         {
-            var tree = _visualTreeAsset.Instantiate();
+            _visualTreeAsset.CloneTree(rootVisualElement);
 
-            tree.Q<VisualElement>("Board").Add(new BoardView());
-
-            rootVisualElement.Add(tree);
+            rootVisualElement
+                .Q<ScrollView>("BoardScroll")
+                .Add(new BoardView());
         }
     }
 }
