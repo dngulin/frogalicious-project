@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Frog.Level.Primitives;
 using UnityEditor;
@@ -22,6 +23,9 @@ namespace Frog.LevelEditor
             wnd.titleContent = new GUIContent("Level");
         }
 
+        private Dictionary<BoardTileType, Sprite> _tileIcons;
+        private Dictionary<BoardObjectType, Sprite> _objectIcons;
+
         private BoardView _board;
 
         private EnumFlagsField _brushLayers;
@@ -39,36 +43,43 @@ namespace Frog.LevelEditor
 
             rootVisualElement.Q<ScrollView>("BoardScroll").Add(_board);
 
-            var tilesMap = _iconsConfig.Tiles.ToDictionary(entry => entry.Type, entry => entry.Sprite);
-            var objectsMap = _iconsConfig.Objects.ToDictionary(entry => entry.Type, entry => entry.Sprite);
+            _tileIcons = _iconsConfig.Tiles.ToDictionary(entry => entry.Type, entry => entry.Sprite);
+            _objectIcons = _iconsConfig.Objects.ToDictionary(entry => entry.Type, entry => entry.Sprite);
 
-            _board.RegisterCallback<MouseDownEvent>(e =>
+            _board.RegisterCallback<MouseDownEvent>(e => HandleMouseEvent(e.localMousePosition));
+            _board.RegisterCallback<MouseMoveEvent>(e =>
             {
-                var pos = e.localMousePosition;
-                pos.y = _board.layout.height - pos.y;
-
-                var point = new BoardPoint((int)(pos.x / 64f), (int)(pos.y / 64f));
-
-                Debug.Log($"pos: {e.localMousePosition} -> {pos} -> ({point.X}, {point.Y})");
-
-                var layers = (BoardLayers)_brushLayers.value;
-
-                Sprite tileSprite = null, objSprite = null;
-
-                if ((layers & BoardLayers.Tiles) == BoardLayers.Tiles)
+                if ((e.pressedButtons & 1) == 1)
                 {
-                    var tileType = (BoardTileType)_brushTile.value;
-                    tileSprite = tilesMap[tileType];
-
-                    if ((layers & BoardLayers.Objects) == BoardLayers.Objects)
-                    {
-                        var objectType = (BoardObjectType)_brushObject.value;
-                        objSprite = objectsMap[objectType];
-                    }
+                    HandleMouseEvent(e.localMousePosition);
                 }
-
-                _board.SetSprites(point, new CellSprites(tileSprite, objSprite));
             });
+        }
+
+        private void HandleMouseEvent(in Vector2 eventLocalPosition)
+        {
+            var pos = eventLocalPosition;
+            pos.y = _board.layout.height - pos.y;
+
+            var point = new BoardPoint((int)(pos.x / 64f), (int)(pos.y / 64f));
+
+            var layers = (BoardLayers)_brushLayers.value;
+
+            Sprite tileSprite = null, objSprite = null;
+
+            if ((layers & BoardLayers.Tiles) == BoardLayers.Tiles)
+            {
+                var tileType = (BoardTileType)_brushTile.value;
+                tileSprite = _tileIcons[tileType];
+
+                if ((layers & BoardLayers.Objects) == BoardLayers.Objects)
+                {
+                    var objectType = (BoardObjectType)_brushObject.value;
+                    objSprite = _objectIcons[objectType];
+                }
+            }
+
+            _board.SetSprites(point, new CellSprites(tileSprite, objSprite));
         }
     }
 }
