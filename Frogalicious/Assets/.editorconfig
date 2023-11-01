@@ -1,0 +1,8 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+
+[*.cs]
+resharper_csharp_trailing_comma_in_multiline_lists = true
