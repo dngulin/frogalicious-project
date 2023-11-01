@@ -12,16 +12,6 @@ namespace Frog.LevelEditor
         public BoardView()
         {
             AddToClassList("board");
-
-            for (var i = 0; i < 9; i++)
-            {
-                var row = new BoardRowView();
-                _rows.Add(row);
-                Add(row);
-            }
-
-            style.width = 64 * 9;
-            style.height = 64 * 9;
         }
 
         public void SetSprites(in BoardPoint point, in CellSprites sprites)
@@ -29,6 +19,40 @@ namespace Frog.LevelEditor
             if (point.Y >= 0 && point.Y < _rows.Count)
             {
                 _rows[point.Y].SetSprites(point.X, sprites);
+            }
+        }
+
+        public void ChangeSize(int w, int h)
+        {
+            ChangeHeight(h);
+            ChangeWidth(w);
+
+            style.width = 64 * w;
+            style.height = 64 * h;
+        }
+
+        private void ChangeHeight(int h)
+        {
+            while (_rows.Count < h)
+            {
+                var rowView = new BoardRowView();
+                _rows.Add(rowView);
+                Add(rowView);
+            }
+
+            while (_rows.Count > h)
+            {
+                var idx = _rows.Count - 1;
+                _rows.RemoveAt(idx);
+                RemoveAt(idx);
+            }
+        }
+
+        private void ChangeWidth(int w)
+        {
+            foreach (var rowView in _rows)
+            {
+                rowView.ChangeWidth(w);
             }
         }
     }
@@ -54,6 +78,23 @@ namespace Frog.LevelEditor
             if (idx >= 0 && idx < _cells.Count)
             {
                 _cells[idx].SetSprites(sprites);
+            }
+        }
+
+        public void ChangeWidth(int w)
+        {
+            while (_cells.Count < w)
+            {
+                var cellView = new BoardCellView();
+                _cells.Add(cellView);
+                Add(cellView);
+            }
+
+            while (_cells.Count > w)
+            {
+                var idx = _cells.Count - 1;
+                _cells.RemoveAt(idx);
+                RemoveAt(idx);
             }
         }
     }

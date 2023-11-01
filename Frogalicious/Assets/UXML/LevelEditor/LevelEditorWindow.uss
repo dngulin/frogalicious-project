@@ -1,8 +1,3 @@
-#Editor {
-    flex-direction: row;
-    flex-grow: 1;
-}
-
 #BoardScroll {
     flex-grow: 1;
     flex-shrink: 1;
