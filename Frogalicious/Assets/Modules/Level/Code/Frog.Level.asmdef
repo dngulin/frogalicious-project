@@ -1,6 +1,6 @@
 {
     "name": "Frog.Level",
-    "rootNamespace": "Frog",
+    "rootNamespace": "Frog.Level",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,6 @@
 {
     "name": "Frog.LevelEditor",
-    "rootNamespace": "Frog",
+    "rootNamespace": "Frog.LevelEditor",
     "references": [
         "Frog.Level"
     ],
