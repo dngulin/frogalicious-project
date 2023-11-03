@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Frog.LevelEditor.Config;
 using Frog.LevelEditor.View;
 using Frog.LevelEditor.Data;
-using Frog.LevelEditor.Modules.LevelEditor.Code.Tools;
 using Frog.LevelEditor.Tools;
 using UnityEditor;
 using UnityEditor.UIElements;

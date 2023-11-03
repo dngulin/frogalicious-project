@@ -1,12 +1,11 @@
 using System;
 using Frog.Level.Primitives;
 using Frog.LevelEditor.Data;
-using Frog.LevelEditor.Tools;
 using Frog.LevelEditor.View;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
+namespace Frog.LevelEditor.Tools
 {
     internal sealed class TilesDrawingTool : LevelEditorTool
     {
