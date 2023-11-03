@@ -10,6 +10,8 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
 {
     internal sealed class TilesDrawingTool : LevelEditorTool
     {
+        private readonly CellSpritesProvider _cellSpritesProvider;
+
         private readonly BoardGridView _boardView;
         private readonly VisualElement _panelRoot;
 
@@ -23,8 +25,9 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
         private EventCallback<MouseLeaveEvent> _lvEvent;
 
 
-        public TilesDrawingTool(BoardGridView boardView, VisualElement panelRoot)
+        public TilesDrawingTool(CellSpritesProvider csp, BoardGridView boardView, VisualElement panelRoot)
         {
+            _cellSpritesProvider = csp;
             _boardView = boardView;
             _panelRoot = panelRoot;
         }
@@ -115,12 +118,8 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
 
             level.Rows[point.Y][point.X] = cell;
 
-            UpdateCellView(cell, point);
-        }
-
-        private void UpdateCellView(in CellData cell, in BoardPoint point)
-        {
-            _boardView.SetSprites(point, default);
+            var cellSprites = _cellSpritesProvider.GetSprites(cell);
+            _boardView.SetSprites(point, cellSprites);
         }
     }
 }

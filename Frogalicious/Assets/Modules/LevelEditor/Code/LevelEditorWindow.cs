@@ -53,10 +53,10 @@ namespace Frog.LevelEditor
 
         private void SetupTools()
         {
-            var spriteDb = new LevelEditorSpriteDb(_icons);
+            var csp = new CellSpritesProvider(_icons);
 
-            RegisterTool(LevelEditorToolType.Settings, new LevelSettingsTool(_boardGridView, _sidePanel));
-            RegisterTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(_boardGridView, _sidePanel));
+            RegisterTool(LevelEditorToolType.Settings, new LevelSettingsTool(csp, _boardGridView, _sidePanel));
+            RegisterTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(csp, _boardGridView, _sidePanel));
 
             SetCurrentTool(LevelEditorToolType.Settings);
         }
