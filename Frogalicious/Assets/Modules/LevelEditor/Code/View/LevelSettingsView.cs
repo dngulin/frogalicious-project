@@ -22,6 +22,11 @@ namespace Frog.LevelEditor.View
 
         public event Action<int, int> OnSizeUpdated;
 
+        public void ClearSubscriptions()
+        {
+            OnSizeUpdated = null;
+        }
+
         public LevelSettingsView()
         {
             Add(new Label("BoardSize"));
