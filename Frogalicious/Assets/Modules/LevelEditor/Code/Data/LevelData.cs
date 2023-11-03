@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Frog.Level.Primitives;
 
-namespace Frog.LevelEditor
+namespace Frog.LevelEditor.Data
 {
     public class LevelData
     {

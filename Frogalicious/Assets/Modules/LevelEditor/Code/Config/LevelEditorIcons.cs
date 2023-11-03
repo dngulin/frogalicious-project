@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Frog.LevelEditor
+namespace Frog.LevelEditor.Config
 {
     [CreateAssetMenu(menuName = "LevelEditor/IconsConfig", fileName = nameof(LevelEditorIcons))]
     public class LevelEditorIcons : ScriptableObject

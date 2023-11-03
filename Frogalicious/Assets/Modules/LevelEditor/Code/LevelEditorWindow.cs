@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Frog.Level.Primitives;
+using Frog.LevelEditor.View;
+using Frog.LevelEditor.Data;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -20,7 +22,7 @@ namespace Frog.LevelEditor
         private ToolbarMenu _toolMenu;
 
         private VisualElement _sidePanel;
-        private BoardView _boardView;
+        private BoardGridView _boardGridView;
 
         private LevelEditorMode _mode;
 
@@ -38,8 +40,8 @@ namespace Frog.LevelEditor
             _toolMenu = root.Q<ToolbarMenu>("ToolMenu");
             _sidePanel = root.Q<VisualElement>("SidePanel");
 
-            _boardView = new BoardView();
-            root.Q<ScrollView>("BoardScroll").Add(_boardView);
+            _boardGridView = new BoardGridView();
+            root.Q<ScrollView>("BoardScroll").Add(_boardGridView);
 
             SetupTools();
         }
@@ -155,13 +157,13 @@ namespace Frog.LevelEditor
 
         private void ResizeBoardView(int w, int h)
         {
-            _boardView.ChangeSize(w, h);
+            _boardGridView.ChangeSize(w, h);
 
             for (var y = 0; y < h; y++)
             for (var x = 0; x < w; x++)
             {
                 var point = new BoardPoint(x, y);
-                _boardView.SetSprites(point, default);
+                _boardGridView.SetSprites(point, default);
             }
         }
     }

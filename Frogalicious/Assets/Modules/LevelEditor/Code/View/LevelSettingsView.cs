@@ -1,9 +1,9 @@
 using System;
 using UnityEngine.UIElements;
 
-namespace Frog.LevelEditor
+namespace Frog.LevelEditor.View
 {
-    public class LevelSettingsView : VisualElement
+    internal class LevelSettingsView : VisualElement
     {
         private readonly SliderInt _widthField = new SliderInt("Width", 5, 15) { showInputField = true };
         private readonly SliderInt _heightField = new SliderInt("Height", 5, 15)  { showInputField = true };

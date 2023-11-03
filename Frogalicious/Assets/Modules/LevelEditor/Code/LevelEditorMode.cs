@@ -1,6 +1,6 @@
 namespace Frog.LevelEditor
 {
-    public enum LevelEditorMode
+    internal enum LevelEditorMode
     {
         Settings,
         Draw,
