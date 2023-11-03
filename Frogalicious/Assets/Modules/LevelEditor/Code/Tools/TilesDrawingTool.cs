@@ -69,7 +69,7 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
         private void StartDrawing(LevelData level, MouseDownEvent e)
         {
             Debug.Assert(_currentDrawPoint == null);
-            var point = GetPoint(e.localMousePosition);
+            var point = GetPoint(level, e.localMousePosition);
 
             _currentDrawPoint = point;
             UpdateCell(level, point);
@@ -83,7 +83,7 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
             if (_currentDrawPoint == null)
                 return;
 
-            var point = GetPoint(e.localMousePosition);
+            var point = GetPoint(level, e.localMousePosition);
             if (_currentDrawPoint == point)
                 return;
 
@@ -93,10 +93,10 @@ namespace Frog.LevelEditor.Modules.LevelEditor.Code.Tools
 
         private void EndDrawing() => _currentDrawPoint = null;
 
-        private static BoardPoint GetPoint(in Vector2 point)
+        private static BoardPoint GetPoint(LevelData level, in Vector2 point)
         {
             var x = (int)(point.x / 64);
-            var y = (int)(point.y / 64);
+            var y = level.Rows.Count - 1 - (int)(point.y / 64);
             return new BoardPoint(x, y);
         }
 
