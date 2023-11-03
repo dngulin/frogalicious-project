@@ -22,7 +22,9 @@ namespace Frog.LevelEditor.View
                 if (_layer == value)
                     return;
 
+                _layer = value;
                 _layerField.value = value;
+
                 RebuildPanel();
             }
         }
@@ -32,8 +34,11 @@ namespace Frog.LevelEditor.View
             get => _tileType;
             set
             {
-                if (_tileType != value)
-                    _tileTypeField.value = value;
+                if (_tileType == value)
+                    return;
+
+                _tileType = value;
+                _tileTypeField.value = value;
             }
         }
 
@@ -42,8 +47,11 @@ namespace Frog.LevelEditor.View
             get => _objType;
             set
             {
-                if (_objType != value)
-                    _objectTypeField.value = value;
+                if (_objType == value)
+                    return;
+
+                _objType = value;
+                _objectTypeField.value = value;
             }
         }
 
@@ -75,7 +83,7 @@ namespace Frog.LevelEditor.View
             var element = _layer switch
             {
                 DrawingLayer.Tiles => _tileTypeField,
-                DrawingLayer.Objects => _layerField,
+                DrawingLayer.Objects => _objectTypeField,
                 _ => throw new ArgumentOutOfRangeException(),
             };
 
