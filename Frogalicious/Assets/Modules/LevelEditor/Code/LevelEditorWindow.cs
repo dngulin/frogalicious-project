@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Frog.LevelEditor.Config;
 using Frog.LevelEditor.View;
 using Frog.LevelEditor.Data;
+using Frog.LevelEditor.Modules.LevelEditor.Code.Tools;
 using Frog.LevelEditor.Tools;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -15,6 +17,7 @@ namespace Frog.LevelEditor
         public static void ShowWindow() => GetWindow<LevelEditorWindow>();
 
         [SerializeField] private VisualTreeAsset _windowLayout;
+        [SerializeField] private LevelEditorIcons _icons;
 
         private ToolbarButton _openButton;
         private ToolbarButton _saveButton;
@@ -50,7 +53,10 @@ namespace Frog.LevelEditor
 
         private void SetupTools()
         {
+            var spriteDb = new LevelEditorSpriteDb(_icons);
+
             RegisterTool(LevelEditorToolType.Settings, new LevelSettingsTool(_boardGridView, _sidePanel));
+            RegisterTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(_boardGridView, _sidePanel));
 
             SetCurrentTool(LevelEditorToolType.Settings);
         }
