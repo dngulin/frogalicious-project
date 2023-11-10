@@ -8,7 +8,7 @@ namespace Frog.LevelEditor.View
     {
         private readonly EnumField _layerField = new EnumField("Drawing Layer", DrawingLayer.Tiles);
         private readonly EnumField _tileTypeField = new EnumField("Tile Type", BoardTileType.Nothing);
-        private readonly EnumField _objectTypeField = new EnumField("Object Type", BoardObjectType.Nothing);
+        private readonly EnumField _objTypeField = new EnumField("Object Type", BoardObjectType.Nothing);
 
         private DrawingLayer _layer;
         private BoardTileType _tileType;
@@ -17,58 +17,39 @@ namespace Frog.LevelEditor.View
         public DrawingLayer Layer
         {
             get => _layer;
-            set
-            {
-                if (_layer == value)
-                    return;
-
-                _layer = value;
-                _layerField.value = value;
-
-                RebuildPanel();
-            }
+            set => _layerField.value = value;
         }
 
         public BoardTileType TileType
         {
             get => _tileType;
-            set
-            {
-                if (_tileType == value)
-                    return;
-
-                _tileType = value;
-                _tileTypeField.value = value;
-            }
+            set => _tileTypeField.value = value;
         }
 
         public BoardObjectType ObjectType
         {
             get => _objType;
-            set
-            {
-                if (_objType == value)
-                    return;
-
-                _objType = value;
-                _objectTypeField.value = value;
-            }
+            set => _objTypeField.value = value;
         }
 
         public DrawingSettingsView()
         {
             _layerField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) => v.Layer = (DrawingLayer)e.newValue,
+                static (e, v) =>
+                {
+                    v._layer = (DrawingLayer)e.newValue;
+                    v.RebuildPanel();
+                },
                 this
             );
 
             _tileTypeField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) => v.TileType = (BoardTileType)e.newValue,
+                static (e, v) => v._tileType = (BoardTileType)e.newValue,
                 this
             );
 
-            _objectTypeField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) => v.ObjectType = (BoardObjectType)e.newValue,
+            _objTypeField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
+                static (e, v) => v._objType = (BoardObjectType)e.newValue,
                 this
             );
 
@@ -83,7 +64,7 @@ namespace Frog.LevelEditor.View
             var element = _layer switch
             {
                 DrawingLayer.Tiles => _tileTypeField,
-                DrawingLayer.Objects => _objectTypeField,
+                DrawingLayer.Objects => _objTypeField,
                 _ => throw new ArgumentOutOfRangeException(),
             };
 
