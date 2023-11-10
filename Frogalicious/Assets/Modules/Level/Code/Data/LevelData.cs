@@ -15,7 +15,7 @@ namespace Frog.Level.Data
     [Serializable]
     public struct BoardCellConfig
     {
-        public BoardTileType Tile;
-        public BoardObjectType Object;
+        public BoardTileType TileType;
+        public BoardObjectType ObjectType;
     }
 }

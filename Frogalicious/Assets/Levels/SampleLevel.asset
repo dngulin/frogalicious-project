@@ -12,5 +12,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b4ecb64cc84b498ebfffd25e06dd3d, type: 3}
   m_Name: SampleLevel
   m_EditorClassIdentifier: 
-  Width: 0
-  Height: 0
+  Width: 5
+  Height: 6
+  Cells:
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 2
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 1
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
