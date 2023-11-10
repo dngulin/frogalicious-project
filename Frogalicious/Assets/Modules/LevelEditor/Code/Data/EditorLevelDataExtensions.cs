@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Frog.LevelEditor.Data
 {
-    internal static class LevelDataExtensions
+    internal static class EditorLevelDataExtensions
     {
         public static bool ChangeBoardSize(this EditorLevelData level, int w, int h)
         {
