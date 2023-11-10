@@ -21,6 +21,6 @@ MonoBehaviour:
   - Type: 0
     Sprite: {fileID: 0}
   - Type: 1
-    Sprite: {fileID: 21300000, guid: b5a001ea86ef794dbb74f9fa8b3d0acb, type: 3}
-  - Type: 2
     Sprite: {fileID: 21300000, guid: 402cfb14de47a59a19851b1fd9540011, type: 3}
+  - Type: 2
+    Sprite: {fileID: 21300000, guid: b5a001ea86ef794dbb74f9fa8b3d0acb, type: 3}
