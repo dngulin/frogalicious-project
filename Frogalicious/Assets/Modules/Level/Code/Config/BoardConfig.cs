@@ -1,5 +1,3 @@
-using Frog.Level.Primitives;
-
 namespace Frog.Level.Config
 {
     public struct BoardConfig
@@ -7,7 +5,5 @@ namespace Frog.Level.Config
         public ushort Width;
         public ushort Height;
         public BoardCellConfig[] Cells;
-
-        public BoardPoint EntryPoint;
     }
 }
