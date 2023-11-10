@@ -1,9 +1,9 @@
 namespace Frog.Level.Primitives
 {
-    public enum BoardObjectType
+    public enum BoardObjectType : uint
     {
-        Nothing,
-        Character,
-        Obstacle,
+        Nothing = 0,
+        Character = 1,
+        Obstacle = 2,
     }
 }
