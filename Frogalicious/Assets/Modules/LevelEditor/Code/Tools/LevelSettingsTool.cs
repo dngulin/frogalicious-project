@@ -25,7 +25,7 @@ namespace Frog.LevelEditor.Tools
 
         public override string Name => "Level Settings";
 
-        public override void Enable(LevelData level)
+        public override void Enable(EditorLevelData level)
         {
             _panelRoot.Add(_settingsView);
 
@@ -47,13 +47,13 @@ namespace Frog.LevelEditor.Tools
             _panelRoot.Remove(_settingsView);
         }
 
-        private void HandleBoardSizeChanged(LevelData level, int w, int h)
+        private void HandleBoardSizeChanged(EditorLevelData level, int w, int h)
         {
             if (level.ChangeBoardSize(w, h))
                 ResizeAndRedrawBoard(level, w, h);
         }
 
-        private void ResizeAndRedrawBoard(LevelData level, int w, int h)
+        private void ResizeAndRedrawBoard(EditorLevelData level, int w, int h)
         {
             _boardView.ChangeSize(w, h);
 

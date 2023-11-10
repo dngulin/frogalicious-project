@@ -3,12 +3,12 @@ using Frog.Level.Primitives;
 
 namespace Frog.LevelEditor.Data
 {
-    public class LevelData
+    public class EditorLevelData
     {
-        public List<List<CellData>> Rows = new List<List<CellData>>();
+        public List<List<EditorCellData>> Rows = new List<List<EditorCellData>>();
     }
 
-    public struct CellData
+    public struct EditorCellData
     {
         public BoardTileType TileType;
         public BoardObjectType ObjectType;

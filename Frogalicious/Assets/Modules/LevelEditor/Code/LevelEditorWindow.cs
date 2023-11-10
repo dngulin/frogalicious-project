@@ -30,7 +30,7 @@ namespace Frog.LevelEditor
         private readonly Dictionary<LevelEditorToolType, LevelEditorTool> _tools =
             new Dictionary<LevelEditorToolType, LevelEditorTool>();
 
-        private LevelData _level = new LevelData();
+        private EditorLevelData _level = new EditorLevelData();
 
         public void CreateGUI()
         {

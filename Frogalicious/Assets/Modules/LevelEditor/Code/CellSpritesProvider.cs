@@ -19,7 +19,7 @@ namespace Frog.LevelEditor
             _objects = icons.Objects.ToDictionary(e => e.Type, e => e.Sprite);;
         }
 
-        public CellSprites GetSprites(in CellData cellData)
+        public CellSprites GetSprites(in EditorCellData cellData)
         {
             return new CellSprites
             {

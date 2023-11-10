@@ -4,18 +4,18 @@ namespace Frog.LevelEditor.Data
 {
     internal static class LevelDataExtensions
     {
-        public static bool ChangeBoardSize(this LevelData level, int w, int h)
+        public static bool ChangeBoardSize(this EditorLevelData level, int w, int h)
         {
             var hChanged = ChangeBoardHeight(level, h);
             var wChanged = ChangeBoardWidth(level, w);
             return hChanged || wChanged;
         }
 
-        private static bool ChangeBoardHeight(LevelData level, int h)
+        private static bool ChangeBoardHeight(EditorLevelData level, int h)
         {
             if (level.Rows.Count < h)
             {
-                while (level.Rows.Count < h) level.Rows.Add(new List<CellData>());
+                while (level.Rows.Count < h) level.Rows.Add(new List<EditorCellData>());
                 return true;
             }
 
@@ -28,7 +28,7 @@ namespace Frog.LevelEditor.Data
             return false;
         }
 
-        private static bool ChangeBoardWidth(LevelData level, int w)
+        private static bool ChangeBoardWidth(EditorLevelData level, int w)
         {
             var updated = false;
 

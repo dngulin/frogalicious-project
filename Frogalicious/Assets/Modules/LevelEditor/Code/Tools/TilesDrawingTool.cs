@@ -33,7 +33,7 @@ namespace Frog.LevelEditor.Tools
 
         public override string Name => "Draw Tiles";
 
-        public override void Enable(LevelData level)
+        public override void Enable(EditorLevelData level)
         {
             _panelRoot.Add(_panel);
 
@@ -65,7 +65,7 @@ namespace Frog.LevelEditor.Tools
             _panelRoot.Remove(_panel);
         }
 
-        private void StartDrawing(LevelData level, MouseDownEvent e)
+        private void StartDrawing(EditorLevelData level, MouseDownEvent e)
         {
             Debug.Assert(_currentDrawPoint == null);
             var point = GetPoint(level, e.localMousePosition);
@@ -74,7 +74,7 @@ namespace Frog.LevelEditor.Tools
             UpdateCell(level, point);
         }
 
-        private void UpdateDrawing(LevelData level, MouseMoveEvent e)
+        private void UpdateDrawing(EditorLevelData level, MouseMoveEvent e)
         {
             if ((e.pressedButtons & 1) == 0)
                 _currentDrawPoint = null;
@@ -92,14 +92,14 @@ namespace Frog.LevelEditor.Tools
 
         private void EndDrawing() => _currentDrawPoint = null;
 
-        private static BoardPoint GetPoint(LevelData level, in Vector2 point)
+        private static BoardPoint GetPoint(EditorLevelData level, in Vector2 point)
         {
             var x = (int)(point.x / 64);
             var y = level.Rows.Count - 1 - (int)(point.y / 64);
             return new BoardPoint(x, y);
         }
 
-        private void UpdateCell(LevelData level, in BoardPoint point)
+        private void UpdateCell(EditorLevelData level, in BoardPoint point)
         {
             var cell = level.Rows[point.Y][point.X];
 
