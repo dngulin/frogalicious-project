@@ -4,3 +4,8 @@ This repo contains Frogalicious game that is being developed just for fun as a s
 Directory structure:
 
 - `Frogalicious` — unity project
+
+
+Source code is licensed under the MIT License.
+
+All original art assets is licensed under CC BY-SA.
