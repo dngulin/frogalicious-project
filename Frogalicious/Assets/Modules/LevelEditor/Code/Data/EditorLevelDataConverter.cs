@@ -28,7 +28,7 @@ namespace Frog.LevelEditor.Data
         {
             data.Height = (ushort) editorData.Rows.Count;
             data.Width = (ushort) (data.Height > 0 ? editorData.Rows[0].Count : 0);
-            data.Cells = new BoardCellConfig[data.Width * data.Height];
+            data.Cells = new CellData[data.Width * data.Height];
 
             for (var row = 0; row < data.Height; row++)
             for (var col = 0; col < data.Width; col++)

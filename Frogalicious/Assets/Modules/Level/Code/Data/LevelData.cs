@@ -9,11 +9,11 @@ namespace Frog.Level.Data
     {
         public ushort Width;
         public ushort Height;
-        public BoardCellConfig[] Cells;
+        public CellData[] Cells;
     }
 
     [Serializable]
-    public struct BoardCellConfig
+    public struct CellData
     {
         public BoardTileType TileType;
         public BoardObjectType ObjectType;
