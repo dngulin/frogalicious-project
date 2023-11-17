@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6b6227b866e49fb9cf9d68e1048bfd8, type: 3}
+  m_Name: LevelViewConfig
+  m_EditorClassIdentifier: 
+  Tile: {fileID: 4919007352804523480, guid: 4cdee010714fd9c278fa9daa47e0ece3, type: 3}
+  Obstacle: {fileID: 4919007352804523480, guid: e390f17400939e27890984ae8ec7d064, type: 3}
+  Character: {fileID: 4919007352804523480, guid: c1bc20c067cdde453914c116b8950657, type: 3}

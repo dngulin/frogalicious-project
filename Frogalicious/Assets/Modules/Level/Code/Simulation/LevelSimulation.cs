@@ -10,6 +10,11 @@ namespace Frog.Level.Simulation
     {
         private readonly LevelData _data;
 
+        public LevelSimulation(LevelData data)
+        {
+            _data = data;
+        }
+
         public void Simulate(ref LevelState state, in InputState input, List<SimulationEvent> events)
         {
             Debug.Assert(events.Count == 0);

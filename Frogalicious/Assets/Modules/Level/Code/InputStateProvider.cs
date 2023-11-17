@@ -7,9 +7,11 @@ namespace Frog.Level
     {
         public static InputState Poll()
         {
-            var result = InputState.None;
-
             var kbd = Keyboard.current;
+            if (kbd == null)
+                return InputState.None;
+
+            var result = InputState.None;
 
             if (kbd.wKey.isPressed) result |= InputState.Up;
             if (kbd.dKey.isPressed) result |= InputState.Right;
