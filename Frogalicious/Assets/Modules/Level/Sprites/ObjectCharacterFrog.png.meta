@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 691c552f8986047ad921993275da52e9
+guid: f05539a79453e498eb85d1840397de4e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7642245397485543326
-    second: TileGrassDark02_0
+      213: 2820143329777312509
+    second: Frog_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileGrassDark02_0
+      name: Frog_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 105
+        height: 142
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9f5d7bd2b5be0a60800000000000000
-      internalID: 7642245397485543326
+      spriteID: df2601baa69232720800000000000000
+      internalID: 2820143329777312509
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TileGrassDark02_0: 7642245397485543326
+      Frog_0: 2820143329777312509
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
