@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
@@ -15,18 +16,41 @@ namespace Frog.Level.Simulation
             _data = data;
         }
 
+        public LevelState CreateInitialState()
+        {
+            for (var y = 0; y < _data.Height; y++)
+            for (var x = 0; x < _data.Width; x++)
+            {
+                var point = new BoardPoint(x, y);
+                ref readonly var cellData = ref _data.CellAtPoint(point);
+
+                if (cellData.ObjectType == BoardObjectType.Character)
+                {
+                    return new LevelState
+                    {
+                        CharacterPosition = point,
+                    };
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
         public void Simulate(ref LevelState state, in InputState input, List<SimulationEvent> events)
         {
             Debug.Assert(events.Count == 0);
 
-            if (input.TryGetMoveDirection(out var direction))
+            if (!input.TryGetMoveDirection(out var direction))
                 return;
 
             var offset = direction.ToBoardPoint();
             var newPos = state.CharacterPosition + offset;
 
+            if (!_data.IsPointInBounds(newPos))
+                return;
+
             ref readonly var cell = ref _data.CellAtPoint(newPos);
-            if (cell.TileType != BoardTileType.Ground || cell.ObjectType != BoardObjectType.Nothing)
+            if (cell.TileType != BoardTileType.Ground || cell.ObjectType == BoardObjectType.Obstacle)
                 return;
 
             events.Add(new SimulationEvent

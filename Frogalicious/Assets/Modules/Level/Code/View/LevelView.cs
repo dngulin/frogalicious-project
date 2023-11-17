@@ -26,24 +26,30 @@ namespace Frog.Level.View
                 if (cellData.TileType == BoardTileType.Ground)
                 {
                     var cell = Object.Instantiate(viewConfig.Tile, _root);
-                    cell.transform.localPosition = new Vector2 { x = point.X, y = point.Y };
+                    cell.transform.localPosition = point.ToVector2();
                 }
 
                 switch (cellData.ObjectType)
                 {
                     case BoardObjectType.Character:
                         var hero = Object.Instantiate(viewConfig.Character, _root);
-                        hero.transform.localPosition = new Vector2 { x = point.X, y = point.Y };
+                        hero.transform.localPosition = point.ToVector2();
                         _character = hero.transform;
                         break;
 
                     case BoardObjectType.Obstacle:
                         var obstacle = Object.Instantiate(viewConfig.Obstacle, _root);
-                        obstacle.transform.localPosition = new Vector2 { x = point.X, y = point.Y };
+                        obstacle.transform.localPosition = point.ToVector2();
                         break;
                 }
             }
         }
+
+        private const float MoveDuration = 0.5f;
+        private bool _moving;
+        private float _moveTime;
+        private Vector2 _moveStart;
+        private Vector2 _moveEnd;
 
         public void Dispose()
         {
@@ -53,14 +59,30 @@ namespace Frog.Level.View
 
         public void Tick(float dt)
         {
+            if (!_moving)
+                return;
 
+            _moveTime += dt;
+            _character.localPosition = Vector2.Lerp(_moveStart, _moveEnd, _moveTime / MoveDuration);
+
+            if (_moveTime >= MoveDuration)
+                _moving = false;
         }
 
-        public bool IsBusy { get; private set; }
+        public bool IsBusy => _moving;
 
         public void DisplayEvents(List<SimulationEvent> events)
         {
-
+            foreach (var e in events)
+            {
+                if (e.Type == SimulationEventType.Move)
+                {
+                    _moving = true;
+                    _moveTime = 0;
+                    _moveStart = e.Position.ToVector2();
+                    _moveEnd = e.EndPosition.ToVector2();
+                }
+            }
         }
     }
 }

@@ -12,11 +12,21 @@ namespace Frog.Level
         [SerializeField]
         private LevelViewConfig _levelViewConfig;
 
-        private LevelView _view;
+        private LevelController _level;
 
         private void Start()
         {
-            _view = new LevelView(_levelViewConfig, _data);
+            _level = LevelController.Create(_data, _levelViewConfig);
+        }
+
+        private void Update()
+        {
+            _level.Tick(Time.deltaTime);
+        }
+
+        private void OnDestroy()
+        {
+            _level.Dispose();
         }
     }
 }
