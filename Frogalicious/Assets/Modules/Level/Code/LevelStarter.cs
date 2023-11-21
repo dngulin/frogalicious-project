@@ -6,17 +6,16 @@ namespace Frog.Level
 {
     public class LevelStarter : MonoBehaviour
     {
-        [SerializeField]
-        private LevelData _data;
+        [SerializeField] private LevelData _data;
+        [SerializeField] private LevelViewConfig _levelViewConfig;
 
-        [SerializeField]
-        private LevelViewConfig _levelViewConfig;
+        [SerializeField] private Camera _camera;
 
         private LevelController _level;
 
         private void Start()
         {
-            _level = LevelController.Create(_data, _levelViewConfig);
+            _level = LevelController.Create(_data, _levelViewConfig, _camera);
         }
 
         private void Update()

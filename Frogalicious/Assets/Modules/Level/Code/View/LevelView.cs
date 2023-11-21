@@ -13,7 +13,9 @@ namespace Frog.Level.View
         private readonly Transform _root;
         private readonly Transform _character;
 
-        public LevelView(LevelViewConfig viewConfig, LevelData data)
+        private readonly Camera _camera;
+
+        public LevelView(LevelViewConfig viewConfig, LevelData data, Camera camera)
         {
             var rootGo = new GameObject("LevelRoot");
             _root = rootGo.transform;
@@ -43,6 +45,18 @@ namespace Frog.Level.View
                         break;
                 }
             }
+
+            var center = new Vector2(data.Width - 1, data.Height - 1) * 0.5f;
+            camera.transform.position = new Vector3(center.x, center.y, -10);
+
+            _camera = camera;
+            UpdateOrthographicSize();
+        }
+
+        public void Dispose()
+        {
+            if (_root != null)
+                Object.Destroy(_root.gameObject);
         }
 
         private const float MoveDuration = 0.5f;
@@ -51,14 +65,10 @@ namespace Frog.Level.View
         private Vector2 _moveStart;
         private Vector2 _moveEnd;
 
-        public void Dispose()
-        {
-            if (_root != null)
-                Object.Destroy(_root.gameObject);
-        }
-
         public void Tick(float dt)
         {
+            UpdateOrthographicSize();
+
             if (!_moving)
                 return;
 
@@ -82,6 +92,27 @@ namespace Frog.Level.View
                     _moveStart = e.Position.ToVector2();
                     _moveEnd = e.EndPosition.ToVector2();
                 }
+            }
+        }
+
+        private const float MaxHeight = 7f;
+        private const float MaxWidth = 11f;
+        private float _lastAspect;
+
+        private void UpdateOrthographicSize()
+        {
+            if (Mathf.Approximately(_lastAspect, _camera.aspect))
+                return;
+
+            _lastAspect = _camera.aspect;
+
+            if (_lastAspect > 1)
+            {
+                _camera.orthographicSize = MaxHeight / 2;
+            }
+            else
+            {
+                _camera.orthographicSize = MaxWidth / (2 * _camera.aspect);
             }
         }
     }
