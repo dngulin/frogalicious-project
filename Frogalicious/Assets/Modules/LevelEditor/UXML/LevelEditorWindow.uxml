@@ -3,7 +3,7 @@
     <ui:VisualElement name="Root" style="flex-grow: 1;">
         <uie:Toolbar>
             <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                <uie:ToolbarButton text="Open" name="OpenButton" />
+                <uie:ToolbarMenu enable-rich-text="false" name="LevelsMenu" />
                 <uie:ToolbarButton text="Save" name="SaveButton" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">
