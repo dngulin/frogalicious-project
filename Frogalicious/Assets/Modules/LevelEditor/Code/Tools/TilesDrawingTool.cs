@@ -1,4 +1,5 @@
 using System;
+using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.LevelEditor.Data;
 using Frog.LevelEditor.View;
@@ -33,14 +34,14 @@ namespace Frog.LevelEditor.Tools
 
         public override string Name => "Draw Tiles";
 
-        public override void Enable(EditorLevelData level)
+        public override void Enable(LevelData levelData)
         {
             _panelRoot.Add(_panel);
 
-            _dnEvent = e => StartDrawing(level, e);
-            _mvEvent = e => UpdateDrawing(level, e);
-            _upEvent = _ => EndDrawing();
-            _lvEvent = _ => EndDrawing();
+            _dnEvent = e => StartDrawing(levelData, e);
+            _mvEvent = e => UpdateDrawing(levelData, e);
+            _upEvent = _ => EndDrawing(levelData);
+            _lvEvent = _ => EndDrawing(levelData);
 
             _boardView.RegisterCallback(_dnEvent);
             _boardView.RegisterCallback(_mvEvent);
@@ -65,16 +66,16 @@ namespace Frog.LevelEditor.Tools
             _panelRoot.Remove(_panel);
         }
 
-        private void StartDrawing(EditorLevelData level, MouseDownEvent e)
+        private void StartDrawing(LevelData levelData, MouseDownEvent e)
         {
             Debug.Assert(_currentDrawPoint == null);
-            var point = GetPoint(level, e.localMousePosition);
+            var point = GetPoint(levelData, e.localMousePosition);
 
             _currentDrawPoint = point;
-            UpdateCell(level, point);
+            UpdateCell(levelData, point);
         }
 
-        private void UpdateDrawing(EditorLevelData level, MouseMoveEvent e)
+        private void UpdateDrawing(LevelData levelData, MouseMoveEvent e)
         {
             if ((e.pressedButtons & 1) == 0)
                 _currentDrawPoint = null;
@@ -82,26 +83,30 @@ namespace Frog.LevelEditor.Tools
             if (_currentDrawPoint == null)
                 return;
 
-            var point = GetPoint(level, e.localMousePosition);
+            var point = GetPoint(levelData, e.localMousePosition);
             if (_currentDrawPoint == point)
                 return;
 
             _currentDrawPoint = point;
-            UpdateCell(level, point);
+            UpdateCell(levelData, point);
         }
 
-        private void EndDrawing() => _currentDrawPoint = null;
+        private void EndDrawing(LevelData levelData)
+        {
+            _currentDrawPoint = null;
+            levelData.SaveAsset();
+        }
 
-        private static BoardPoint GetPoint(EditorLevelData level, in Vector2 point)
+        private static BoardPoint GetPoint(LevelData levelData, in Vector2 point)
         {
             var x = (int)(point.x / 64);
-            var y = level.Rows.Count - 1 - (int)(point.y / 64);
+            var y = levelData.Height - 1 - (int)(point.y / 64);
             return new BoardPoint(x, y);
         }
 
-        private void UpdateCell(EditorLevelData level, in BoardPoint point)
+        private void UpdateCell(LevelData levelData, in BoardPoint point)
         {
-            var cell = level.Rows[point.Y][point.X];
+            ref var cell = ref levelData.CellAtPointMut(point);
 
             switch (_panel.Layer)
             {
@@ -114,8 +119,6 @@ namespace Frog.LevelEditor.Tools
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            level.Rows[point.Y][point.X] = cell;
 
             var cellSprites = _cellSpritesProvider.GetSprites(cell);
             _boardView.SetSprites(point, cellSprites);

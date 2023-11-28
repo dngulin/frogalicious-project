@@ -1,4 +1,4 @@
-using Frog.Level.Primitives;
+using Frog.Level.Data;
 using Frog.LevelEditor.Data;
 using Frog.LevelEditor.View;
 using UnityEngine.UIElements;
@@ -7,7 +7,7 @@ namespace Frog.LevelEditor.Tools
 {
     internal sealed class LevelSettingsTool : LevelEditorTool
     {
-        private CellSpritesProvider _cellSpritesProvider;
+        private readonly CellSpritesProvider _cellSpritesProvider;
 
         private readonly BoardGridView _boardView;
         private readonly VisualElement _panelRoot;
@@ -25,20 +25,17 @@ namespace Frog.LevelEditor.Tools
 
         public override string Name => "Level Settings";
 
-        public override void Enable(EditorLevelData level)
+        public override void Enable(LevelData levelData)
         {
             _panelRoot.Add(_settingsView);
 
-            var rows = level.Rows.Count;
-            var cols = level.Rows.Count > 0 ? level.Rows[0].Count : 0;
+            _settingsView.Width = levelData.Width;
+            _settingsView.Height = levelData.Height;
 
-            _settingsView.Height = rows;
-            _settingsView.Width = cols;
+            if (_settingsView.Width != levelData.Width || _settingsView.Height != levelData.Height)
+                HandleBoardSizeChanged(levelData, _settingsView.Width, _settingsView.Height);
 
-            if (_settingsView.Width != cols || _settingsView.Height != rows)
-                HandleBoardSizeChanged(level, _settingsView.Width, _settingsView.Height);
-
-            _settingsView.OnSizeUpdated += (w, h) => HandleBoardSizeChanged(level, w, h);
+            _settingsView.OnSizeUpdated += (w, h) => HandleBoardSizeChanged(levelData, w, h);
         }
 
         public override void Disable()
@@ -47,24 +44,13 @@ namespace Frog.LevelEditor.Tools
             _panelRoot.Remove(_settingsView);
         }
 
-        private void HandleBoardSizeChanged(EditorLevelData level, int w, int h)
+        private void HandleBoardSizeChanged(LevelData levelData, int w, int h)
         {
-            if (level.ChangeBoardSize(w, h))
-                ResizeAndRedrawBoard(level, w, h);
-        }
+            if (!levelData.ChangeBoardSize((ushort)w, (ushort)h))
+                return;
 
-        private void ResizeAndRedrawBoard(EditorLevelData level, int w, int h)
-        {
-            _boardView.ChangeSize(w, h);
-
-            for (var y = 0; y < h; y++)
-            for (var x = 0; x < w; x++)
-            {
-                var point = new BoardPoint(x, y);
-                var cell = level.Rows[point.Y][point.X];
-                var cellSprites = _cellSpritesProvider.GetSprites(cell);
-                _boardView.SetSprites(point, cellSprites);
-            }
+            levelData.SaveAsset();
+            _boardView.Reset(levelData, _cellSpritesProvider);
         }
     }
 }

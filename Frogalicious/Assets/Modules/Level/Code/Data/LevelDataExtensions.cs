@@ -1,3 +1,4 @@
+using System;
 using Frog.Level.Primitives;
 
 namespace Frog.Level.Data
@@ -17,6 +18,9 @@ namespace Frog.Level.Data
 
         public static ref readonly CellData CellAtPoint(this LevelData data, in BoardPoint point)
         {
+            if (!data.IsPointInBounds(point))
+                throw new IndexOutOfRangeException();
+
             return ref data.Cells[point.Y * data.Width + point.X];
         }
 

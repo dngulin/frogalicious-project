@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Frog.Level.Data;
-using Frog.Level.Primitives;
 using Frog.LevelEditor.Config;
-using Frog.LevelEditor.View;
 using Frog.LevelEditor.Data;
+using Frog.LevelEditor.View;
 using Frog.LevelEditor.Tools;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -25,7 +24,7 @@ namespace Frog.LevelEditor
         [SerializeField] private VisualTreeAsset _windowLayout;
         [SerializeField] private LevelEditorIcons _icons;
 
-        private CellSpritesProvider _csp;
+        private CellSpritesProvider _cellSpritesProvider;
 
         private ToolbarMenu _levelsMenu;
         private ToolbarButton _saveButton;
@@ -41,7 +40,6 @@ namespace Frog.LevelEditor
 
         private string _levelDataPath;
         private LevelData _levelData;
-        private EditorLevelData _editorLevelData;
 
         public void RebuildLevelList(Dictionary<string, string> renames)
         {
@@ -69,7 +67,7 @@ namespace Frog.LevelEditor
         {
             titleContent = new GUIContent("LevelEditor");
 
-            _csp = new CellSpritesProvider(_icons);
+            _cellSpritesProvider = new CellSpritesProvider(_icons);
 
             var root = rootVisualElement;
             _windowLayout.CloneTree(root);
@@ -105,8 +103,7 @@ namespace Frog.LevelEditor
             const string path = "Assets/Levels/NewLevel.asset";
 
             AssetDatabase.CreateAsset(levelData, path);
-            EditorUtility.SetDirty(levelData);
-            AssetDatabase.SaveAssetIfDirty(levelData);
+            levelData.SaveAsset();
 
             return new[] { path };
         }
@@ -122,7 +119,7 @@ namespace Frog.LevelEditor
             _levelsMenu.text = StripLevelPath(levelPath);
 
             LoadLevel(levelPath);
-            InitGridView();
+            _boardGridView.Reset(_levelData, _cellSpritesProvider);
 
             if (_currentTool == null)
             {
@@ -131,7 +128,7 @@ namespace Frog.LevelEditor
             else
             {
                 _currentTool.Disable();
-                _currentTool.Enable(_editorLevelData);
+                _currentTool.Enable(_levelData);
             }
         }
 
@@ -141,27 +138,12 @@ namespace Frog.LevelEditor
         {
             _levelDataPath = levelPath;
             _levelData = AssetDatabase.LoadAssetAtPath<LevelData>(levelPath);
-            _editorLevelData = EditorLevelDataConverter.CreateFrom(_levelData);
-        }
-
-        private void InitGridView()
-        {
-            _boardGridView.ChangeSize(_levelData.Width, _levelData.Height);
-
-            for (var y = 0; y < _levelData.Height; y++)
-            for (var x = 0; x < _levelData.Width; x++)
-            {
-                var point = new BoardPoint(x, y);
-                var cell = _editorLevelData.Rows[point.Y][point.X];
-                var cellSprites = _csp.GetSprites(cell);
-                _boardGridView.SetSprites(point, cellSprites);
-            }
         }
 
         private void CreateTools()
         {
-            CreateTool(LevelEditorToolType.Settings, new LevelSettingsTool(_csp, _boardGridView, _sidePanel));
-            CreateTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(_csp, _boardGridView, _sidePanel));
+            CreateTool(LevelEditorToolType.Settings, new LevelSettingsTool(_cellSpritesProvider, _boardGridView, _sidePanel));
+            CreateTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(_cellSpritesProvider, _boardGridView, _sidePanel));
         }
 
         private void CreateTool(LevelEditorToolType toolType, LevelEditorTool tool)
@@ -185,7 +167,7 @@ namespace Frog.LevelEditor
             _currentTool = tool;
             _toolMenu.text = tool.Name;
 
-            _currentTool.Enable(_editorLevelData);
+            _currentTool.Enable(_levelData);
         }
     }
 }
