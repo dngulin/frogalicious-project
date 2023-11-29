@@ -13,9 +13,19 @@ namespace Frog.Level
 
         private LevelController _level;
 
+        private LevelData _editorLevelData;
+
+        public void SetEditorLevelData(LevelData levelData)
+        {
+            _editorLevelData = levelData;
+        }
+
         private void Start()
         {
-            _level = LevelController.Create(_data, _levelViewConfig, _camera);
+            var data = _editorLevelData == null ? _data : _editorLevelData;
+            _editorLevelData = null;
+
+            _level = LevelController.Create(data, _levelViewConfig, _camera);
         }
 
         private void Update()

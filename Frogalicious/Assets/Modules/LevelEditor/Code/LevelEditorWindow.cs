@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Frog.Level;
 using Frog.Level.Data;
 using Frog.LevelEditor.Config;
 using Frog.LevelEditor.Data;
@@ -8,6 +9,7 @@ using Frog.LevelEditor.Tools;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor
@@ -27,7 +29,7 @@ namespace Frog.LevelEditor
         private CellSpritesProvider _cellSpritesProvider;
 
         private ToolbarMenu _levelsMenu;
-        private ToolbarButton _saveButton;
+        private ToolbarButton _playButton;
         private ToolbarMenu _toolMenu;
 
         private VisualElement _sidePanel;
@@ -73,20 +75,31 @@ namespace Frog.LevelEditor
             _windowLayout.CloneTree(root);
 
             _levelsMenu = root.Q<ToolbarMenu>("LevelsMenu");
-            _saveButton = root.Q<ToolbarButton>("SaveButton");
+            _playButton = root.Q<ToolbarButton>("PlayButton");
             _toolMenu = root.Q<ToolbarMenu>("ToolMenu");
-            _sidePanel = root.Q<VisualElement>("SidePanel");
             _sidePanel = root.Q<VisualElement>("SidePanel");
 
             _boardGridView = new BoardGridView();
             root.Q<ScrollView>("BoardScroll").Add(_boardGridView);
 
+            SetupPlayButton();
             CreateTools();
 
             var levelPaths = GetLevelAssetsPaths();
 
             CreateLevelMenuEntries(levelPaths);
             SelectLevel(levelPaths[0]);
+        }
+
+        private void SetupPlayButton()
+        {
+            _playButton.SetEnabled(!EditorApplication.isPlaying);
+            EditorApplication.playModeStateChanged += change =>
+            {
+                _playButton.SetEnabled(change == PlayModeStateChange.EnteredEditMode);
+            };
+
+            _playButton.clicked += PlayLevel;
         }
 
         private static string[] GetLevelAssetsPaths()
@@ -168,6 +181,38 @@ namespace Frog.LevelEditor
             _toolMenu.text = tool.Name;
 
             _currentTool.Enable(_levelData);
+        }
+
+        private void PlayLevel()
+        {
+            if (EditorApplication.isPlaying)
+                return;
+
+            var currScene = SceneManager.GetActiveScene();
+            Debug.Log(currScene.path);
+
+            if (currScene.path != "Assets/Scenes/LevelTest.unity")
+            {
+                EditorUtility.DisplayDialog("Wrong Scene", "The LevelTest scene should be open to load level", "OK");
+                return;
+            }
+
+            var starter = FindStarter(currScene.GetRootGameObjects());
+            starter.SetEditorLevelData(_levelData);
+
+            EditorApplication.EnterPlaymode();
+        }
+
+        private static LevelStarter FindStarter(GameObject[] rootObjects)
+        {
+            foreach (var obj in rootObjects)
+            {
+                var starter = obj.GetComponent<LevelStarter>();
+                if (starter != null)
+                    return starter;
+            }
+
+            return null;
         }
     }
 }

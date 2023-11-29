@@ -17,50 +17,6 @@ MonoBehaviour:
   Cells:
   - TileType: 0
     ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
   - TileType: 1
     ObjectType: 0
   - TileType: 0
@@ -70,16 +26,6 @@ MonoBehaviour:
   - TileType: 0
     ObjectType: 0
   - TileType: 0
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 1
     ObjectType: 0
   - TileType: 0
     ObjectType: 0
@@ -95,7 +41,35 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
   - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 1
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
     ObjectType: 0
   - TileType: 1
     ObjectType: 0
@@ -105,7 +79,39 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 0
     ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
   - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
+    ObjectType: 0
+  - TileType: 0
+    ObjectType: 0
+  - TileType: 1
     ObjectType: 0
   - TileType: 0
     ObjectType: 0
@@ -113,13 +119,7 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 0
     ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
-    ObjectType: 0
-  - TileType: 0
+  - TileType: 1
     ObjectType: 0
   - TileType: 0
     ObjectType: 0

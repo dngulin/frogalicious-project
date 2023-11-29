@@ -4,7 +4,7 @@
         <uie:Toolbar>
             <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
                 <uie:ToolbarMenu enable-rich-text="false" name="LevelsMenu" />
-                <uie:ToolbarButton text="Save" name="SaveButton" />
+                <uie:ToolbarButton text="Play" name="PlayButton" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">
                 <uie:ToolbarMenu enable-rich-text="false" name="ToolMenu" />
