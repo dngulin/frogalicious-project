@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Frog.Level.Primitives;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.View

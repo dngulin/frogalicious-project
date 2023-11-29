@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Frog.Level.Simulation;
 using Frog.Level.State;
 using Frog.Level.View;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Frog.Level
 {
