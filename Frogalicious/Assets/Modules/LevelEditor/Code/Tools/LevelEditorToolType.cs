@@ -1,4 +1,4 @@
-namespace Frog.LevelEditor
+namespace Frog.LevelEditor.Tools
 {
     internal enum LevelEditorToolType
     {
