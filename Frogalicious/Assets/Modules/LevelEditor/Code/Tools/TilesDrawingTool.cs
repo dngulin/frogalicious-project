@@ -15,7 +15,7 @@ namespace Frog.LevelEditor.Tools
         private readonly BoardGridView _boardView;
         private readonly VisualElement _panelRoot;
 
-        private readonly DrawingSettingsView _panel = new DrawingSettingsView();
+        private readonly DrawingSettingsView _panel;
 
         private BoardPoint? _currentDrawPoint;
 
@@ -28,11 +28,12 @@ namespace Frog.LevelEditor.Tools
         public TilesDrawingTool(CellSpritesProvider csp, BoardGridView boardView, VisualElement panelRoot)
         {
             _cellSpritesProvider = csp;
+            _panel = new DrawingSettingsView(csp);
             _boardView = boardView;
             _panelRoot = panelRoot;
         }
 
-        public override string Name => "Draw Tiles";
+        public override string Name => "Drawing";
 
         public override void Enable(LevelData levelData)
         {

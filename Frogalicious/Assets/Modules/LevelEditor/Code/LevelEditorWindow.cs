@@ -156,7 +156,7 @@ namespace Frog.LevelEditor
         private void CreateTools()
         {
             CreateTool(LevelEditorToolType.Settings, new LevelSettingsTool(_cellSpritesProvider, _boardGridView, _sidePanel));
-            CreateTool(LevelEditorToolType.DrawTiles, new TilesDrawingTool(_cellSpritesProvider, _boardGridView, _sidePanel));
+            CreateTool(LevelEditorToolType.Drawing, new TilesDrawingTool(_cellSpritesProvider, _boardGridView, _sidePanel));
         }
 
         private void CreateTool(LevelEditorToolType toolType, LevelEditorTool tool)

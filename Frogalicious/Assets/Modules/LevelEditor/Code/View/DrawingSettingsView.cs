@@ -1,74 +1,84 @@
 using System;
 using Frog.Level.Primitives;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.View
 {
     internal class DrawingSettingsView : VisualElement
     {
-        private readonly EnumField _layerField = new EnumField("Drawing Layer", DrawingLayer.Tiles);
-        private readonly EnumField _tileTypeField = new EnumField("Tile Type", BoardTileType.Nothing);
-        private readonly EnumField _objTypeField = new EnumField("Object Type", BoardObjectType.Nothing);
+        public DrawingLayer Layer { get; private set; }
+        public BoardTileType TileType { get; private set; }
+        public BoardObjectType ObjectType { get; private set; }
 
-        private DrawingLayer _layer;
-        private BoardTileType _tileType;
-        private BoardObjectType _objType;
-
-        public DrawingLayer Layer
+        public DrawingSettingsView(CellSpritesProvider csp)
         {
-            get => _layer;
-            set => _layerField.value = value;
+            Add(new TextElement { text = "Tiles" });
+            CreateButtons<BoardTileType>(csp);
+
+            Add(new TextElement { text = "Objects" });
+            CreateButtons<BoardObjectType>(csp);
         }
 
-        public BoardTileType TileType
+        private void CreateButtons<TBrush>(CellSpritesProvider csp) where TBrush : Enum
         {
-            get => _tileType;
-            set => _tileTypeField.value = value;
-        }
+            var holder = CreateButtonsPanel();
 
-        public BoardObjectType ObjectType
-        {
-            get => _objType;
-            set => _objTypeField.value = value;
-        }
-
-        public DrawingSettingsView()
-        {
-            _layerField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) =>
-                {
-                    v._layer = (DrawingLayer)e.newValue;
-                    v.RebuildPanel();
-                },
-                this
-            );
-
-            _tileTypeField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) => v._tileType = (BoardTileType)e.newValue,
-                this
-            );
-
-            _objTypeField.RegisterCallback<ChangeEvent<Enum>, DrawingSettingsView>(
-                static (e, v) => v._objType = (BoardObjectType)e.newValue,
-                this
-            );
-
-            Add(_layerField);
-            Add(_tileTypeField);
-        }
-
-        private void RebuildPanel()
-        {
-            RemoveAt(1);
-
-            var element = _layer switch
+            foreach (var brush in Enum.GetValues(typeof(TBrush)))
             {
-                DrawingLayer.Tiles => _tileTypeField,
-                DrawingLayer.Objects => _objTypeField,
-                _ => throw new ArgumentOutOfRangeException(),
-            };
+                var button = new Button { style = { width = 32, height = 32 } };
+                var image = new Image { sprite = GetBrushSprite(csp, brush) };
+                button.Add(image);
+                holder.Add(button);
 
-            Add(element);
+                button.clicked += () => SetBrush(brush);
+            }
+
+            Add(holder);
+        }
+
+        private void SetBrush(object brush)
+        {
+            switch (brush)
+            {
+                case BoardTileType tileType:
+                    Layer = DrawingLayer.Tiles;
+                    TileType = tileType;
+                    break;
+
+                case BoardObjectType objectType:
+                    Layer = DrawingLayer.Objects;
+                    ObjectType = objectType;
+                    break;
+
+                default:
+                    Debug.LogError($"Unknown drawing brush: {brush.GetType()}, value: {brush}");
+                    break;
+            }
+        }
+
+        private static Sprite GetBrushSprite(CellSpritesProvider csp, object brush)
+        {
+            switch (brush)
+            {
+                case BoardTileType tileType:
+                    return csp.GetTileSprite(tileType);
+
+                case BoardObjectType objectType:
+                    return csp.GetObjectSprite(objectType);
+
+                default:
+                    Debug.LogError($"Unknown drawing brush: {brush.GetType()}, value: {brush}");
+                    return null;
+            }
+        }
+
+        private static VisualElement CreateButtonsPanel()
+        {
+            return new VisualElement
+            {
+                style = { flexDirection = FlexDirection.Row, flexWrap = Wrap.Wrap },
+            };
         }
     }
 

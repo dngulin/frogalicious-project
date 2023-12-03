@@ -27,5 +27,9 @@ namespace Frog.LevelEditor
                 Object = _objects[cellData.ObjectType],
             };
         }
+
+
+        public Sprite GetTileSprite(BoardTileType type) => _tiles[type];
+        public Sprite GetObjectSprite(BoardObjectType type) => _objects[type];
     }
 }
