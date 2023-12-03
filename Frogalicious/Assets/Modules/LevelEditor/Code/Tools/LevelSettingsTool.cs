@@ -23,7 +23,7 @@ namespace Frog.LevelEditor.Tools
             _panelRoot = panelRoot;
         }
 
-        public override string Name => "Level Settings";
+        public override string Name => "Settings";
 
         public override void Enable(LevelData levelData)
         {
