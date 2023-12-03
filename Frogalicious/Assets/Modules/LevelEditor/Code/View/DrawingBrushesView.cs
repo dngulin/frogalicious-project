@@ -5,13 +5,13 @@ using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.View
 {
-    internal class DrawingSettingsView : VisualElement
+    internal class DrawingBrushesView : VisualElement
     {
         public DrawingLayer Layer { get; private set; }
         public BoardTileType TileType { get; private set; }
         public BoardObjectType ObjectType { get; private set; }
 
-        public DrawingSettingsView(CellSpritesProvider csp)
+        public DrawingBrushesView(CellSpritesProvider csp)
         {
             Add(new TextElement { text = "Tiles" });
             CreateButtons<BoardTileType>(csp);

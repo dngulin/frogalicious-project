@@ -8,14 +8,14 @@ using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.Tools
 {
-    internal sealed class TilesDrawingTool : LevelEditorTool
+    internal sealed class DrawingTool : LevelEditorTool
     {
         private readonly CellSpritesProvider _cellSpritesProvider;
 
         private readonly BoardGridView _boardView;
         private readonly VisualElement _panelRoot;
 
-        private readonly DrawingSettingsView _panel;
+        private readonly DrawingBrushesView _panel;
 
         private BoardPoint? _currentDrawPoint;
 
@@ -25,10 +25,10 @@ namespace Frog.LevelEditor.Tools
         private EventCallback<MouseLeaveEvent> _lvEvent;
 
 
-        public TilesDrawingTool(CellSpritesProvider csp, BoardGridView boardView, VisualElement panelRoot)
+        public DrawingTool(CellSpritesProvider csp, BoardGridView boardView, VisualElement panelRoot)
         {
             _cellSpritesProvider = csp;
-            _panel = new DrawingSettingsView(csp);
+            _panel = new DrawingBrushesView(csp);
             _boardView = boardView;
             _panelRoot = panelRoot;
         }
