@@ -50,3 +50,18 @@
     width: 64px;
     height: 64px;
 }
+
+.brush-holder {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.brush {
+    width: 32px;
+    height: 32px;
+}
+
+.active-brush {
+    border-width: 2px;
+    border-color: var(--unity-colors-object_field-border-focus);
+}
