@@ -14,13 +14,19 @@ namespace Frog.LevelEditor.FileTracking
             if (!EditorWindow.HasOpenInstances<LevelEditorWindow>())
                 return;
 
+            var window = EditorWindow.GetWindow<LevelEditorWindow>(title: null, focus: false);
+
+            // Check if GUI is already created
+            if (window.rootVisualElement.childCount == 0)
+                return;
+
             var renames = new Dictionary<string, string>(movedAssets.Length);
             for (var i = 0; i < movedFromAssetPaths.Length; i++)
             {
                 renames.Add(movedFromAssetPaths[i], movedAssets[i]);
             }
 
-            EditorWindow.GetWindow<LevelEditorWindow>(title: null, focus: false).RebuildLevelList(renames);
+            window.RebuildLevelList(renames);
         }
     }
 }
