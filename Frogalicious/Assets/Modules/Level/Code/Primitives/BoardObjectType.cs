@@ -5,5 +5,7 @@ namespace Frog.Level.Primitives
         Nothing = 0,
         Character = 1,
         Obstacle = 2,
+        Box = 3,
+        Coin = 4,
     }
 }

@@ -4,5 +4,7 @@ namespace Frog.Level.Primitives
     {
         Nothing = 0,
         Ground = 1,
+        Button = 2,
+        Spikes = 3,
     }
 }
