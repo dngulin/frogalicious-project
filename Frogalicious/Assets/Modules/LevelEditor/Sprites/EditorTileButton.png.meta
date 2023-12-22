@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b5a001ea86ef794dbb74f9fa8b3d0acb
+guid: 657405886f0c16dc1997da33069f7c10
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -156195301584226239
-    second: icon_obj_obstacle_0
+      213: -3375471597991802774
+    second: EditorTileButton_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_obj_obstacle_0
+      name: EditorTileButton_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 3
+        y: 3
+        width: 58
+        height: 58
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 148bc75633515ddf0800000000000000
-      internalID: -156195301584226239
+      spriteID: a684744377ae721d0800000000000000
+      internalID: -3375471597991802774
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      icon_obj_obstacle_0: -156195301584226239
+      EditorTileButton_0: -3375471597991802774
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

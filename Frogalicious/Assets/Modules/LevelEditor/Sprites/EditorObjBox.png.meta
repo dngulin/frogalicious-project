@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 402cfb14de47a59a19851b1fd9540011
+guid: 2db422bf9e45a8497927cafd689281f5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7682055659348762394
-    second: icon_obj_charge_0
+      213: -4426468349072765251
+    second: EditorObjBox_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_obj_charge_0
+      name: EditorObjBox_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 4
+        y: 4
+        width: 56
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a1f1340cbe42c9a60800000000000000
-      internalID: 7682055659348762394
+      spriteID: dbe020c2d760292c0800000000000000
+      internalID: -4426468349072765251
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      icon_obj_charge_0: 7682055659348762394
+      EditorObjBox_0: -4426468349072765251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -17,6 +17,10 @@ MonoBehaviour:
     Sprite: {fileID: 0}
   - Type: 1
     Sprite: {fileID: 21300000, guid: 5a45cc29a2c93c9f6b8b23cabd385b61, type: 3}
+  - Type: 2
+    Sprite: {fileID: 21300000, guid: 657405886f0c16dc1997da33069f7c10, type: 3}
+  - Type: 3
+    Sprite: {fileID: 21300000, guid: 9f467ab0b037208cbacfd30953b1f0ea, type: 3}
   Objects:
   - Type: 0
     Sprite: {fileID: 0}
@@ -24,3 +28,7 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 02a2c42099aa0730f904ae04c5296d5a, type: 3}
   - Type: 2
     Sprite: {fileID: 21300000, guid: b5a001ea86ef794dbb74f9fa8b3d0acb, type: 3}
+  - Type: 3
+    Sprite: {fileID: 21300000, guid: 2db422bf9e45a8497927cafd689281f5, type: 3}
+  - Type: 4
+    Sprite: {fileID: 21300000, guid: c658d86b842a660799a56ecca9e0c225, type: 3}
