@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1a99580bbf99d41d9b3bbf514698f566
+guid: 477a66d9902a9f34eaf3488b855bdf20
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2189510010676529607
-    second: Portal_0
+      213: -7919071632560318028
+    second: TileSpikesBlueInactive_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portal_0
+      name: TileSpikesBlueInactive_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
+        x: 2
+        y: 2
+        width: 125
+        height: 126
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7c9498211c3b26e10800000000000000
-      internalID: 2189510010676529607
+      spriteID: 4b99e56ae4ec91290800000000000000
+      internalID: -7919071632560318028
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Portal_0: 2189510010676529607
+      TileSpikesBlueInactive_0: -7919071632560318028
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

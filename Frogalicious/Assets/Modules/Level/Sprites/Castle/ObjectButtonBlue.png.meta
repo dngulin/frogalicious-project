@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1a99580bbf99d41d9b3bbf514698f566
+guid: 4eba01a6feb9eab96ae316d5c304f04e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2189510010676529607
-    second: Portal_0
+      213: -3988207358692484328
+    second: ObjectButtonBlue_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portal_0
+      name: ObjectButtonBlue_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
+        x: 1
+        y: 1
+        width: 126
+        height: 127
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7c9498211c3b26e10800000000000000
-      internalID: 2189510010676529607
+      spriteID: 81b1986a98a07a8c0800000000000000
+      internalID: -3988207358692484328
       vertices: []
       indices: 
       edges: []
@@ -121,7 +121,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Portal_0: 2189510010676529607
+      ObjectButtonBlue_0: -3988207358692484328
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

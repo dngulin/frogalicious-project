@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 934d73c76e9d6414c89b1ff746d62010
+guid: 818277b1c7a50e64c86378778df1b32d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5045904642562364379
-    second: TileGrassLight00_0
+      213: 3195006776548604399
+    second: TileStone02_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileGrassLight00_0
+      name: TileStone02_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
+        x: 1
+        y: 1
+        width: 126
+        height: 126
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd39c6eb987a60640800000000000000
-      internalID: 5045904642562364379
+      spriteID: fe935234cb1f65c20800000000000000
+      internalID: 3195006776548604399
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TileGrassLight00_0: 5045904642562364379
+      TileStone02_0: 3195006776548604399
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

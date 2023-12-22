@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1a99580bbf99d41d9b3bbf514698f566
+guid: 934d73c76e9d6414c89b1ff746d62010
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2189510010676529607
-    second: Portal_0
+      213: 5045904642562364379
+    second: TileGrassLight00_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portal_0
+      name: TileGrassLight00_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7c9498211c3b26e10800000000000000
-      internalID: 2189510010676529607
+      spriteID: bd39c6eb987a60640800000000000000
+      internalID: 5045904642562364379
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Portal_0: 2189510010676529607
+      TileGrassLight00_0: 5045904642562364379
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
