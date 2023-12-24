@@ -2,14 +2,14 @@ using Frog.Level.Primitives;
 
 namespace Frog.Level.Simulation
 {
-    public enum SimulationEventType
+    public enum TimeLineEventType
     {
         Move,
     }
 
-    public struct SimulationEvent
+    public struct TimeLineEvent
     {
-        public SimulationEventType Type;
+        public TimeLineEventType Type;
         public ushort SenderId;
         public ushort Step;
         public BoardPoint Position;

@@ -36,9 +36,9 @@ namespace Frog.Level.Simulation
             throw new InvalidOperationException();
         }
 
-        public void Simulate(ref LevelState state, in InputState input, List<SimulationEvent> events)
+        public void Simulate(ref LevelState state, in InputState input, List<TimeLineEvent> timeLine)
         {
-            Debug.Assert(events.Count == 0);
+            Debug.Assert(timeLine.Count == 0);
 
             if (!input.TryGetMoveDirection(out var direction))
                 return;
@@ -53,9 +53,9 @@ namespace Frog.Level.Simulation
             if (cell.TileType != BoardTileType.Ground || cell.ObjectType == BoardObjectType.Obstacle)
                 return;
 
-            events.Add(new SimulationEvent
+            timeLine.Add(new TimeLineEvent
             {
-                Type = SimulationEventType.Move,
+                Type = TimeLineEventType.Move,
                 Position = state.CharacterPosition,
                 EndPosition = newPos,
                 SenderId = 0,

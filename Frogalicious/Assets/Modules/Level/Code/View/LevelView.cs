@@ -79,18 +79,18 @@ namespace Frog.Level.View
                 _moving = false;
         }
 
-        public bool IsBusy => _moving;
+        public bool IsPlayingTimeline => _moving;
 
-        public void DisplayEvents(List<SimulationEvent> events)
+        public void StartPlayingTimeline(List<TimeLineEvent> timeLine)
         {
-            foreach (var e in events)
+            foreach (var timeLineEvent in timeLine)
             {
-                if (e.Type == SimulationEventType.Move)
+                if (timeLineEvent.Type == TimeLineEventType.Move)
                 {
                     _moving = true;
                     _moveTime = 0;
-                    _moveStart = e.Position.ToVector2();
-                    _moveEnd = e.EndPosition.ToVector2();
+                    _moveStart = timeLineEvent.Position.ToVector2();
+                    _moveEnd = timeLineEvent.EndPosition.ToVector2();
                 }
             }
         }

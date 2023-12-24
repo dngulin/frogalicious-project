@@ -13,7 +13,7 @@ namespace Frog.Level
         private readonly LevelSimulation _simulation;
         private readonly LevelView _view;
 
-        private readonly List<SimulationEvent> _simEvents = new List<SimulationEvent>();
+        private readonly List<TimeLineEvent> _timeLineEvents = new List<TimeLineEvent>();
 
         private LevelController(LevelState state, LevelSimulation simulation, LevelView view)
         {
@@ -30,17 +30,17 @@ namespace Frog.Level
         public void Tick(float dt)
         {
             _view.Tick(dt);
-            if (_view.IsBusy)
+            if (_view.IsPlayingTimeline)
                 return;
 
             var input = InputStateProvider.Poll();
-            _simulation.Simulate(ref _state, input, _simEvents);
+            _simulation.Simulate(ref _state, input, _timeLineEvents);
 
-            if (_simEvents.Count == 0)
+            if (_timeLineEvents.Count == 0)
                 return;
 
-            _view.DisplayEvents(_simEvents);
-            _simEvents.Clear();
+            _view.StartPlayingTimeline(_timeLineEvents);
+            _timeLineEvents.Clear();
         }
     }
 }
