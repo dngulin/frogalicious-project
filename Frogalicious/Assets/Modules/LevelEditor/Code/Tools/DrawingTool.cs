@@ -1,4 +1,5 @@
 using System;
+using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.LevelEditor.Data;
@@ -107,7 +108,7 @@ namespace Frog.LevelEditor.Tools
 
         private void UpdateCell(LevelData levelData, in BoardPoint point)
         {
-            ref var cell = ref levelData.CellAtPointMut(point);
+            ref var cell = ref levelData.AsBoardGrid().RefAtMut(point);
 
             switch (_panel.Layer)
             {

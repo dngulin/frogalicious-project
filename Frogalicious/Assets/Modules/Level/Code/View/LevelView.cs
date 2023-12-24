@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.Simulation;
@@ -20,11 +21,13 @@ namespace Frog.Level.View
             var rootGo = new GameObject("LevelRoot");
             _root = rootGo.transform;
 
-            for (var y = 0; y < data.Height; y++)
-            for (var x = 0; x < data.Width; x++)
+            var grid = data.AsBoardGrid();
+
+            for (var y = 0; y < grid.Height; y++)
+            for (var x = 0; x < grid.Width; x++)
             {
                 var point = new BoardPoint(x, y);
-                ref readonly var cellData = ref data.CellAtPoint(point);
+                ref readonly var cellData = ref grid.RefAt(point);
                 if (cellData.TileType == BoardTileType.Ground)
                 {
                     var cell = Object.Instantiate(viewConfig.Tile, _root);

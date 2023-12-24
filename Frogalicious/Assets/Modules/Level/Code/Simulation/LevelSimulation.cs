@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.State;
@@ -18,11 +19,13 @@ namespace Frog.Level.Simulation
 
         public LevelState CreateInitialState()
         {
-            for (var y = 0; y < _data.Height; y++)
-            for (var x = 0; x < _data.Width; x++)
+            var grid = _data.AsBoardGrid();
+
+            for (var y = 0; y < grid.Height; y++)
+            for (var x = 0; x < grid.Width; x++)
             {
                 var point = new BoardPoint(x, y);
-                ref readonly var cellData = ref _data.CellAtPoint(point);
+                ref readonly var cellData = ref grid.RefAt(point);
 
                 if (cellData.ObjectType == BoardObjectType.Character)
                 {
@@ -46,10 +49,12 @@ namespace Frog.Level.Simulation
             var offset = direction.ToBoardPoint();
             var newPos = state.CharacterPosition + offset;
 
-            if (!_data.IsPointInBounds(newPos))
+            var grid = _data.AsBoardGrid();
+
+            if (!grid.HasPoint(newPos))
                 return;
 
-            ref readonly var cell = ref _data.CellAtPoint(newPos);
+            ref readonly var cell = ref grid.RefAt(newPos);
             if (cell.TileType != BoardTileType.Ground || cell.ObjectType == BoardObjectType.Obstacle)
                 return;
 

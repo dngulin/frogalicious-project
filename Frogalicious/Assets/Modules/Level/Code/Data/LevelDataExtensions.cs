@@ -1,32 +1,11 @@
-using System;
-using Frog.Level.Primitives;
+using Frog.Level.Collections;
 
 namespace Frog.Level.Data
 {
-    public static class LevelDataExtensions
-    {
-        public static bool IsPointInBounds(this LevelData data, in BoardPoint point)
+    public static class LevelDataExtensions {
+        public static BoardGrid<CellData> AsBoardGrid(this LevelData data)
         {
-            if (point.X < 0 || point.Y < 0)
-                return false;
-
-            if (point.X >= data.Width || point.Y >= data.Height)
-                return false;
-
-            return true;
-        }
-
-        public static ref readonly CellData CellAtPoint(this LevelData data, in BoardPoint point)
-        {
-            if (!data.IsPointInBounds(point))
-                throw new IndexOutOfRangeException();
-
-            return ref data.Cells[point.Y * data.Width + point.X];
-        }
-
-        public static ref CellData CellAtPointMut(this LevelData data, in BoardPoint point)
-        {
-            return ref data.Cells[point.Y * data.Width + point.X];
+            return new BoardGrid<CellData>(data.Cells, data.Width, data.Height);
         }
     }
 }

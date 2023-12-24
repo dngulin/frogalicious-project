@@ -1,3 +1,4 @@
+using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using UnityEditor;
@@ -26,18 +27,19 @@ namespace Frog.LevelEditor.Data
             if (levelData.Width == w && levelData.Height == h)
                 return false;
 
-            var cells = new CellData[w * h];
+            var newGrid = new BoardGrid<CellData>(new CellData[w * h], w, h);
+            var oldGrid = levelData.AsBoardGrid();
 
             for (var y = 0; y < Mathf.Min(h, levelData.Height); y++)
             for (var x = 0; x < Mathf.Min(w, levelData.Width); x++)
             {
                 var point = new BoardPoint(x, y);
-                cells[point.Y * w + point.X] = levelData.CellAtPoint(point);
+                newGrid.RefAtMut(point) = oldGrid.RefAt(point);
             }
 
-            levelData.Width = w;
-            levelData.Height = h;
-            levelData.Cells = cells;
+            levelData.Width = newGrid.Width;
+            levelData.Height = newGrid.Height;
+            levelData.Cells = newGrid.Cells;
             return true;
 
         }
