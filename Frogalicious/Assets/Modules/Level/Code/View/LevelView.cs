@@ -37,7 +37,7 @@ namespace Frog.Level.View
                         BoardTileType.Ground => viewConfig.Ground,
                         BoardTileType.Button => viewConfig.Button,
                         BoardTileType.Spikes => viewConfig.Spikes,
-                        _ => throw new ArgumentOutOfRangeException()
+                        _ => throw new ArgumentOutOfRangeException(),
                     };
                     InstantiateAt(tilePrefab, point);
                 }
@@ -51,7 +51,7 @@ namespace Frog.Level.View
                         BoardObjectType.Obstacle => viewConfig.Obstacle,
                         BoardObjectType.Box => viewConfig.Box,
                         BoardObjectType.Coin => viewConfig.Coin,
-                        _ => throw new ArgumentOutOfRangeException()
+                        _ => throw new ArgumentOutOfRangeException(),
                     };
                     var obj = InstantiateAt(objPrefab, point);
 
