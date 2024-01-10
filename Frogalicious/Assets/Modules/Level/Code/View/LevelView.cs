@@ -28,32 +28,54 @@ namespace Frog.Level.View
             {
                 var point = new BoardPoint(x, y);
                 ref readonly var cellData = ref grid.RefAt(point);
-                if (cellData.TileType == BoardTileType.Ground)
+
+                if (cellData.TileType != BoardTileType.Nothing)
                 {
-                    var cell = Object.Instantiate(viewConfig.Tile, _root);
-                    cell.transform.localPosition = point.ToVector2();
+                    var tilePrefab = cellData.TileType switch
+                    {
+                        BoardTileType.Nothing => throw new InvalidOperationException(),
+                        BoardTileType.Ground => viewConfig.Ground,
+                        BoardTileType.Button => viewConfig.Button,
+                        BoardTileType.Spikes => viewConfig.Spikes,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    InstantiateAt(tilePrefab, point);
                 }
 
-                switch (cellData.ObjectType)
+                if (cellData.ObjectType != BoardObjectType.Nothing)
                 {
-                    case BoardObjectType.Character:
-                        var hero = Object.Instantiate(viewConfig.Character, _root);
-                        hero.transform.localPosition = point.ToVector2();
-                        _character = hero.transform;
-                        break;
+                    var objPrefab = cellData.ObjectType switch
+                    {
+                        BoardObjectType.Nothing => throw new InvalidOperationException(),
+                        BoardObjectType.Character => viewConfig.Character,
+                        BoardObjectType.Obstacle => viewConfig.Obstacle,
+                        BoardObjectType.Box => viewConfig.Box,
+                        BoardObjectType.Coin => viewConfig.Coin,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    var obj = InstantiateAt(objPrefab, point);
 
-                    case BoardObjectType.Obstacle:
-                        var obstacle = Object.Instantiate(viewConfig.Obstacle, _root);
-                        obstacle.transform.localPosition = point.ToVector2();
-                        break;
+                    if (cellData.ObjectType == BoardObjectType.Character)
+                    {
+                        _character = obj.transform;
+                    }
                 }
             }
+
+            Debug.Assert(_character != null);
 
             var center = new Vector2(data.Width - 1, data.Height - 1) * 0.5f;
             camera.transform.position = new Vector3(center.x, center.y, -10);
 
             _camera = camera;
             UpdateOrthographicSize();
+        }
+
+        private GameObject InstantiateAt(GameObject prefab, in BoardPoint pos)
+        {
+            var instance = Object.Instantiate(prefab, _root);
+            instance.transform.localPosition = pos.ToVector2();
+            return instance;
         }
 
         public void Dispose()

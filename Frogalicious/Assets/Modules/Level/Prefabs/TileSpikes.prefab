@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6303211220167619504}
   - component: {fileID: 2330882222447788198}
   m_Layer: 0
-  m_Name: Character
+  m_Name: TileSpikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,10 +70,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 2003479363
-  m_SortingLayer: 2
+  m_SortingLayerID: -1664646509
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f05539a79453e498eb85d1840397de4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 477a66d9902a9f34eaf3488b855bdf20, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
