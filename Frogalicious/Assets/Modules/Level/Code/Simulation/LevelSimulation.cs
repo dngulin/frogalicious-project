@@ -88,7 +88,7 @@ namespace Frog.Level.Simulation
             return cell.TileType switch {
                 BoardTileType.Ground => true,
                 BoardTileType.Button => true,
-                BoardTileType.Spikes => byObj == BoardObjectType.Character || !state.Spikes[cell.ObjectStateIdx].IsActive,
+                BoardTileType.Spikes => byObj == BoardObjectType.Character || !state.Spikes[cell.TileStateIdx].IsActive,
                 _ => false,
             };
         }
