@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: LevelViewConfig
   m_EditorClassIdentifier: 
   Ground: {fileID: 4919007352804523480, guid: 4cdee010714fd9c278fa9daa47e0ece3, type: 3}
-  Button: {fileID: 0}
-  Spikes: {fileID: 0}
+  Button: {fileID: 4919007352804523480, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
+  Spikes: {fileID: 4919007352804523480, guid: c0ce66c5eb00e7df4b4f3e286ddd71f2, type: 3}
   Character: {fileID: 4919007352804523480, guid: c1bc20c067cdde453914c116b8950657, type: 3}
   Obstacle: {fileID: 4919007352804523480, guid: e390f17400939e27890984ae8ec7d064, type: 3}
-  Box: {fileID: 0}
-  Coin: {fileID: 0}
+  Box: {fileID: 4919007352804523480, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
+  Coin: {fileID: 4919007352804523480, guid: 9ab54a32e3eafbaa99c5d66e669c08ea, type: 3}
