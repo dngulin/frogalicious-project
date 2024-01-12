@@ -24,7 +24,7 @@ namespace Frog.Level.Collections
             return ref data.Cells[point.Y * data.Width + point.X];
         }
 
-        public static ref T RefAtMut<T>(this in BoardGrid<T> grid, in BoardPoint point)
+        public static ref T RefMutAt<T>(this in BoardGrid<T> grid, in BoardPoint point)
         {
             if (!grid.HasPoint(point))
                 throw new IndexOutOfRangeException();

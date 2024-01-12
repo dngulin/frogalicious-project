@@ -12,7 +12,7 @@ namespace Frog.Level.View
     public class LevelView : IDisposable
     {
         private readonly Transform _root;
-        private readonly Transform _character;
+        private readonly Dictionary<BoardPoint, Transform> _objects = new Dictionary<BoardPoint, Transform>();
 
         private readonly Camera _camera;
 
@@ -55,14 +55,10 @@ namespace Frog.Level.View
                     };
                     var obj = InstantiateAt(objPrefab, point);
 
-                    if (cellData.ObjectType == BoardObjectType.Character)
-                    {
-                        _character = obj.transform;
-                    }
+                    _objects.Add(point, obj.transform);
                 }
             }
 
-            Debug.Assert(_character != null);
 
             var center = new Vector2(data.Width - 1, data.Height - 1) * 0.5f;
             camera.transform.position = new Vector3(center.x, center.y, -10);
@@ -84,41 +80,55 @@ namespace Frog.Level.View
                 Object.Destroy(_root.gameObject);
         }
 
-        private const float MoveDuration = 0.5f;
-        private bool _moving;
-        private float _moveTime;
-        private Vector2 _moveStart;
-        private Vector2 _moveEnd;
+        private const float StepDuration = 0.5f;
+        private float _timelinePos;
+
+        private readonly List<MoveJob> _moveJobs = new List<MoveJob>();
+
+        public void StartPlayingTimeline(List<TimeLineEvent> timeLine)
+        {
+            _timelinePos = 0;
+
+            foreach (var evt in timeLine)
+            {
+                if (evt.Type == TimeLineEventType.Move)
+                {
+                    var target = _objects[evt.Position];
+                    _objects.Remove(evt.Position);
+
+                    var job = new MoveJob(
+                        evt.Step * StepDuration,
+                        evt.Position,
+                        evt.EndPosition,
+                        target);
+
+                    _moveJobs.Add(job);
+                }
+            }
+        }
 
         public void Tick(float dt)
         {
             UpdateOrthographicSize();
 
-            if (!_moving)
+            if (!IsPlayingTimeline)
                 return;
 
-            _moveTime += dt;
-            _character.localPosition = Vector2.Lerp(_moveStart, _moveEnd, _moveTime / MoveDuration);
+            _timelinePos += dt;
 
-            if (_moveTime >= MoveDuration)
-                _moving = false;
-        }
-
-        public bool IsPlayingTimeline => _moving;
-
-        public void StartPlayingTimeline(List<TimeLineEvent> timeLine)
-        {
-            foreach (var timeLineEvent in timeLine)
+            for (var i = 0; i < _moveJobs.Count; i++)
             {
-                if (timeLineEvent.Type == TimeLineEventType.Move)
+                var job = _moveJobs[i];
+                var finished = job.Update(_timelinePos, StepDuration);
+                if (finished)
                 {
-                    _moving = true;
-                    _moveTime = 0;
-                    _moveStart = timeLineEvent.Position.ToVector2();
-                    _moveEnd = timeLineEvent.EndPosition.ToVector2();
+                    _objects.Add(job.EndPos, job.Target);
+                    _moveJobs.RemoveAt(i);
                 }
             }
         }
+
+        public bool IsPlayingTimeline => _moveJobs.Count > 0;
 
         private const float MaxHeight = 7f;
         private const float MaxWidth = 11f;

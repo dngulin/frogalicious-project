@@ -108,7 +108,7 @@ namespace Frog.LevelEditor.Tools
 
         private void UpdateCell(LevelData levelData, in BoardPoint point)
         {
-            ref var cell = ref levelData.AsBoardGrid().RefAtMut(point);
+            ref var cell = ref levelData.AsBoardGrid().RefMutAt(point);
 
             switch (_panel.Layer)
             {

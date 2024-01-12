@@ -34,7 +34,7 @@ namespace Frog.LevelEditor.Data
             for (var x = 0; x < Mathf.Min(w, levelData.Width); x++)
             {
                 var point = new BoardPoint(x, y);
-                newGrid.RefAtMut(point) = oldGrid.RefAt(point);
+                newGrid.RefMutAt(point) = oldGrid.RefAt(point);
             }
 
             levelData.Width = newGrid.Width;

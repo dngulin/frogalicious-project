@@ -1,72 +1,112 @@
 using System;
 using System.Collections.Generic;
 using Frog.Level.Collections;
-using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.State;
 using UnityEngine;
 
 namespace Frog.Level.Simulation
 {
-    public class LevelSimulation
+    public static class LevelSimulation
     {
-        private readonly LevelData _data;
-
-        public LevelSimulation(LevelData data)
+        public static void Simulate(ref LevelState state, in InputState input, List<TimeLineEvent> timeline)
         {
-            _data = data;
-        }
-
-        public LevelState CreateInitialState()
-        {
-            var grid = _data.AsBoardGrid();
-
-            for (var y = 0; y < grid.Height; y++)
-            for (var x = 0; x < grid.Width; x++)
-            {
-                var point = new BoardPoint(x, y);
-                ref readonly var cellData = ref grid.RefAt(point);
-
-                if (cellData.ObjectType == BoardObjectType.Character)
-                {
-                    return new LevelState
-                    {
-                        CharacterPosition = point,
-                    };
-                }
-            }
-
-            throw new InvalidOperationException();
-        }
-
-        public void Simulate(ref LevelState state, in InputState input, List<TimeLineEvent> timeLine)
-        {
-            Debug.Assert(timeLine.Count == 0);
+            Debug.Assert(timeline.Count == 0);
 
             if (!input.TryGetMoveDirection(out var direction))
                 return;
 
-            var offset = direction.ToBoardPoint();
-            var newPos = state.CharacterPosition + offset;
-
-            var grid = _data.AsBoardGrid();
-
-            if (!grid.HasPoint(newPos))
+            if (!MoveCharacter(ref state, direction, timeline, 0))
+            {
                 return;
+            }
 
-            ref readonly var cell = ref grid.RefAt(newPos);
-            if (cell.TileType != BoardTileType.Ground || cell.ObjectType == BoardObjectType.Obstacle)
-                return;
+            UpdateButtons(ref state, timeline, 1);
+        }
 
-            timeLine.Add(new TimeLineEvent
+        private static bool MoveCharacter(ref LevelState state, MoveDirection dir, List<TimeLineEvent> timeline, ushort step)
+        {
+            var shift = dir.ToBoardPoint();
+            var newPos = state.Character.Position + shift;
+
+
+            return MoveObject(ref state, state.Character.Position, shift, timeline, step);
+        }
+
+        private static bool MoveObject(ref LevelState state, BoardPoint pos, BoardPoint shift, List<TimeLineEvent> timeline, ushort step)
+        {
+            var newPos = pos + shift;
+            if (!state.Cells.HasPoint(newPos))
+                return false;
+
+            ref var cell = ref state.Cells.RefMutAt(pos);
+            if (!IsMovableObject(cell.ObjectType))
+                return false;
+
+            if (!CanLeaveTile(in state, in cell))
+                return false;
+
+            ref var newCell = ref state.Cells.RefMutAt(newPos);
+            if (!CanEnterTile(in state, in newCell, cell.ObjectType))
+                return false;
+
+            if (newCell.ObjectType != BoardObjectType.Nothing && !MoveObject(ref state, newPos, shift, timeline, step))
+                return false;
+
+            newCell.ObjectType = cell.ObjectType;
+            newCell.ObjectStateIdx = cell.ObjectStateIdx;
+
+            cell.ObjectType = default;
+            cell.ObjectStateIdx = default;
+
+            if (newCell.ObjectType == BoardObjectType.Character)
+            {
+                state.Character.Position = newPos;
+            }
+
+            timeline.Add(new TimeLineEvent
             {
                 Type = TimeLineEventType.Move,
-                Position = state.CharacterPosition,
+                Position = pos,
                 EndPosition = newPos,
-                SenderId = 0,
-                Step = 0,
+                Step = step,
             });
-            state.CharacterPosition = newPos;
+            return true;
+        }
+
+        private static bool IsMovableObject(BoardObjectType objType)
+        {
+            return objType switch {
+                BoardObjectType.Character => true,
+                BoardObjectType.Box => true,
+                _ => false,
+            };
+        }
+
+        private static bool CanEnterTile(in LevelState state, in CellState cell, BoardObjectType byObj)
+        {
+            return cell.TileType switch {
+                BoardTileType.Ground => true,
+                BoardTileType.Button => true,
+                BoardTileType.Spikes => byObj == BoardObjectType.Character || !state.Spikes[cell.ObjectStateIdx].IsActive,
+                _ => false,
+            };
+        }
+
+        private static bool CanLeaveTile(in LevelState state, in CellState cell)
+        {
+            return cell.TileType switch {
+                BoardTileType.Ground => true,
+                BoardTileType.Button => true,
+                BoardTileType.Spikes => !state.Spikes[cell.ObjectStateIdx].IsActive,
+                _ => false,
+            };
+        }
+
+
+        private static void UpdateButtons(ref LevelState state, List<TimeLineEvent> timeline, ushort step)
+        {
+
         }
     }
 }

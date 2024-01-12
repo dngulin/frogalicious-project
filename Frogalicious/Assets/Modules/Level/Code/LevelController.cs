@@ -10,15 +10,13 @@ namespace Frog.Level
     {
         private LevelState _state;
 
-        private readonly LevelSimulation _simulation;
         private readonly LevelView _view;
 
         private readonly List<TimeLineEvent> _timeLineEvents = new List<TimeLineEvent>();
 
-        private LevelController(LevelState state, LevelSimulation simulation, LevelView view)
+        private LevelController(LevelState state, LevelView view)
         {
             _state = state;
-            _simulation = simulation;
             _view = view;
         }
 
@@ -34,7 +32,7 @@ namespace Frog.Level
                 return;
 
             var input = InputStateProvider.Poll();
-            _simulation.Simulate(ref _state, input, _timeLineEvents);
+            LevelSimulation.Simulate(ref _state, input, _timeLineEvents);
 
             if (_timeLineEvents.Count == 0)
                 return;

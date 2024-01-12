@@ -10,7 +10,6 @@ namespace Frog.Level.Simulation
     public struct TimeLineEvent
     {
         public TimeLineEventType Type;
-        public ushort SenderId;
         public ushort Step;
         public BoardPoint Position;
         public BoardPoint EndPosition;
