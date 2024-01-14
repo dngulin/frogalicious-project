@@ -7,10 +7,14 @@ namespace Frog.Level.Primitives
         public static BoardPoint Down => new BoardPoint(0, -1);
         public static BoardPoint Left => new BoardPoint(-1, 0);
 
-        public readonly int X;
-        public readonly int Y;
+        public readonly short X;
+        public readonly short Y;
 
-        public BoardPoint(int x, int y)
+        public BoardPoint(int x, int y) : this((short)x, (short)y)
+        {
+        }
+
+        public BoardPoint(short x, short y)
         {
             X = x;
             Y = y;

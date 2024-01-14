@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Frog.Level.Data;
 using Frog.Level.Simulation;
 using Frog.Level.State;
 using Frog.Level.View;
@@ -14,9 +15,9 @@ namespace Frog.Level
 
         private readonly List<TimeLineEvent> _timeLineEvents = new List<TimeLineEvent>();
 
-        private LevelController(LevelState state, LevelView view)
+        private LevelController(LevelView view, LevelData data)
         {
-            _state = state;
+            LevelSimulation.SetupInitialState(ref _state, data);
             _view = view;
         }
 

@@ -44,15 +44,15 @@ MonoBehaviour:
   - TileType: 1
     ObjectType: 2
   - TileType: 1
-    ObjectType: 0
+    ObjectType: 3
   - TileType: 1
     ObjectType: 0
   - TileType: 1
     ObjectType: 1
   - TileType: 1
-    ObjectType: 0
+    ObjectType: 3
   - TileType: 1
-    ObjectType: 0
+    ObjectType: 3
   - TileType: 1
     ObjectType: 0
   - TileType: 1
@@ -64,7 +64,7 @@ MonoBehaviour:
   - TileType: 1
     ObjectType: 2
   - TileType: 1
-    ObjectType: 0
+    ObjectType: 3
   - TileType: 1
     ObjectType: 0
   - TileType: 0

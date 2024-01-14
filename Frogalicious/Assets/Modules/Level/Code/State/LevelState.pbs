@@ -1,0 +1,56 @@
+namespace Frog.Level.State
+{
+    struct ObjectState
+    {
+        BoardObjectType Type;
+        ushort StateIdx;
+    }
+
+    struct TileState
+    {
+        BoardTileType Type;
+        ushort StateIdx;
+    }
+
+    struct CellState
+    {
+        ObjectState Object;
+        TileState Tile;
+    }
+
+    struct CharacterState
+    {
+        BoardPoint Position;
+        bool IsAlive;
+    }
+
+    struct ButtonState
+    {
+        bool IsPressed;
+    }
+
+    struct SpikesState
+    {
+        bool IsActive = true;
+    }
+
+    // maximum board size is 10 x 7
+    array CellsArray CellState[70];
+    array ButtonsArray ButtonState[70];
+    array SpikesArray SpikesState[70];
+
+    struct CellsState
+    {
+        CellsArray Array;
+        ushort Width;
+        ushort Height;
+    }
+
+    struct LevelState
+    {
+        CellsState Cells;
+        CharacterState Character;
+        ButtonsArray Buttons;
+        SpikesArray Spikes;
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Frog.Level.CodeGen",
+    "rootNamespace": "Frog.Level.CodeGen",
+    "references": [
+        "GUID:fe6198da80db75c3b8a5056e73a081ff"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "PlainBuffers.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
