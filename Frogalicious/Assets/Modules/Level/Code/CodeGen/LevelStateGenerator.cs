@@ -1,7 +1,6 @@
 using System;
 using Frog.Level.Primitives;
 using PlainBuffers;
-using PlainBuffers.Generators;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace Frog.Level.CodeGen
             {
                 GetEnumInfo<BoardObjectType>(),
                 GetEnumInfo<BoardTileType>(),
-                ExternStructInfo.WithoutValues(
+                ExternTypeInfo.WithoutValues(
                     nameof(BoardPoint),
                     UnsafeUtility.SizeOf<BoardPoint>(),
                     UnsafeUtility.AlignOf<BoardPoint>()
@@ -45,10 +44,10 @@ namespace Frog.Level.CodeGen
             }
         }
 
-        private static ExternStructInfo GetEnumInfo<T>() where T : unmanaged, Enum
+        private static ExternTypeInfo GetEnumInfo<T>() where T : unmanaged, Enum
         {
             var type = typeof(T);
-            return ExternStructInfo.WithEnumeratedValues(
+            return ExternTypeInfo.WithEnumeratedValues(
                 type.Name,
                 UnsafeUtility.SizeOf<T>(),
                 UnsafeUtility.AlignOf<T>(),

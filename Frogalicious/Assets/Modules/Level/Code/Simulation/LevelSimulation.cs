@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Frog.Level.Collections;
 using Frog.Level.Data;
@@ -10,14 +9,15 @@ namespace Frog.Level.Simulation
 {
     public static class LevelSimulation
     {
+        private const ushort CharacterId = 1000;
+
         public static void SetupInitialState(ref LevelState state, LevelData data)
         {
             var dataGrid = data.AsBoardGrid();
             state.Cells.Width = dataGrid.Width;
             state.Cells.Height = dataGrid.Height;
 
-            state.ButtonsCount = 0;
-            state.SpikesCount = 0;
+            state.EntityCount = 0;
 
             for (var y = 0; y < dataGrid.Height; y++)
             for (var x = 0; x < dataGrid.Width; x++)
@@ -31,6 +31,7 @@ namespace Frog.Level.Simulation
                 cell.Object.Type = cellData.ObjectType;
                 if (cell.Object.Type == BoardObjectType.Character)
                 {
+                    cell.Object.EntityId = CharacterId;
                     state.Character.WriteDefault();
                     state.Character.Position = point;
                 }
@@ -39,12 +40,12 @@ namespace Frog.Level.Simulation
                 switch (cellData.TileType)
                 {
                     case BoardTileType.Button:
-                        cell.Tile.StateIdx = state.ButtonsCount++;
-                        state.Buttons.RefAt(cell.Tile.StateIdx).WriteDefault();
+                        cell.Tile.EntityId = state.EntityCount++;
+                        state.Entities.RefAt(cell.Tile.EntityId).AsButton.WriteDefault();
                         break;
                     case BoardTileType.Spikes:
-                        cell.Tile.StateIdx = state.SpikesCount++;
-                        state.Spikes.RefAt(cell.Tile.StateIdx).WriteDefault();
+                        cell.Tile.EntityId = state.EntityCount++;
+                        state.Entities.RefAt(cell.Tile.EntityId).AsSpikes.WriteDefault();
                         break;
                 }
             }
@@ -128,7 +129,7 @@ namespace Frog.Level.Simulation
                 BoardTileType.Ground => true,
                 BoardTileType.Button => true,
                 BoardTileType.Spikes => byObj == BoardObjectType.Character ||
-                                        !state.Spikes.RefReadonlyAt(tile.StateIdx).IsActive,
+                                        !state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive,
                 _ => false,
             };
         }
@@ -139,7 +140,7 @@ namespace Frog.Level.Simulation
             {
                 BoardTileType.Ground => true,
                 BoardTileType.Button => true,
-                BoardTileType.Spikes => !state.Spikes.RefReadonlyAt(tile.StateIdx).IsActive,
+                BoardTileType.Spikes => !state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive,
                 _ => false,
             };
         }
@@ -149,7 +150,7 @@ namespace Frog.Level.Simulation
             switch (tile.Type)
             {
                 case BoardTileType.Button:
-                    state.Buttons.RefAt(tile.StateIdx).IsPressed = false;
+                    state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = false;
                     timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
                     break;
             }
@@ -160,11 +161,11 @@ namespace Frog.Level.Simulation
             switch (tile.Type)
             {
                 case BoardTileType.Button:
-                    state.Buttons.RefAt(tile.StateIdx).IsPressed = true;
+                    state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = true;
                     timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
                     break;
                 case BoardTileType.Spikes:
-                    if (state.Spikes.RefReadonlyAt(tile.StateIdx).IsActive)
+                    if (state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive)
                     {
                         // TODO; Kill character
                     }
@@ -174,22 +175,6 @@ namespace Frog.Level.Simulation
 
         private static void UpdateButtons(ref LevelState state, List<TimeLineEvent> timeline, ushort step)
         {
-            for (var buttonIdx = 0; buttonIdx < state.ButtonsCount; buttonIdx++)
-            {
-                var isPressed = state.Buttons.RefReadonlyAt(buttonIdx).IsPressed;
-
-                for (var spikesIdx = 0; spikesIdx < state.SpikesCount; spikesIdx++)
-                {
-                    ref var spikes = ref state.Spikes.RefAt(spikesIdx);
-                    var shouldBeActive = !isPressed;
-
-                    if (spikes.IsActive != shouldBeActive)
-                    {
-                        spikes.IsActive = shouldBeActive;
-                        timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
-                    }
-                }
-            }
         }
     }
 }
