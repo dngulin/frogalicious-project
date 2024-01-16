@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.Simulation;
