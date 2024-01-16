@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Frog.Level.Collections;
 using Frog.Level.Data;
@@ -15,8 +16,8 @@ namespace Frog.Level.Simulation
             state.Cells.Width = dataGrid.Width;
             state.Cells.Height = dataGrid.Height;
 
-            ushort buttonsCount = default;
-            ushort spikesCount = default;
+            state.ButtonsCount = 0;
+            state.SpikesCount = 0;
 
             for (var y = 0; y < dataGrid.Height; y++)
             for (var x = 0; x < dataGrid.Width; x++)
@@ -29,17 +30,20 @@ namespace Frog.Level.Simulation
 
                 cell.Object.Type = cellData.ObjectType;
                 if (cell.Object.Type == BoardObjectType.Character)
+                {
+                    state.Character.WriteDefault();
                     state.Character.Position = point;
+                }
 
                 cell.Tile.Type = cellData.TileType;
                 switch (cellData.TileType)
                 {
                     case BoardTileType.Button:
-                        cell.Tile.StateIdx = buttonsCount++;
+                        cell.Tile.StateIdx = state.ButtonsCount++;
                         state.Buttons.RefAt(cell.Tile.StateIdx).WriteDefault();
                         break;
                     case BoardTileType.Spikes:
-                        cell.Tile.StateIdx = spikesCount++;
+                        cell.Tile.StateIdx = state.SpikesCount++;
                         state.Spikes.RefAt(cell.Tile.StateIdx).WriteDefault();
                         break;
                 }
@@ -94,6 +98,9 @@ namespace Frog.Level.Simulation
                 state.Character.Position = newPos;
             }
 
+            TileLeft(ref state, in cell.Tile, timeline, step);
+            TileEntered(ref state, in newCell.Tile, timeline, step);
+
             timeline.Add(new TimeLineEvent
             {
                 Type = TimeLineEventType.Move,
@@ -137,9 +144,52 @@ namespace Frog.Level.Simulation
             };
         }
 
+        private static void TileLeft(ref LevelState state, in TileState tile, List<TimeLineEvent> timeline, ushort step)
+        {
+            switch (tile.Type)
+            {
+                case BoardTileType.Button:
+                    state.Buttons.RefAt(tile.StateIdx).IsPressed = false;
+                    timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
+                    break;
+            }
+        }
+
+        private static void TileEntered(ref LevelState state, in TileState tile, List<TimeLineEvent> timeline, ushort step)
+        {
+            switch (tile.Type)
+            {
+                case BoardTileType.Button:
+                    state.Buttons.RefAt(tile.StateIdx).IsPressed = true;
+                    timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
+                    break;
+                case BoardTileType.Spikes:
+                    if (state.Spikes.RefReadonlyAt(tile.StateIdx).IsActive)
+                    {
+                        // TODO; Kill character
+                    }
+                    break;
+            }
+        }
 
         private static void UpdateButtons(ref LevelState state, List<TimeLineEvent> timeline, ushort step)
         {
+            for (var buttonIdx = 0; buttonIdx < state.ButtonsCount; buttonIdx++)
+            {
+                var isPressed = state.Buttons.RefReadonlyAt(buttonIdx).IsPressed;
+
+                for (var spikesIdx = 0; spikesIdx < state.SpikesCount; spikesIdx++)
+                {
+                    ref var spikes = ref state.Spikes.RefAt(spikesIdx);
+                    var shouldBeActive = !isPressed;
+
+                    if (spikes.IsActive != shouldBeActive)
+                    {
+                        spikes.IsActive = shouldBeActive;
+                        timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
+                    }
+                }
+            }
         }
     }
 }

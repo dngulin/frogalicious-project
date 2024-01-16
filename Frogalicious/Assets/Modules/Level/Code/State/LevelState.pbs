@@ -50,7 +50,11 @@ namespace Frog.Level.State
     {
         CellsState Cells;
         CharacterState Character;
+
         ButtonsArray Buttons;
+        byte ButtonsCount;
+
         SpikesArray Spikes;
+        byte SpikesCount;
     }
 }
