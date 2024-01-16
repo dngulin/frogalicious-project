@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
@@ -51,27 +50,28 @@ namespace Frog.Level.Simulation
             }
         }
 
-        public static void Simulate(ref LevelState state, in InputState input, List<TimeLineEvent> timeline)
+        public static void Simulate(ref LevelState state, in InputState input, ref TimeLine timeline)
         {
-            Debug.Assert(timeline.Count == 0);
+            Debug.Assert(timeline.IsEmpty);
 
             if (!input.TryGetMoveDirection(out var direction))
                 return;
 
-            if (!MoveCharacter(ref state, direction, timeline, 0))
+            timeline.Step = 0;
+            if (!MoveCharacter(ref state, direction, in timeline))
                 return;
 
-            UpdateButtons(ref state, timeline, 1);
+            timeline.Step++;
+            CheckButtons(ref state, in timeline);
         }
 
-        private static bool MoveCharacter(ref LevelState state, MoveDirection dir, List<TimeLineEvent> timeline, ushort step)
+        private static bool MoveCharacter(ref LevelState state, MoveDirection dir, in TimeLine timeline)
         {
             var shift = dir.ToBoardPoint();
-            return MoveObject(ref state, state.Character.Position, shift, timeline, step);
+            return MoveObject(ref state, state.Character.Position, shift, in timeline);
         }
 
-        private static bool MoveObject(ref LevelState state, BoardPoint pos, BoardPoint shift,
-            List<TimeLineEvent> timeline, ushort step)
+        private static bool MoveObject(ref LevelState state, BoardPoint pos, BoardPoint shift, in TimeLine timeline)
         {
             var newPos = pos + shift;
             if (!state.Cells.HasPoint(newPos))
@@ -88,7 +88,7 @@ namespace Frog.Level.Simulation
             if (!CanEnterTile(in state, in newCell.Tile, cell.Object.Type))
                 return false;
 
-            if (newCell.Object.Type != BoardObjectType.Nothing && !MoveObject(ref state, newPos, shift, timeline, step))
+            if (newCell.Object.Type != BoardObjectType.Nothing && !MoveObject(ref state, newPos, shift, in timeline))
                 return false;
 
             newCell.Object = cell.Object;
@@ -99,16 +99,10 @@ namespace Frog.Level.Simulation
                 state.Character.Position = newPos;
             }
 
-            TileLeft(ref state, in cell.Tile, timeline, step);
-            TileEntered(ref state, in newCell.Tile, timeline, step);
+            TileLeft(ref state, in cell.Tile, in timeline);
+            TileEntered(ref state, in newCell.Tile, in timeline);
 
-            timeline.Add(new TimeLineEvent
-            {
-                Type = TimeLineEventType.Move,
-                Position = pos,
-                EndPosition = newPos,
-                Step = step,
-            });
+            timeline.AddMove(cell.Object.EntityId, pos, newPos);
             return true;
         }
 
@@ -145,36 +139,60 @@ namespace Frog.Level.Simulation
             };
         }
 
-        private static void TileLeft(ref LevelState state, in TileState tile, List<TimeLineEvent> timeline, ushort step)
+        private static void TileLeft(ref LevelState state, in TileState tile, in TimeLine timeline)
         {
             switch (tile.Type)
             {
                 case BoardTileType.Button:
                     state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = false;
-                    timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
+                    timeline.AddFlipFlop(tile.EntityId, false);
                     break;
             }
         }
 
-        private static void TileEntered(ref LevelState state, in TileState tile, List<TimeLineEvent> timeline, ushort step)
+        private static void TileEntered(ref LevelState state, in TileState tile, in TimeLine timeline)
         {
             switch (tile.Type)
             {
                 case BoardTileType.Button:
                     state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = true;
-                    timeline.Add(new TimeLineEvent()); // TODO: FlipFlop event
-                    break;
-                case BoardTileType.Spikes:
-                    if (state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive)
-                    {
-                        // TODO; Kill character
-                    }
+                    timeline.AddFlipFlop(tile.EntityId, true);
                     break;
             }
         }
 
-        private static void UpdateButtons(ref LevelState state, List<TimeLineEvent> timeline, ushort step)
+        private static void CheckButtons(ref LevelState state, in TimeLine timeline)
         {
+            for (var y = 0; y < state.Cells.Height; y++)
+            for (var x = 0; x < state.Cells.Width; x++)
+            {
+                var point = new BoardPoint(x, y);
+                ref readonly var cell = ref state.Cells.RefReadonlyAt(point);
+                if (cell.Tile.Type != BoardTileType.Button)
+                    continue;
+
+                var isPressed = state.Entities.RefReadonlyAt(cell.Tile.EntityId).AsButton.IsPressed;
+                UpdateSpikes(ref state, !isPressed, in timeline);
+            }
+        }
+
+        private static void UpdateSpikes(ref LevelState state, bool isActive, in TimeLine timeline)
+        {
+            for (var y = 0; y < state.Cells.Height; y++)
+            for (var x = 0; x < state.Cells.Width; x++)
+            {
+                var point = new BoardPoint(x, y);
+                ref var cell = ref state.Cells.RefAt(point);
+                if (cell.Tile.Type != BoardTileType.Spikes)
+                    continue;
+
+                ref var spikesState = ref state.Entities.RefAt(cell.Tile.EntityId).AsSpikes;
+                if (spikesState.IsActive != isActive)
+                {
+                    spikesState.IsActive = isActive;
+                    timeline.AddFlipFlop(cell.Tile.EntityId, isActive);
+                }
+            }
         }
     }
 }
