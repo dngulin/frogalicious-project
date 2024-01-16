@@ -51,7 +51,7 @@ namespace Frog.Level.View
                     };
                     var obj = InstantiateAt(tilePrefab, point);
 
-                    _objects.Add(cell.Tile.EntityId, obj.transform);
+                    _objects.Add(cell.Tile.Id, obj.transform);
                 }
 
                 if (cell.Object.Type != BoardObjectType.Nothing)
@@ -67,7 +67,7 @@ namespace Frog.Level.View
                     };
                     var obj = InstantiateAt(objPrefab, point);
 
-                    _objects.Add(cell.Object.EntityId, obj.transform);
+                    _objects.Add(cell.Object.Id, obj.transform);
                 }
             }
         }

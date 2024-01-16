@@ -1,28 +1,20 @@
 namespace Frog.Level.State
 {
-    struct ObjectState
-    {
-        BoardObjectType Type;
-        ushort EntityId;
-    }
-
-    struct TileState
-    {
-        BoardTileType Type;
-        ushort EntityId;
-    }
-
-    struct CellState
-    {
-        ObjectState Object;
-        TileState Tile;
-    }
+    // Objects
 
     struct CharacterState
     {
         BoardPoint Position;
         bool IsAlive;
     }
+
+    struct ObjectState
+    {
+        BoardObjectType Type;
+        ushort Id;
+    }
+
+    // Tiles
 
     struct ButtonState
     {
@@ -34,14 +26,28 @@ namespace Frog.Level.State
         bool IsActive = true;
     }
 
-    union EntityState
+    union ExtendedTileState
     {
         ButtonState AsButton;
         SpikesState AsSpikes;
     }
 
+    struct TileState
+    {
+        BoardTileType Type;
+        ushort Id;
+        ExtendedTileState State;
+    }
+
+    // Cells
+
+    struct CellState
+    {
+        ObjectState Object;
+        TileState Tile;
+    }
+
     array CellsArray CellState[70]; // maximum board size is 10 x 7
-    array EntitiesArray EntityState[140]; // one object and one tile per cell
 
     struct CellsState
     {
@@ -50,13 +56,11 @@ namespace Frog.Level.State
         ushort Height;
     }
 
+    // Level
+
     struct LevelState
     {
         CellsState Cells;
-
-        EntitiesArray Entities;
-        ushort EntityCount;
-
         CharacterState Character;
     }
 }

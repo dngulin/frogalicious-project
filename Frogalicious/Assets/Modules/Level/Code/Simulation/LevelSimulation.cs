@@ -8,15 +8,13 @@ namespace Frog.Level.Simulation
 {
     public static class LevelSimulation
     {
-        private const ushort CharacterId = 1000;
-
         public static void SetupInitialState(ref LevelState state, LevelData data)
         {
             var dataGrid = data.AsBoardGrid();
             state.Cells.Width = dataGrid.Width;
             state.Cells.Height = dataGrid.Height;
 
-            state.EntityCount = 0;
+            ushort nextEntityId = 1; // Do not assign a zero id to anything
 
             for (var y = 0; y < dataGrid.Height; y++)
             for (var x = 0; x < dataGrid.Width; x++)
@@ -26,11 +24,12 @@ namespace Frog.Level.Simulation
                 ref var cell = ref state.Cells.RefAt(point);
 
                 cell.WriteDefault();
+                cell.Object.Id = cellData.ObjectType == BoardObjectType.Nothing ? default : nextEntityId++;
+                cell.Tile.Id = cellData.TileType == BoardTileType.Nothing ? default : nextEntityId++;
 
                 cell.Object.Type = cellData.ObjectType;
                 if (cell.Object.Type == BoardObjectType.Character)
                 {
-                    cell.Object.EntityId = CharacterId;
                     state.Character.WriteDefault();
                     state.Character.Position = point;
                 }
@@ -39,12 +38,10 @@ namespace Frog.Level.Simulation
                 switch (cellData.TileType)
                 {
                     case BoardTileType.Button:
-                        cell.Tile.EntityId = state.EntityCount++;
-                        state.Entities.RefAt(cell.Tile.EntityId).AsButton.WriteDefault();
+                        cell.Tile.State.AsButton.WriteDefault();
                         break;
                     case BoardTileType.Spikes:
-                        cell.Tile.EntityId = state.EntityCount++;
-                        state.Entities.RefAt(cell.Tile.EntityId).AsSpikes.WriteDefault();
+                        cell.Tile.State.AsSpikes.WriteDefault();
                         break;
                 }
             }
@@ -77,32 +74,32 @@ namespace Frog.Level.Simulation
             if (!state.Cells.HasPoint(newPos))
                 return false;
 
-            ref var cell = ref state.Cells.RefAt(pos);
-            if (!IsMovableObject(cell.Object.Type))
+            ref var oldCell = ref state.Cells.RefAt(pos);
+            if (!IsMovableObject(oldCell.Object.Type))
                 return false;
 
-            if (!CanLeaveTile(in state, in cell.Tile))
+            if (!CanLeaveTile(in oldCell.Tile))
                 return false;
 
             ref var newCell = ref state.Cells.RefAt(newPos);
-            if (!CanEnterTile(in state, in newCell.Tile, cell.Object.Type))
+            if (!CanEnterTile(in newCell.Tile, oldCell.Object.Type))
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing && !MoveObject(ref state, newPos, shift, in timeline))
                 return false;
 
-            newCell.Object = cell.Object;
-            cell.Object = default;
+            newCell.Object = oldCell.Object;
+            oldCell.Object = default;
 
             if (newCell.Object.Type == BoardObjectType.Character)
             {
                 state.Character.Position = newPos;
             }
 
-            TileLeft(ref state, in cell.Tile, in timeline);
-            TileEntered(ref state, in newCell.Tile, in timeline);
+            TileLeft(ref oldCell.Tile, in timeline);
+            TileEntered(ref newCell.Tile, in timeline);
 
-            timeline.AddMove(cell.Object.EntityId, pos, newPos);
+            timeline.AddMove(newCell.Object.Id, pos, newPos);
             return true;
         }
 
@@ -116,47 +113,46 @@ namespace Frog.Level.Simulation
             };
         }
 
-        private static bool CanEnterTile(in LevelState state, in TileState tile, BoardObjectType byObj)
+        private static bool CanEnterTile(in TileState tile, BoardObjectType byObj)
         {
             return tile.Type switch
             {
                 BoardTileType.Ground => true,
                 BoardTileType.Button => true,
-                BoardTileType.Spikes => byObj == BoardObjectType.Character ||
-                                        !state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive,
+                BoardTileType.Spikes => byObj == BoardObjectType.Character || !tile.State.AsSpikes.IsActive,
                 _ => false,
             };
         }
 
-        private static bool CanLeaveTile(in LevelState state, in TileState tile)
+        private static bool CanLeaveTile(in TileState tile)
         {
             return tile.Type switch
             {
                 BoardTileType.Ground => true,
                 BoardTileType.Button => true,
-                BoardTileType.Spikes => !state.Entities.RefReadonlyAt(tile.EntityId).AsSpikes.IsActive,
+                BoardTileType.Spikes => !tile.State.AsSpikes.IsActive,
                 _ => false,
             };
         }
 
-        private static void TileLeft(ref LevelState state, in TileState tile, in TimeLine timeline)
+        private static void TileLeft(ref TileState tile, in TimeLine timeline)
         {
             switch (tile.Type)
             {
                 case BoardTileType.Button:
-                    state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = false;
-                    timeline.AddFlipFlop(tile.EntityId, false);
+                    tile.State.AsButton.IsPressed = false;
+                    timeline.AddFlipFlop(tile.Id, false);
                     break;
             }
         }
 
-        private static void TileEntered(ref LevelState state, in TileState tile, in TimeLine timeline)
+        private static void TileEntered(ref TileState tile, in TimeLine timeline)
         {
             switch (tile.Type)
             {
                 case BoardTileType.Button:
-                    state.Entities.RefAt(tile.EntityId).AsButton.IsPressed = true;
-                    timeline.AddFlipFlop(tile.EntityId, true);
+                    tile.State.AsButton.IsPressed = true;
+                    timeline.AddFlipFlop(tile.Id, true);
                     break;
             }
         }
@@ -171,7 +167,7 @@ namespace Frog.Level.Simulation
                 if (cell.Tile.Type != BoardTileType.Button)
                     continue;
 
-                var isPressed = state.Entities.RefReadonlyAt(cell.Tile.EntityId).AsButton.IsPressed;
+                var isPressed = cell.Tile.State.AsButton.IsPressed;
                 UpdateSpikes(ref state, !isPressed, in timeline);
             }
         }
@@ -186,11 +182,11 @@ namespace Frog.Level.Simulation
                 if (cell.Tile.Type != BoardTileType.Spikes)
                     continue;
 
-                ref var spikesState = ref state.Entities.RefAt(cell.Tile.EntityId).AsSpikes;
+                ref var spikesState = ref cell.Tile.State.AsSpikes;
                 if (spikesState.IsActive != isActive)
                 {
                     spikesState.IsActive = isActive;
-                    timeline.AddFlipFlop(cell.Tile.EntityId, isActive);
+                    timeline.AddFlipFlop(cell.Tile.Id, isActive);
                 }
             }
         }
