@@ -12,7 +12,7 @@ namespace Frog.Level.View
     public class LevelView : IDisposable
     {
         private readonly Transform _root;
-        private readonly Dictionary<ushort, Transform> _objects = new Dictionary<ushort, Transform>();
+        private readonly Dictionary<ushort, EntityView> _objects = new Dictionary<ushort, EntityView>();
 
         private readonly LevelViewConfig _viewConfig;
         private readonly Camera _camera;
@@ -40,33 +40,14 @@ namespace Frog.Level.View
 
                 if (cell.Tile.Type != BoardTileType.Nothing)
                 {
-                    var tilePrefab = cell.Tile.Type switch
-                    {
-                        BoardTileType.Nothing => throw new InvalidOperationException(),
-                        BoardTileType.Ground => _viewConfig.Ground,
-                        BoardTileType.Button => _viewConfig.Button,
-                        BoardTileType.Spikes => _viewConfig.Spikes,
-                        _ => throw new ArgumentOutOfRangeException(),
-                    };
-                    var obj = InstantiateAt(tilePrefab, point);
-
-                    _objects.Add(cell.Tile.Id, obj.transform);
+                    var tile = _viewConfig.CreateTile(cell.Tile, _root, point.ToVector2());
+                    _objects.Add(cell.Tile.Id, tile);
                 }
 
                 if (cell.Object.Type != BoardObjectType.Nothing)
                 {
-                    var objPrefab = cell.Object.Type switch
-                    {
-                        BoardObjectType.Nothing => throw new InvalidOperationException(),
-                        BoardObjectType.Character => _viewConfig.Character,
-                        BoardObjectType.Obstacle => _viewConfig.Obstacle,
-                        BoardObjectType.Box => _viewConfig.Box,
-                        BoardObjectType.Coin => _viewConfig.Coin,
-                        _ => throw new ArgumentOutOfRangeException(),
-                    };
-                    var obj = InstantiateAt(objPrefab, point);
-
-                    _objects.Add(cell.Object.Id, obj.transform);
+                    var obj = _viewConfig.CreateObject(cell.Object, _root, point.ToVector2());
+                    _objects.Add(cell.Object.Id, obj);
                 }
             }
         }
@@ -99,7 +80,7 @@ namespace Frog.Level.View
                 {
                     case TimeLineEventType.Move:
                     {
-                        var target = _objects[evt.EntityId];
+                        var target = _objects[evt.EntityId].transform;
 
                         var job = new MoveJob(
                             evt.Step * StepDuration,
