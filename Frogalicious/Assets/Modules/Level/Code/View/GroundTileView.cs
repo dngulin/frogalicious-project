@@ -1,4 +1,3 @@
-using Frog.Level.State;
 using UnityEngine;
 
 namespace Frog.Level.View

@@ -52,13 +52,6 @@ namespace Frog.Level.View
             }
         }
 
-        private GameObject InstantiateAt(GameObject prefab, in BoardPoint pos)
-        {
-            var instance = Object.Instantiate(prefab, _root);
-            instance.transform.localPosition = pos.ToVector2();
-            return instance;
-        }
-
         public void Dispose()
         {
             if (_root != null)
