@@ -6,6 +6,7 @@ namespace Frog.Level.State
     {
         BoardPoint Position;
         bool IsAlive;
+        ushort Coins;
     }
 
     struct ObjectState

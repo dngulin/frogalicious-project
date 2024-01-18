@@ -7,6 +7,7 @@ namespace Frog.Level.Simulation
     {
         Move,
         FlipFlop,
+        Destroy,
     }
 
     public struct TimeLineEvent

@@ -1,3 +1,4 @@
+using System;
 using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
@@ -82,12 +83,16 @@ namespace Frog.Level.Simulation
                 return false;
 
             ref var newCell = ref state.Cells.RefAt(newPos);
-            if (!CanEnterTile(in newCell.Tile, oldCell.Object.Type))
+            if (!CanEnterTile(newCell.Tile, oldCell.Object.Type))
                 return false;
 
-            if (newCell.Object.Type != BoardObjectType.Nothing && !MoveObject(ref state, newPos, shift, in timeline))
+            if (!CanCollectObject(newCell.Object, oldCell.Object.Type) && !MoveObject(ref state, newPos, shift, timeline))
                 return false;
 
+            if (newCell.Object.Type != BoardObjectType.Nothing)
+                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type, timeline);
+
+            Debug.Assert(newCell.Object.Type == BoardObjectType.Nothing);
             newCell.Object = oldCell.Object;
             oldCell.Object = default;
 
@@ -133,6 +138,29 @@ namespace Frog.Level.Simulation
                 BoardTileType.Spikes => !tile.State.AsSpikes.IsActive,
                 _ => false,
             };
+        }
+
+        private static bool CanCollectObject(in ObjectState obj, BoardObjectType byObjType)
+        {
+            if (byObjType != BoardObjectType.Character)
+                return false;
+
+            return obj.Type == BoardObjectType.Coin;
+        }
+
+        private static void CollectObject(ref LevelState state, ref ObjectState obj, BoardObjectType byObjType, in TimeLine timeline)
+        {
+            switch (obj.Type)
+            {
+                case BoardObjectType.Coin:
+                    timeline.AddDestroy(obj.Id);
+                    obj.WriteDefault();
+                    if (byObjType == BoardObjectType.Character)
+                        state.Character.Coins++;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
         }
 
         private static void TileLeft(ref TileState tile, in TimeLine timeline)
@@ -187,6 +215,12 @@ namespace Frog.Level.Simulation
                 {
                     spikesState.IsActive = isActive;
                     timeline.AddFlipFlop(cell.Tile.Id, isActive);
+
+                    if (cell.Object.Type == BoardObjectType.Character)
+                    {
+                        timeline.AddDestroy(cell.Object.Id);
+                        state.Character.IsAlive = false;
+                    }
                 }
             }
         }

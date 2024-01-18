@@ -37,5 +37,16 @@ namespace Frog.Level.Simulation
                 Value = { State = state },
             });
         }
+
+        public readonly void AddDestroy(ushort entityId)
+        {
+            _events.Add(new TimeLineEvent
+            {
+                Type = TimeLineEventType.FlipFlop,
+                Step = Step,
+                EntityId = entityId,
+                Value = default,
+            });
+        }
     }
 }
