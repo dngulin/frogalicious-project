@@ -23,7 +23,7 @@ namespace Frog.Level.Simulation
                 Type = TimeLineEventType.Move,
                 Step = Step,
                 EntityId = entityId,
-                Value = { Move = (from, to) },
+                Args = { AsMove = (from, to) },
             });
         }
 
@@ -34,7 +34,7 @@ namespace Frog.Level.Simulation
                 Type = TimeLineEventType.FlipFlop,
                 Step = Step,
                 EntityId = entityId,
-                Value = { State = state },
+                Args = { AsFlipFlopState = state },
             });
         }
 
@@ -45,7 +45,7 @@ namespace Frog.Level.Simulation
                 Type = TimeLineEventType.FlipFlop,
                 Step = Step,
                 EntityId = entityId,
-                Value = default,
+                Args = default,
             });
         }
     }

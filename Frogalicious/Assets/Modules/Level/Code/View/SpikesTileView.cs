@@ -16,9 +16,11 @@ namespace Frog.Level.View
             SetActive(state.IsActive);
         }
 
-        public void SetActive(bool isActive)
+        private void SetActive(bool isActive)
         {
             _renderer.sprite = isActive ? _sprites.Active : _sprites.Inactive;
         }
+
+        public override void FlipFlop(bool state) => SetActive(state);
     }
 }

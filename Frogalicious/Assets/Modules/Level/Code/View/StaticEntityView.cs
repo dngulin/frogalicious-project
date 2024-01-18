@@ -11,5 +11,7 @@ namespace Frog.Level.View
         {
             _renderer.sprite = sprite;
         }
+
+        public override void Disappear() => gameObject.SetActive(false);
     }
 }

@@ -15,9 +15,11 @@ namespace Frog.Level.View
             SetPressed(state.IsPressed);
         }
 
-        public void SetPressed(bool isPressed)
+        private void SetPressed(bool isPressed)
         {
             _renderer.sprite = isPressed ? _sprites.Pressed : _sprites.Normal;
         }
+
+        public override void FlipFlop(bool state) => SetPressed(state);
     }
 }

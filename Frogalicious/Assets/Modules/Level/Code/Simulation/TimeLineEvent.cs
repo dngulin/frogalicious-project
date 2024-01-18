@@ -7,7 +7,7 @@ namespace Frog.Level.Simulation
     {
         Move,
         FlipFlop,
-        Destroy,
+        Disappear,
     }
 
     public struct TimeLineEvent
@@ -15,13 +15,13 @@ namespace Frog.Level.Simulation
         public TimeLineEventType Type;
         public ushort Step;
         public ushort EntityId;
-        public TimeLineEventValue Value;
+        public TimeLineEventArgs Args;
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct TimeLineEventValue
+    public struct TimeLineEventArgs
     {
-        [FieldOffset(0)] public (BoardPoint From, BoardPoint To) Move;
-        [FieldOffset(0)] public bool State;
+        [FieldOffset(0)] public (BoardPoint From, BoardPoint To) AsMove;
+        [FieldOffset(0)] public bool AsFlipFlopState;
     }
 }

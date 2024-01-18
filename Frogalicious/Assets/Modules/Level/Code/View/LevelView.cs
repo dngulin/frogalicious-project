@@ -58,38 +58,15 @@ namespace Frog.Level.View
                 Object.Destroy(_root.gameObject);
         }
 
-        private const float StepDuration = 0.5f;
         private float _timelinePos;
+        private readonly List<TimelineJob> _timeline = new List<TimelineJob>();
 
-        private readonly List<MoveJob> _moveJobs = new List<MoveJob>();
-
-        public void StartPlayingTimeline(List<TimeLineEvent> timeLine)
+        public void StartPlayingTimeline(List<TimeLineEvent> timeLineEvents)
         {
             _timelinePos = 0;
 
-            foreach (var evt in timeLine)
-            {
-                switch (evt.Type)
-                {
-                    case TimeLineEventType.Move:
-                    {
-                        var target = _objects[evt.EntityId].transform;
-
-                        var job = new MoveJob(
-                            evt.Step * StepDuration,
-                            evt.Value.Move.From,
-                            evt.Value.Move.To,
-                            target);
-
-                        _moveJobs.Add(job);
-                        break;
-                    }
-                    case TimeLineEventType.FlipFlop:
-                    {
-                        break;
-                    }
-                }
-            }
+            foreach (var evt in timeLineEvents)
+                _timeline.Add(new TimelineJob(evt, _objects[evt.EntityId]));
         }
 
         public void Tick(float dt)
@@ -99,18 +76,18 @@ namespace Frog.Level.View
             if (!IsPlayingTimeline)
                 return;
 
-            _timelinePos += dt;
-
-            for (var i = 0; i < _moveJobs.Count; i++)
+            for (var i = 0; i < _timeline.Count; i++)
             {
-                var job = _moveJobs[i];
-                var finished = job.Update(_timelinePos, StepDuration);
+                var job = _timeline[i];
+                var finished = job.Update(_timelinePos, dt);
                 if (finished)
-                    _moveJobs.RemoveAt(i);
+                    _timeline.RemoveAt(i);
             }
+
+            _timelinePos += dt;
         }
 
-        public bool IsPlayingTimeline => _moveJobs.Count > 0;
+        public bool IsPlayingTimeline => _timeline.Count > 0;
 
         private const float MaxHeight = 7f;
         private const float MaxWidth = 11f;
