@@ -86,7 +86,7 @@ namespace Frog.Level.Simulation
             if (!CanEnterTile(newCell.Tile, oldCell.Object.Type))
                 return false;
 
-            if (!CanCollectObject(newCell.Object, oldCell.Object.Type) && !MoveObject(ref state, newPos, shift, timeline))
+            if (!CanReplaceObject(newCell.Object, oldCell.Object.Type) && !MoveObject(ref state, newPos, shift, timeline))
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing)
@@ -140,8 +140,11 @@ namespace Frog.Level.Simulation
             };
         }
 
-        private static bool CanCollectObject(in ObjectState obj, BoardObjectType byObjType)
+        private static bool CanReplaceObject(in ObjectState obj, BoardObjectType byObjType)
         {
+            if (obj.Type == BoardObjectType.Nothing)
+                return true;
+
             if (byObjType != BoardObjectType.Character)
                 return false;
 
