@@ -156,7 +156,7 @@ namespace Frog.Level.Simulation
             switch (obj.Type)
             {
                 case BoardObjectType.Coin:
-                    timeline.AddDestroy(obj.Id);
+                    timeline.AddDisappear(obj.Id);
                     obj.WriteDefault();
                     if (byObjType == BoardObjectType.Character)
                         state.Character.Coins++;
@@ -221,7 +221,7 @@ namespace Frog.Level.Simulation
 
                     if (cell.Object.Type == BoardObjectType.Character)
                     {
-                        timeline.AddDestroy(cell.Object.Id);
+                        timeline.AddDisappear(cell.Object.Id);
                         state.Character.IsAlive = false;
                     }
                 }

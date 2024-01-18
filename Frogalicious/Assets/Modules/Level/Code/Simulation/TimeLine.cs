@@ -38,11 +38,11 @@ namespace Frog.Level.Simulation
             });
         }
 
-        public readonly void AddDestroy(ushort entityId)
+        public readonly void AddDisappear(ushort entityId)
         {
             _events.Add(new TimeLineEvent
             {
-                Type = TimeLineEventType.FlipFlop,
+                Type = TimeLineEventType.Disappear,
                 Step = Step,
                 EntityId = entityId,
                 Args = default,
