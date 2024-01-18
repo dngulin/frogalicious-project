@@ -7,7 +7,6 @@ namespace Frog.Level.View
     public readonly struct TimelineJob
     {
         private const float StepDuration = 0.5f;
-        private const float HalfStepDuration = StepDuration / 2;
 
         private readonly float _startTime;
         private readonly TimeLineEventType _jobType;
@@ -39,14 +38,14 @@ namespace Frog.Level.View
                     break;
 
                 case TimeLineEventType.FlipFlop:
-                    if (prevTime - _startTime < HalfStepDuration && currTime - _startTime >= HalfStepDuration)
+                    if (prevTime <= _startTime && currTime > _startTime)
                     {
                         _target.FlipFlop(_jobArgs.AsFlipFlopState);
                     }
                     break;
 
                 case TimeLineEventType.Disappear:
-                    if (prevTime - _startTime < HalfStepDuration && currTime - _startTime >= HalfStepDuration)
+                    if (prevTime <= _startTime && currTime > _startTime)
                     {
                         _target.Disappear();
                     }
