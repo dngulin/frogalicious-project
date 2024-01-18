@@ -59,9 +59,9 @@ namespace Frog.Level.Simulation
             if (!MoveCharacter(ref state, direction, in timeline))
                 return;
 
-            timeline.Step++;
             CheckButtons(ref state, in timeline);
 
+            timeline.Step++;
             ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
             if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
             {
