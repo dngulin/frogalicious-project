@@ -24,13 +24,7 @@ MonoBehaviour:
     Ground:
     - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
     - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
     - {fileID: 21300000, guid: bdccdafb1b33754ee92c6470a9eed6ac, type: 3}
-    - {fileID: 21300000, guid: bdccdafb1b33754ee92c6470a9eed6ac, type: 3}
-    - {fileID: 21300000, guid: 818277b1c7a50e64c86378778df1b32d, type: 3}
     - {fileID: 21300000, guid: 818277b1c7a50e64c86378778df1b32d, type: 3}
     Button:
       Normal: {fileID: 21300000, guid: 4eba01a6feb9eab96ae316d5c304f04e, type: 3}
@@ -38,7 +32,7 @@ MonoBehaviour:
     Spikes:
       Active: {fileID: 21300000, guid: 1535d7956876d753b8b4cd9183e923e2, type: 3}
       Inactive: {fileID: 21300000, guid: 477a66d9902a9f34eaf3488b855bdf20, type: 3}
-    Character: {fileID: 21300000, guid: 1a99580bbf99d41d9b3bbf514698f566, type: 3}
-    Obstacle: {fileID: 0}
+    Character: {fileID: 21300000, guid: f05539a79453e498eb85d1840397de4e, type: 3}
+    Obstacle: {fileID: 21300000, guid: 1a99580bbf99d41d9b3bbf514698f566, type: 3}
     Box: {fileID: 21300000, guid: dbd57e1eb3aae140387a73b74d201c1b, type: 3}
     Coin: {fileID: 21300000, guid: 2d89fab0bab0134e58f83f0b747336e2, type: 3}
