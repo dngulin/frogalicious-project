@@ -78,10 +78,12 @@ namespace Frog.Level.View
 
             for (var i = 0; i < _timeline.Count; i++)
             {
-                var job = _timeline[i];
-                var finished = job.Update(_timelinePos, dt);
+                var finished = _timeline[i].Update(_timelinePos, dt);
                 if (finished)
+                {
                     _timeline.RemoveAt(i);
+                    i--;
+                }
             }
 
             _timelinePos += dt;
