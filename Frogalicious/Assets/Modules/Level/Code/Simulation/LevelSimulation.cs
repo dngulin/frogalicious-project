@@ -61,6 +61,14 @@ namespace Frog.Level.Simulation
 
             timeline.Step++;
             CheckButtons(ref state, in timeline);
+
+            ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
+            if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
+            {
+                Debug.Assert(charCell.Object.Type == BoardObjectType.Character);
+                timeline.AddDisappear(charCell.Object.Id);
+                state.Character.IsAlive = false;
+            }
         }
 
         private static bool MoveCharacter(ref LevelState state, MoveDirection dir, in TimeLine timeline)
@@ -218,12 +226,6 @@ namespace Frog.Level.Simulation
                 {
                     spikesState.IsActive = isActive;
                     timeline.AddFlipFlop(cell.Tile.Id, isActive);
-
-                    if (cell.Object.Type == BoardObjectType.Character)
-                    {
-                        timeline.AddDisappear(cell.Object.Id);
-                        state.Character.IsAlive = false;
-                    }
                 }
             }
         }
