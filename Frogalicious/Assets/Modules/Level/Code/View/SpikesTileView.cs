@@ -7,20 +7,15 @@ namespace Frog.Level.View
     {
         [SerializeField] private SpriteRenderer _renderer;
 
-        private SpikesSprites _sprites;
+        [SerializeField] private Sprite _active;
+        [SerializeField] private Sprite _inactive;
 
-
-        public void Init(in SpikesState state, in SpikesSprites sprites)
-        {
-            _sprites = sprites;
-            SetActive(state.IsActive);
-        }
+        public void Init(in SpikesState state) => SetActive(state.IsActive);
+        public override void FlipFlop(bool state) => SetActive(state);
 
         private void SetActive(bool isActive)
         {
-            _renderer.sprite = isActive ? _sprites.Active : _sprites.Inactive;
+            _renderer.sprite = isActive ? _active : _inactive;
         }
-
-        public override void FlipFlop(bool state) => SetActive(state);
     }
 }

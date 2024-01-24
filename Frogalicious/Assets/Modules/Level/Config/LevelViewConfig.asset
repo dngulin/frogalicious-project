@@ -12,27 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6b6227b866e49fb9cf9d68e1048bfd8, type: 3}
   m_Name: LevelViewConfig
   m_EditorClassIdentifier: 
-  Prefabs:
-    Ground: {fileID: 3225909687395576396, guid: 4cdee010714fd9c278fa9daa47e0ece3, type: 3}
-    Button: {fileID: 4833528592495553411, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
-    Spikes: {fileID: -9180374457984358030, guid: c0ce66c5eb00e7df4b4f3e286ddd71f2, type: 3}
-    Character: {fileID: 8766369095581473314, guid: c1bc20c067cdde453914c116b8950657, type: 3}
-    Obstacle: {fileID: -6555553432740161383, guid: e390f17400939e27890984ae8ec7d064, type: 3}
-    Box: {fileID: -1337075441224353445, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
-    Coin: {fileID: 1238313054251440815, guid: 9ab54a32e3eafbaa99c5d66e669c08ea, type: 3}
-  Sprites:
-    Ground:
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: 47fe80aa6d9ff642abfcb8db6aaf3325, type: 3}
-    - {fileID: 21300000, guid: bdccdafb1b33754ee92c6470a9eed6ac, type: 3}
-    - {fileID: 21300000, guid: 818277b1c7a50e64c86378778df1b32d, type: 3}
-    Button:
-      Normal: {fileID: 21300000, guid: 4eba01a6feb9eab96ae316d5c304f04e, type: 3}
-      Pressed: {fileID: 21300000, guid: 4eba01a6feb9eab96ae316d5c304f04e, type: 3}
-    Spikes:
-      Active: {fileID: 21300000, guid: 1535d7956876d753b8b4cd9183e923e2, type: 3}
-      Inactive: {fileID: 21300000, guid: 477a66d9902a9f34eaf3488b855bdf20, type: 3}
-    Character: {fileID: 21300000, guid: f05539a79453e498eb85d1840397de4e, type: 3}
-    Obstacle: {fileID: 21300000, guid: 1a99580bbf99d41d9b3bbf514698f566, type: 3}
-    Box: {fileID: 21300000, guid: dbd57e1eb3aae140387a73b74d201c1b, type: 3}
-    Coin: {fileID: 21300000, guid: 2d89fab0bab0134e58f83f0b747336e2, type: 3}
+  Ground: {fileID: 3225909687395576396, guid: 4cdee010714fd9c278fa9daa47e0ece3, type: 3}
+  Button: {fileID: 4833528592495553411, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
+  Spikes: {fileID: -9180374457984358030, guid: c0ce66c5eb00e7df4b4f3e286ddd71f2, type: 3}
+  Character: {fileID: 8766369095581473314, guid: c1bc20c067cdde453914c116b8950657, type: 3}
+  Obstacle: {fileID: -6555553432740161383, guid: e390f17400939e27890984ae8ec7d064, type: 3}
+  Box: {fileID: -1337075441224353445, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
+  Coin: {fileID: 1238313054251440815, guid: 9ab54a32e3eafbaa99c5d66e669c08ea, type: 3}

@@ -10,43 +10,16 @@ namespace Frog.Level.View
     {
         public static EntityView CreateObject(this LevelViewConfig config, in ObjectState obj, Transform parent, in Vector2 position)
         {
-            switch (obj.Type)
+            var rotation = Quaternion.identity;
+            return obj.Type switch
             {
-                case BoardObjectType.Nothing:
-                    throw new InvalidOperationException();
-
-                case BoardObjectType.Character:
-                {
-                    var character = Object.Instantiate(config.Prefabs.Character, position, Quaternion.identity, parent);
-                    character.Init(config.Sprites.Character);
-                    return character;
-                }
-
-                case BoardObjectType.Obstacle:
-                {
-                    var obstacle = Object.Instantiate(config.Prefabs.Obstacle, position, Quaternion.identity, parent);
-                    obstacle.Init(config.Sprites.Obstacle);
-                    return obstacle;
-                }
-
-                case BoardObjectType.Box:
-                {
-                    var box = Object.Instantiate(config.Prefabs.Box, position, Quaternion.identity, parent);
-                    box.Init(config.Sprites.Box);
-                    return box;
-                }
-
-                case BoardObjectType.Coin:
-                {
-                    var box = Object.Instantiate(config.Prefabs.Coin, position, Quaternion.identity, parent);
-                    box.Init(config.Sprites.Coin);
-                    return box;
-                }
-
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                BoardObjectType.Nothing => throw new InvalidOperationException(),
+                BoardObjectType.Character => Object.Instantiate(config.Character, position, rotation, parent),
+                BoardObjectType.Obstacle => Object.Instantiate(config.Obstacle, position, rotation, parent),
+                BoardObjectType.Box => Object.Instantiate(config.Box, position, rotation, parent),
+                BoardObjectType.Coin => Object.Instantiate(config.Coin, position, rotation, parent),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }

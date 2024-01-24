@@ -7,19 +7,15 @@ namespace Frog.Level.View
     {
         [SerializeField] private SpriteRenderer _renderer;
 
-        private ButtonSprites _sprites;
+        [SerializeField]private Sprite _pressed;
+        [SerializeField] private Sprite _normal;
 
-        public void Init(in ButtonState state, in ButtonSprites sprites)
-        {
-            _sprites = sprites;
-            SetPressed(state.IsPressed);
-        }
+        public void Init(in ButtonState state) => SetPressed(state.IsPressed);
+        public override void FlipFlop(bool state) => SetPressed(state);
 
         private void SetPressed(bool isPressed)
         {
-            _renderer.sprite = isPressed ? _sprites.Pressed : _sprites.Normal;
+            _renderer.sprite = isPressed ? _pressed : _normal;
         }
-
-        public override void FlipFlop(bool state) => SetPressed(state);
     }
 }

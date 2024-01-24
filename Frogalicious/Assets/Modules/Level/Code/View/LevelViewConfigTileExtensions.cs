@@ -17,22 +17,22 @@ namespace Frog.Level.View
 
                 case BoardTileType.Ground:
                 {
-                    var ground = Object.Instantiate(config.Prefabs.Ground, position, Quaternion.identity, parent);
-                    ground.Init(config.Sprites.Ground);
+                    var ground = Object.Instantiate(config.Ground, position, Quaternion.identity, parent);
+                    ground.Init();
                     return ground;
                 }
 
                 case BoardTileType.Button:
                 {
-                    var button = Object.Instantiate(config.Prefabs.Button, position, Quaternion.identity, parent);
-                    button.Init(tile.State.AsButton, config.Sprites.Button);
+                    var button = Object.Instantiate(config.Button, position, Quaternion.identity, parent);
+                    button.Init(tile.State.AsButton);
                     return button;
                 }
 
                 case BoardTileType.Spikes:
                 {
-                    var spikes = Object.Instantiate(config.Prefabs.Spikes, position, Quaternion.identity, parent);
-                    spikes.Init(tile.State.AsSpikes, config.Sprites.Spikes);
+                    var spikes = Object.Instantiate(config.Spikes, position, Quaternion.identity, parent);
+                    spikes.Init(tile.State.AsSpikes);
                     return spikes;
                 }
 
