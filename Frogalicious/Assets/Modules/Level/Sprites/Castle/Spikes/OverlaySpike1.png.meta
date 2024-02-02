@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 477a66d9902a9f34eaf3488b855bdf20
+guid: d6879afae312c4bc7a16a7b99436cd2f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7919071632560318028
-    second: TileSpikesBlueInactive_0
+      213: -7593265369963964800
+    second: OverlaySpike1_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -53,7 +53,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileSpikesBlueInactive_0
+      name: OverlaySpike1_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 125
-        height: 126
+        x: 0
+        y: 0
+        width: 123
+        height: 87
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b99e56ae4ec91290800000000000000
-      internalID: -7919071632560318028
+      spriteID: 086d50a706d4f9690800000000000000
+      internalID: -7593265369963964800
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TileSpikesBlueInactive_0: -7919071632560318028
+      OverlaySpike1_0: -7593265369963964800
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
