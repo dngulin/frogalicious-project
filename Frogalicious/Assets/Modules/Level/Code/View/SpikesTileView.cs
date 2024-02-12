@@ -5,17 +5,21 @@ namespace Frog.Level.View
 {
     public sealed class SpikesTileView : EntityView
     {
-        [SerializeField] private SpriteRenderer _renderer;
+        [SerializeField] private Animator _animator;
 
-        [SerializeField] private Sprite _active;
-        [SerializeField] private Sprite _inactive;
+        private readonly int _paramIsActive = Animator.StringToHash("IsActive");
 
-        public void Init(in SpikesState state) => SetActive(state.IsActive);
+        public void Init(in SpikesState state)
+        {
+            SetActive(state.IsActive);
+            _animator.Update(0);
+        }
+
         public override void FlipFlop(bool state) => SetActive(state);
 
         private void SetActive(bool isActive)
         {
-            _renderer.sprite = isActive ? _active : _inactive;
+            _animator.SetBool(_paramIsActive, isActive);
         }
     }
 }
