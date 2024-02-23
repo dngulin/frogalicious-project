@@ -210,12 +210,13 @@ namespace Frog.Level.Simulation
                 if (cell.Tile.Type != BoardTileType.Button)
                     continue;
 
-                var isPressed = cell.Tile.State.AsButton.IsPressed;
-                UpdateSpikes(ref state, !isPressed, in timeline);
+                ref readonly var button = ref cell.Tile.State.AsButton;
+
+                UpdateSpikes(ref state, !button.IsPressed, button.Color, in timeline);
             }
         }
 
-        private static void UpdateSpikes(ref LevelState state, bool isActive, in TimeLine timeline)
+        private static void UpdateSpikes(ref LevelState state, bool isActive, BoardColorGroup color, in TimeLine timeline)
         {
             for (var y = 0; y < state.Cells.Height; y++)
             for (var x = 0; x < state.Cells.Width; x++)
@@ -225,10 +226,13 @@ namespace Frog.Level.Simulation
                 if (cell.Tile.Type != BoardTileType.Spikes)
                     continue;
 
-                ref var spikesState = ref cell.Tile.State.AsSpikes;
-                if (spikesState.IsActive != isActive)
+                ref var spikes = ref cell.Tile.State.AsSpikes;
+                if (spikes.Color != color)
+                    continue;
+
+                if (spikes.IsActive != isActive)
                 {
-                    spikesState.IsActive = isActive;
+                    spikes.IsActive = isActive;
                     timeline.AddFlipFlop(cell.Tile.Id, isActive);
                 }
             }
