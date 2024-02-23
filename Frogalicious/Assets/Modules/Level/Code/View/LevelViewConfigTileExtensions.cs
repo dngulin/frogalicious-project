@@ -24,13 +24,7 @@ namespace Frog.Level.View
 
                 case BoardTileType.Button:
                 {
-                    var buttonPrefab = tile.State.AsButton.Color switch {
-                        BoardColorGroup.Blue => config.ButtonBlue,
-                        BoardColorGroup.Red => config.ButtonRed,
-                        BoardColorGroup.Yellow => config.ButtonYellow,
-                        BoardColorGroup.Green => config.ButtonGreen,
-                        _ => throw new ArgumentOutOfRangeException()
-                    };
+                    var buttonPrefab = config.ButtonVariants[tile.State.AsButton.Color];
                     var button = Object.Instantiate(buttonPrefab, position, Quaternion.identity, parent);
                     button.Init(tile.State.AsButton);
                     return button;
@@ -38,13 +32,7 @@ namespace Frog.Level.View
 
                 case BoardTileType.Spikes:
                 {
-                    var spikesPrefab = tile.State.AsButton.Color switch {
-                        BoardColorGroup.Blue => config.SpikesBlue,
-                        BoardColorGroup.Red => config.SpikesRed,
-                        BoardColorGroup.Yellow => config.SpikesYellow,
-                        BoardColorGroup.Green => config.SpikesGreen,
-                        _ => throw new ArgumentOutOfRangeException()
-                    };
+                    var spikesPrefab = config.SpikesVariants[tile.State.AsSpikes.Color];
                     var spikes = Object.Instantiate(spikesPrefab, position, Quaternion.identity, parent);
                     spikes.Init(tile.State.AsSpikes);
                     return spikes;
