@@ -22,6 +22,7 @@ namespace Frog.Level.CodeGen
             {
                 GetEnumInfo<BoardObjectType>(),
                 GetEnumInfo<BoardTileType>(),
+                GetEnumInfo<BoardColorGroup>(),
                 ExternTypeInfo.WithoutValues(
                     nameof(BoardPoint),
                     UnsafeUtility.SizeOf<BoardPoint>(),

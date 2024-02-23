@@ -19,11 +19,13 @@ namespace Frog.Level.State
 
     struct ButtonState
     {
+        BoardColorGroup Color;
         bool IsPressed;
     }
 
     struct SpikesState
     {
+        BoardColorGroup Color;
         bool IsActive = true;
     }
 
