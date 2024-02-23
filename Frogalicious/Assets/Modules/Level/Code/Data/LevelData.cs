@@ -16,6 +16,8 @@ namespace Frog.Level.Data
     public struct CellData
     {
         public BoardTileType TileType;
+        public BoardColorGroup TileColor;
+
         public BoardObjectType ObjectType;
     }
 }
