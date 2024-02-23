@@ -39,10 +39,14 @@ namespace Frog.Level.Simulation
                 switch (cellData.TileType)
                 {
                     case BoardTileType.Button:
-                        cell.Tile.State.AsButton.WriteDefault();
+                        ref var button = ref cell.Tile.State.AsButton;
+                        button.WriteDefault();
+                        button.Color = cellData.TileColor;
                         break;
                     case BoardTileType.Spikes:
-                        cell.Tile.State.AsSpikes.WriteDefault();
+                        ref var spikes = ref cell.Tile.State.AsSpikes;
+                        spikes.WriteDefault();
+                        spikes.Color = cellData.TileColor;
                         break;
                 }
             }
