@@ -16,74 +16,110 @@ MonoBehaviour:
   Height: 6
   Cells:
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 1
   - TileType: 1
+    TileColor: 0
     ObjectType: 3
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 3
   - TileType: 2
+    TileColor: 1
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 3
+    TileColor: 1
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 3
   - TileType: 1
+    TileColor: 0
     ObjectType: 3
   - TileType: 1
+    TileColor: 0
     ObjectType: 3
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 3
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
     ObjectType: 2
   - TileType: 1
+    TileColor: 0
     ObjectType: 4
   - TileType: 2
+    TileColor: 0
     ObjectType: 0
