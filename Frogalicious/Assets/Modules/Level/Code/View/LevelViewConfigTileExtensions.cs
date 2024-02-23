@@ -24,14 +24,24 @@ namespace Frog.Level.View
 
                 case BoardTileType.Button:
                 {
-                    var button = Object.Instantiate(config.Button, position, Quaternion.identity, parent);
+                    var buttonPrefab = tile.State.AsButton.Color switch {
+                        BoardColorGroup.Blue => config.ButtonBlue,
+                        BoardColorGroup.Red => config.ButtonRed,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    var button = Object.Instantiate(buttonPrefab, position, Quaternion.identity, parent);
                     button.Init(tile.State.AsButton);
                     return button;
                 }
 
                 case BoardTileType.Spikes:
                 {
-                    var spikes = Object.Instantiate(config.Spikes, position, Quaternion.identity, parent);
+                    var spikesPrefab = tile.State.AsButton.Color switch {
+                        BoardColorGroup.Blue => config.SpikesBlue,
+                        BoardColorGroup.Red => config.SpikesRed,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    var spikes = Object.Instantiate(spikesPrefab, position, Quaternion.identity, parent);
                     spikes.Init(tile.State.AsSpikes);
                     return spikes;
                 }
