@@ -15,8 +15,12 @@ MonoBehaviour:
   Ground: {fileID: 3225909687395576396, guid: 4cdee010714fd9c278fa9daa47e0ece3, type: 3}
   ButtonBlue: {fileID: 4833528592495553411, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
   ButtonRed: {fileID: 6574257999190202927, guid: dba0a62e7c2f92b359bb6d6cd7fd3869, type: 3}
+  ButtonYellow: {fileID: 2114209887172532017, guid: d7be13356c1e6010e95f0c80bede267a, type: 3}
+  ButtonGreen: {fileID: 3655461569099173332, guid: d9c0567bffae0f28ebe2479ec4d11a92, type: 3}
   SpikesBlue: {fileID: -9180374457984358030, guid: c0ce66c5eb00e7df4b4f3e286ddd71f2, type: 3}
   SpikesRed: {fileID: 2915877522807472195, guid: ebf966e6a5369f16782a63dfba278162, type: 3}
+  SpikesYellow: {fileID: 1116793676165670163, guid: 38e301be443decadc8dfcbed0d495376, type: 3}
+  SpikesGreen: {fileID: 2993411733128338243, guid: 1453795f62c52d0159e86b6df6ec0879, type: 3}
   Character: {fileID: 8766369095581473314, guid: c1bc20c067cdde453914c116b8950657, type: 3}
   Obstacle: {fileID: -6555553432740161383, guid: e390f17400939e27890984ae8ec7d064, type: 3}
   Box: {fileID: -1337075441224353445, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
