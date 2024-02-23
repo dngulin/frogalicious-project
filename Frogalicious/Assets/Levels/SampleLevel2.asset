@@ -78,8 +78,8 @@ MonoBehaviour:
   - TileType: 1
     TileColor: 0
     ObjectType: 0
-  - TileType: 1
-    TileColor: 0
+  - TileType: 2
+    TileColor: 3
     ObjectType: 0
   - TileType: 0
     TileColor: 0
@@ -90,8 +90,8 @@ MonoBehaviour:
   - TileType: 0
     TileColor: 0
     ObjectType: 0
-  - TileType: 1
-    TileColor: 0
+  - TileType: 3
+    TileColor: 2
     ObjectType: 0
   - TileType: 1
     TileColor: 0
@@ -105,8 +105,8 @@ MonoBehaviour:
   - TileType: 1
     TileColor: 0
     ObjectType: 0
-  - TileType: 1
-    TileColor: 0
+  - TileType: 2
+    TileColor: 2
     ObjectType: 0
   - TileType: 0
     TileColor: 0
@@ -117,8 +117,8 @@ MonoBehaviour:
   - TileType: 0
     TileColor: 0
     ObjectType: 0
-  - TileType: 1
-    TileColor: 0
+  - TileType: 3
+    TileColor: 3
     ObjectType: 0
   - TileType: 1
     TileColor: 0

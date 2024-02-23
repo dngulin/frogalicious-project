@@ -50,6 +50,8 @@ namespace Frog.LevelEditor
             {
                 BoardColorGroup.Blue => Color.cyan,
                 BoardColorGroup.Red => Color.red,
+                BoardColorGroup.Yellow => Color.yellow,
+                BoardColorGroup.Green => Color.green,
                 _ => Color.black,
             };
         }

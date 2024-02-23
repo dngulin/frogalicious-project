@@ -4,5 +4,7 @@ namespace Frog.Level.Primitives
     {
         Blue = 0,
         Red = 1,
+        Yellow = 2,
+        Green = 3,
     }
 }

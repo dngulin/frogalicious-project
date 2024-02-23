@@ -10,9 +10,13 @@ namespace Frog.Level.View
 
         public ButtonTileView ButtonBlue;
         public ButtonTileView ButtonRed;
+        public ButtonTileView ButtonYellow;
+        public ButtonTileView ButtonGreen;
 
         public SpikesTileView SpikesBlue;
         public SpikesTileView SpikesRed;
+        public SpikesTileView SpikesYellow;
+        public SpikesTileView SpikesGreen;
 
         [Header("Objects")]
         public StaticEntityView Character;
