@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 5810061599220475659}
   - component: {fileID: 3601871395595730096}
   m_Layer: 0
-  m_Name: TileSpikes
+  m_Name: TileSpikesBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

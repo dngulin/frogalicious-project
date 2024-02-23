@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2330882222447788198}
   - component: {fileID: 4833528592495553411}
   m_Layer: 0
-  m_Name: TileButton
+  m_Name: TileButtonBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
