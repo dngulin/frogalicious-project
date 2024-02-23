@@ -1,12 +1,13 @@
 using System;
+using Frog.Level;
 using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.View
 {
     internal class LevelSettingsView : VisualElement
     {
-        private readonly SliderInt _widthField = new SliderInt("Width", 3, 10) { showInputField = true };
-        private readonly SliderInt _heightField = new SliderInt("Height", 3, 7)  { showInputField = true };
+        private readonly SliderInt _widthField = new SliderInt("Width", 3, LevelConventions.MaxWidth) { showInputField = true };
+        private readonly SliderInt _heightField = new SliderInt("Height", 3, LevelConventions.MaxHeight)  { showInputField = true };
 
         public int Width
         {
