@@ -15,7 +15,7 @@ namespace Frog.LevelEditor.View
         private readonly Dictionary<int, Button> _buttons = new Dictionary<int, Button>();
 
         public DrawingLayer Layer { get; private set; }
-        public BoardColorGroup? ColorGroup { get; private set; }
+        public BoardColorGroup ColorGroup { get; private set; }
         public BoardTileType TileType { get; private set; }
         public BoardObjectType ObjectType { get; private set; }
 
@@ -54,41 +54,36 @@ namespace Frog.LevelEditor.View
             Add(holder);
         }
 
-        private void CreateButton(VisualElement holder, CellSpritesProvider csp, object brush, BoardColorGroup? colorGroup)
+        private void CreateButton(VisualElement holder, CellSpritesProvider csp, object brush, BoardColorGroup? optColor)
         {
             var button = new Button();
             var image = new Image { sprite = GetBrushSprite(csp, brush) };
 
-            if (colorGroup.HasValue)
-            {
-                image.tintColor = colorGroup.Value switch
-                {
-                    BoardColorGroup.Blue => Color.cyan,
-                    BoardColorGroup.Red => Color.red,
-                    _ => Color.black,
-                };
-            }
+            if (optColor.HasValue)
+                image.tintColor = CellSpritesProvider.GetTintColor(optColor.Value);
 
             button.AddToClassList(BrushClass);
             button.Add(image);
             holder.Add(button);
 
-            button.clicked += () => SetBrush(brush, colorGroup.GetValueOrDefault());
+            var color = optColor.GetValueOrDefault();
 
-            _buttons.Add(GetBrushButtonKey(brush, colorGroup.GetValueOrDefault()), button);
+            button.clicked += () => SetBrush(brush, color);
+
+            _buttons.Add(GetBrushButtonKey(brush, color), button);
         }
 
-        private void SetBrush(object brush, BoardColorGroup colorGroup)
+        private void SetBrush(object brush, BoardColorGroup color)
         {
             GetActiveButton().RemoveFromClassList(ActiveBrushClass);
 
             switch (brush)
             {
                 case BoardTileType tileType:
-                    (Layer, TileType, ColorGroup) = (DrawingLayer.Tiles, tileType, colorGroup);
+                    (Layer, TileType, ColorGroup) = (DrawingLayer.Tiles, tileType, color);
                     break;
                 case BoardObjectType objectType:
-                    (Layer, ObjectType, ColorGroup) = (DrawingLayer.Objects, objectType, colorGroup);
+                    (Layer, ObjectType, ColorGroup) = (DrawingLayer.Objects, objectType, color);
                     break;
                 default:
                     Debug.LogError($"Unknown drawing brush: {brush.GetType()}, value: {brush}");
@@ -120,23 +115,22 @@ namespace Frog.LevelEditor.View
             }
         }
 
-        private static int GetBrushButtonKey(object brush, BoardColorGroup cg)
+        private static int GetBrushButtonKey(object brush, BoardColorGroup color)
         {
             return brush switch
             {
-                BoardTileType tileType => (DrawingLayer.Tiles, tileType, cg).GetHashCode(),
-                BoardObjectType objectType => (DrawingLayer.Objects, objectType, cg).GetHashCode(),
+                BoardTileType tileType => (DrawingLayer.Tiles, tileType, cg: color).GetHashCode(),
+                BoardObjectType objectType => (DrawingLayer.Objects, objectType, cg: color).GetHashCode(),
                 _ => throw new IndexOutOfRangeException(),
             };
         }
 
         private Button GetActiveButton()
         {
-            var cg = ColorGroup.GetValueOrDefault();
             var key = Layer switch
             {
-                DrawingLayer.Tiles => (DrawingLayer.Tiles, TileType, cg).GetHashCode(),
-                DrawingLayer.Objects => (DrawingLayer.Objects, ObjectType, cg).GetHashCode(),
+                DrawingLayer.Tiles => (DrawingLayer.Tiles, TileType, ColorGroup).GetHashCode(),
+                DrawingLayer.Objects => (DrawingLayer.Objects, ObjectType, ColorGroup).GetHashCode(),
                 _ => throw new IndexOutOfRangeException(),
             };
 

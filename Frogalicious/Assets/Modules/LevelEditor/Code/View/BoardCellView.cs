@@ -21,6 +21,7 @@ namespace Frog.LevelEditor.View
         public void SetSprites(in CellSprites sprites)
         {
             _tile.sprite = sprites.Tile;
+            _tile.tintColor = sprites.TileTintColor;
             _object.sprite = sprites.Object;
         }
     }
@@ -28,6 +29,7 @@ namespace Frog.LevelEditor.View
     internal struct CellSprites
     {
         public Sprite Tile;
+        public Color TileTintColor;
         public Sprite Object;
     }
 }

@@ -24,12 +24,34 @@ namespace Frog.LevelEditor
             return new CellSprites
             {
                 Tile = _tiles[cellData.TileType],
+                TileTintColor = GetTintColor(cellData.TileType, cellData.TileColor),
                 Object = _objects[cellData.ObjectType],
             };
         }
 
-
         public Sprite GetTileSprite(BoardTileType type) => _tiles[type];
         public Sprite GetObjectSprite(BoardObjectType type) => _objects[type];
+
+        private static Color GetTintColor(BoardTileType tileType, BoardColorGroup color)
+        {
+            switch (tileType)
+            {
+                case BoardTileType.Button:
+                case BoardTileType.Spikes:
+                    return GetTintColor(color);
+                default:
+                    return Color.white;
+            }
+        }
+
+        public static Color GetTintColor(BoardColorGroup color)
+        {
+            return color switch
+            {
+                BoardColorGroup.Blue => Color.cyan,
+                BoardColorGroup.Red => Color.red,
+                _ => Color.black,
+            };
+        }
     }
 }

@@ -114,6 +114,7 @@ namespace Frog.LevelEditor.Tools
             {
                 case DrawingLayer.Tiles:
                     cell.TileType = _panel.TileType;
+                    cell.TileColor = _panel.ColorGroup;
                     break;
                 case DrawingLayer.Objects:
                     cell.ObjectType = _panel.ObjectType;
