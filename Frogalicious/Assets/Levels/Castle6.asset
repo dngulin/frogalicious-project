@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66b4ecb64cc84b498ebfffd25e06dd3d, type: 3}
-  m_Name: TutorialFive
+  m_Name: Castle6
   m_EditorClassIdentifier: 
   Width: 6
   Height: 6
   Cells:
   - TileType: 1
     TileColor: 0
-    ObjectType: 2
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 0
   - TileType: 1
     TileColor: 0
     ObjectType: 2
@@ -26,7 +29,7 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
-    ObjectType: 0
+    ObjectType: 2
   - TileType: 1
     TileColor: 0
     ObjectType: 1
@@ -35,7 +38,16 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    ObjectType: 3
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 2
+  - TileType: 1
+    TileColor: 0
     ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 2
   - TileType: 1
     TileColor: 0
     ObjectType: 0
@@ -47,10 +59,31 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    ObjectType: 2
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 2
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 2
+  - TileType: 1
+    TileColor: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
     ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 4
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 2
   - TileType: 1
     TileColor: 0
     ObjectType: 0
@@ -65,18 +98,6 @@ MonoBehaviour:
     ObjectType: 2
   - TileType: 1
     TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
     ObjectType: 2
   - TileType: 1
     TileColor: 0
@@ -87,39 +108,18 @@ MonoBehaviour:
   - TileType: 1
     TileColor: 0
     ObjectType: 0
-  - TileType: 3
+  - TileType: 1
     TileColor: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
-    ObjectType: 2
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    ObjectType: 0
   - TileType: 2
     TileColor: 0
     ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 4
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
