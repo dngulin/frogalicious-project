@@ -53,10 +53,10 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
-    ObjectType: 3
+    ObjectType: 2
   - TileType: 1
     TileColor: 0
-    ObjectType: 2
+    ObjectType: 3
   - TileType: 1
     TileColor: 0
     ObjectType: 2
@@ -92,7 +92,7 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
-    ObjectType: 2
+    ObjectType: 0
   - TileType: 1
     TileColor: 0
     ObjectType: 0
