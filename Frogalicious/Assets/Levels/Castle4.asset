@@ -113,10 +113,10 @@ MonoBehaviour:
     ObjectType: 0
   - TileType: 1
     TileColor: 0
-    ObjectType: 4
+    ObjectType: 2
   - TileType: 1
     TileColor: 0
-    ObjectType: 2
+    ObjectType: 4
   - TileType: 1
     TileColor: 0
     ObjectType: 2
