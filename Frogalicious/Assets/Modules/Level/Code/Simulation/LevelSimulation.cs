@@ -59,20 +59,30 @@ namespace Frog.Level.Simulation
             if (!input.TryGetMoveDirection(out var direction))
                 return;
 
-            timeline.Step = 0;
-            if (!MoveCharacter(ref state, direction, in timeline))
-                return;
-
-            CheckButtons(ref state, in timeline);
-
-            timeline.Step++;
-            ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
-            if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
+            while (MakeMovements(ref state, direction, in timeline))
             {
-                Debug.Assert(charCell.Object.Type == BoardObjectType.Character);
-                timeline.AddDisappear(charCell.Object.Id);
-                state.Character.IsAlive = false;
+                UpdateButtons(ref state, in timeline);
+                timeline.Step++;
+                CheckCharacterAlive(ref state, timeline);
+
+                if (timeline.Step > 1000)
+                {
+                    Debug.LogError("Too many iterations");
+                    break;
+                }
             }
+        }
+
+        private static bool MakeMovements(ref LevelState state, MoveDirection dir, in TimeLine timeline)
+        {
+            var hasMovements = false;
+
+            if (timeline.Step == 0)
+                hasMovements |= MoveCharacter(ref state, dir, in timeline);
+
+            // TODO: Update springs
+
+            return hasMovements;
         }
 
         private static bool MoveCharacter(ref LevelState state, MoveDirection dir, in TimeLine timeline)
@@ -200,7 +210,7 @@ namespace Frog.Level.Simulation
             }
         }
 
-        private static void CheckButtons(ref LevelState state, in TimeLine timeline)
+        private static void UpdateButtons(ref LevelState state, in TimeLine timeline)
         {
             for (var y = 0; y < state.Cells.Height; y++)
             for (var x = 0; x < state.Cells.Width; x++)
@@ -235,6 +245,17 @@ namespace Frog.Level.Simulation
                     spikes.IsActive = isActive;
                     timeline.AddFlipFlop(cell.Tile.Id, isActive);
                 }
+            }
+        }
+
+        private static void CheckCharacterAlive(ref LevelState state, TimeLine timeline)
+        {
+            ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
+            if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
+            {
+                Debug.Assert(charCell.Object.Type == BoardObjectType.Character);
+                timeline.AddDisappear(charCell.Object.Id);
+                state.Character.IsAlive = false;
             }
         }
     }
