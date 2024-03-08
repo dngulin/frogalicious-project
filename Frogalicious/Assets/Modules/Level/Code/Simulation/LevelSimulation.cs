@@ -73,7 +73,7 @@ namespace Frog.Level.Simulation
             }
         }
 
-        private static bool MakeMovements(ref LevelState state, MoveDirection dir, in TimeLine timeline)
+        private static bool MakeMovements(ref LevelState state, BoardDirection dir, in TimeLine timeline)
         {
             var hasMovements = false;
 
@@ -85,7 +85,7 @@ namespace Frog.Level.Simulation
             return hasMovements;
         }
 
-        private static bool MoveCharacter(ref LevelState state, MoveDirection dir, in TimeLine timeline)
+        private static bool MoveCharacter(ref LevelState state, BoardDirection dir, in TimeLine timeline)
         {
             var shift = dir.ToBoardPoint();
             return MoveObject(ref state, state.Character.Position, shift, in timeline);
