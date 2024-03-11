@@ -1,6 +1,6 @@
 namespace Frog.Level.Primitives
 {
-    public enum BoardObjectType : uint
+    public enum BoardObjectType : ushort
     {
         Nothing = 0,
         Character = 1,

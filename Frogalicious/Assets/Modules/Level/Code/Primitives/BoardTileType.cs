@@ -1,6 +1,6 @@
 namespace Frog.Level.Primitives
 {
-    public enum BoardTileType : uint
+    public enum BoardTileType : ushort
     {
         Nothing = 0,
         Ground = 1,

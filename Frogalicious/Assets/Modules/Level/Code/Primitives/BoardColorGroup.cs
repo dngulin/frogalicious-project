@@ -1,6 +1,6 @@
 namespace Frog.Level.Primitives
 {
-    public enum BoardColorGroup : uint
+    public enum BoardColorGroup : byte
     {
         Blue = 0,
         Red = 1,
