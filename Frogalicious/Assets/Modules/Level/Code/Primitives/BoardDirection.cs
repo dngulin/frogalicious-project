@@ -2,7 +2,7 @@ using System;
 
 namespace Frog.Level.Primitives
 {
-    public enum BoardDirection
+    public enum BoardDirection : byte
     {
         Up,
         Right,

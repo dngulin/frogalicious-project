@@ -29,10 +29,16 @@ namespace Frog.Level.State
         bool IsActive = true;
     }
 
+    struct SpringState
+    {
+        BoardDirection Direction;
+    }
+
     union ExtendedTileState
     {
         ButtonState AsButton;
         SpikesState AsSpikes;
+        SpringState AsSpring;
     }
 
     struct TileState
