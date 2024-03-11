@@ -25,6 +25,7 @@ namespace Frog.LevelEditor
             {
                 Tile = _tiles[cellData.TileType],
                 TileTintColor = GetTintColor(cellData.TileType, cellData.TileColor),
+                TileRotation = GetRotation(cellData.TileDirection),
                 Object = _objects[cellData.ObjectType],
             };
         }

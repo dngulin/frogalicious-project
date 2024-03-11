@@ -22,6 +22,7 @@ namespace Frog.LevelEditor.View
         {
             _tile.sprite = sprites.Tile;
             _tile.tintColor = sprites.TileTintColor;
+            _tile.transform.rotation = sprites.TileRotation;
             _object.sprite = sprites.Object;
         }
     }
@@ -30,6 +31,7 @@ namespace Frog.LevelEditor.View
     {
         public Sprite Tile;
         public Color TileTintColor;
+        public Quaternion TileRotation;
         public Sprite Object;
     }
 }
