@@ -38,6 +38,13 @@ namespace Frog.Level.View
                     return spikes;
                 }
 
+                case BoardTileType.Spring:
+                {
+                    var spring = Object.Instantiate(config.Spring, position, Quaternion.identity, parent);
+                    spring.Inint(tile.State.AsSpring);
+                    return spring;
+                }
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

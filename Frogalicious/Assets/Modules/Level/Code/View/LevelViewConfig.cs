@@ -11,6 +11,7 @@ namespace Frog.Level.View
         public GroundTileView Ground;
         public ColorVariants<ButtonTileView> ButtonVariants;
         public ColorVariants<SpikesTileView> SpikesVariants;
+        public SpringTileView Spring;
 
         [Header("Objects")]
         public StaticEntityView Character;
