@@ -17,163 +17,217 @@ MonoBehaviour:
   Cells:
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 2
     TileColor: 1
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 3
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 1
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 1
+    ObjectType: 0
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 2
     TileColor: 3
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 0
-    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 3
     TileColor: 2
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 2
     TileColor: 2
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
-  - TileType: 1
+  - TileType: 4
     TileColor: 0
+    TileDirection: 3
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 3
     TileColor: 3
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 2
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 3
     TileColor: 1
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 0
     TileColor: 0
+    TileDirection: 0
     ObjectType: 0
