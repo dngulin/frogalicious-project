@@ -16,7 +16,7 @@ namespace Frog.Level.View
                 BoardDirection.Left => 270f,
                 _ => 0f,
             };
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.AngleAxis(angle, -Vector3.forward);
 
             return this;
         }
