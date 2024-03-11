@@ -48,6 +48,10 @@ namespace Frog.Level.Simulation
                         spikes.WriteDefault();
                         spikes.Color = cellData.TileColor;
                         break;
+                    case BoardTileType.Spring:
+                        ref var spring = ref cell.Tile.State.AsSpring;
+                        spring.Direction = cellData.TileDirection;
+                        break;
                 }
             }
         }
