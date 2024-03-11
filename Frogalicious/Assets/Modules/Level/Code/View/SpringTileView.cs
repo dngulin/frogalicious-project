@@ -6,7 +6,7 @@ namespace Frog.Level.View
 {
     public class SpringTileView : EntityView
     {
-        public void Inint(in SpringState state)
+        public SpringTileView Inintialized(in SpringState state)
         {
             var angle = state.Direction switch
             {
@@ -17,6 +17,8 @@ namespace Frog.Level.View
                 _ => 0f,
             };
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            return this;
         }
     }
 }

@@ -8,13 +8,15 @@ namespace Frog.Level.View
 
         [SerializeField] private SpriteRenderer _renderer;
 
-        public void Init()
+        public GroundTileView Initialized()
         {
             var spriteIdx = Random.Range(0, _sprites.Length);
             _renderer.sprite = _sprites[spriteIdx];
 
             var angle = Random.Range(0, 4) * 90;
             transform.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            return this;
         }
     }
 }

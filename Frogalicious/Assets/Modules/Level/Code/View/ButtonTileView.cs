@@ -10,7 +10,12 @@ namespace Frog.Level.View
         [SerializeField]private Sprite _pressed;
         [SerializeField] private Sprite _normal;
 
-        public void Init(in ButtonState state) => SetPressed(state.IsPressed);
+        public ButtonTileView Initialized(in ButtonState state)
+        {
+            SetPressed(state.IsPressed);
+            return this;
+        }
+
         public override void FlipFlop(bool state) => SetPressed(state);
 
         private void SetPressed(bool isPressed)

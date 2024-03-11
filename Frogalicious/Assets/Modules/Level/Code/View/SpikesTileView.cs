@@ -9,10 +9,11 @@ namespace Frog.Level.View
 
         private readonly int _paramIsActive = Animator.StringToHash("IsActive");
 
-        public void Init(in SpikesState state)
+        public SpikesTileView Initialized(in SpikesState state)
         {
             SetActive(state.IsActive);
             _animator.Update(0);
+            return this;
         }
 
         public override void FlipFlop(bool state) => SetActive(state);

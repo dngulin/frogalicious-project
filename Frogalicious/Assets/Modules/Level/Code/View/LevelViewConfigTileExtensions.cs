@@ -15,32 +15,18 @@ namespace Frog.Level.View
                     throw new InvalidOperationException();
 
                 case BoardTileType.Ground:
-                {
-                    var ground = config.Ground.Spawn(parent, position);
-                    ground.Init();
-                    return ground;
-                }
+                    return config.Ground.Spawn(parent, position).Initialized();
 
                 case BoardTileType.Button:
-                {
-                    var button = config.ButtonVariants[tile.State.AsButton.Color].Spawn(parent, position);
-                    button.Init(tile.State.AsButton);
-                    return button;
-                }
+                    var button = tile.State.AsButton;
+                    return config.ButtonVariants[button.Color].Spawn(parent, position).Initialized(button);
 
                 case BoardTileType.Spikes:
-                {
-                    var spikes = config.SpikesVariants[tile.State.AsSpikes.Color].Spawn(parent, position);
-                    spikes.Init(tile.State.AsSpikes);
-                    return spikes;
-                }
+                    var spikes = tile.State.AsSpikes;
+                    return config.SpikesVariants[spikes.Color].Spawn(parent, position).Initialized(spikes);
 
                 case BoardTileType.Spring:
-                {
-                    var spring = config.Spring.Spawn(parent, position);
-                    spring.Inint(tile.State.AsSpring);
-                    return spring;
-                }
+                    return config.Spring.Spawn(parent, position).Inintialized(tile.State.AsSpring);
 
                 default:
                     throw new ArgumentOutOfRangeException();
