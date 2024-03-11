@@ -17,6 +17,7 @@ namespace Frog.Level.Data
     {
         public BoardTileType TileType;
         public BoardColorGroup TileColor;
+        public BoardDirection TileDirection;
 
         public BoardObjectType ObjectType;
     }

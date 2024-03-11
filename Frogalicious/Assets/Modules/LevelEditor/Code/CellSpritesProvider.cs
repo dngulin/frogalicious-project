@@ -55,5 +55,17 @@ namespace Frog.LevelEditor
                 _ => Color.black,
             };
         }
+
+        public static Quaternion GetRotation(BoardDirection direction)
+        {
+            return direction switch
+            {
+                BoardDirection.Up => Quaternion.AngleAxis(0, Vector3.forward),
+                BoardDirection.Right => Quaternion.AngleAxis(90, Vector3.forward),
+                BoardDirection.Down => Quaternion.AngleAxis(180, Vector3.forward),
+                BoardDirection.Left => Quaternion.AngleAxis(270, Vector3.forward),
+                _ => Quaternion.identity,
+            };
+        }
     }
 }

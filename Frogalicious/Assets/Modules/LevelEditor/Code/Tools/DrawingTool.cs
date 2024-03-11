@@ -110,14 +110,14 @@ namespace Frog.LevelEditor.Tools
         {
             ref var cell = ref levelData.AsBoardGrid().RefMutAt(point);
 
-            switch (_panel.Layer)
+            switch (_panel.Brush.Layer)
             {
                 case DrawingLayer.Tiles:
-                    cell.TileType = _panel.TileType;
-                    cell.TileColor = _panel.ColorGroup;
+                    cell.TileType = _panel.Brush.TileType;
+                    cell.TileColor = _panel.Brush.Color;
                     break;
                 case DrawingLayer.Objects:
-                    cell.ObjectType = _panel.ObjectType;
+                    cell.ObjectType = _panel.Brush.ObjectType;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

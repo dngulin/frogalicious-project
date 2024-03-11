@@ -14,10 +14,9 @@ namespace Frog.LevelEditor.View
 
         private readonly Dictionary<int, Button> _buttons = new Dictionary<int, Button>();
 
-        public DrawingLayer Layer { get; private set; }
-        public BoardColorGroup ColorGroup { get; private set; }
-        public BoardTileType TileType { get; private set; }
-        public BoardObjectType ObjectType { get; private set; }
+        private DrawingBrushState _brush;
+
+        public ref readonly DrawingBrushState Brush => ref _brush;
 
         public DrawingBrushesView(CellSpritesProvider csp)
         {
@@ -37,24 +36,26 @@ namespace Frog.LevelEditor.View
 
             foreach (var brush in Enum.GetValues(typeof(TBrush)))
             {
-
                 if (IsColoredBrush(brush))
                 {
                     foreach (BoardColorGroup color in Enum.GetValues(typeof(BoardColorGroup)))
-                    {
-                        CreateButton(holder, csp, brush, color);
-                    }
+                        CreateButton(holder, csp, brush, color, null);
+                }
+                else if (IsDirectedBrush(brush))
+                {
+                    foreach (BoardDirection direction in Enum.GetValues(typeof(BoardDirection)))
+                        CreateButton(holder, csp, brush, null, direction);
                 }
                 else
                 {
-                    CreateButton(holder, csp, brush, null);
+                    CreateButton(holder, csp, brush, null, null);
                 }
             }
 
             Add(holder);
         }
 
-        private void CreateButton(VisualElement holder, CellSpritesProvider csp, object brush, BoardColorGroup? optColor)
+        private void CreateButton(VisualElement holder, CellSpritesProvider csp, object brush, BoardColorGroup? optColor, BoardDirection? optDirection)
         {
             var button = new Button();
             var image = new Image { sprite = GetBrushSprite(csp, brush) };
@@ -62,28 +63,33 @@ namespace Frog.LevelEditor.View
             if (optColor.HasValue)
                 image.tintColor = CellSpritesProvider.GetTintColor(optColor.Value);
 
+            if (optDirection.HasValue)
+                image.transform.rotation = CellSpritesProvider.GetRotation(optDirection.Value);
+
             button.AddToClassList(BrushClass);
             button.Add(image);
             holder.Add(button);
 
             var color = optColor.GetValueOrDefault();
+            var direction = optDirection.GetValueOrDefault();
 
-            button.clicked += () => SetBrush(brush, color);
+            button.clicked += () => SetBrush(brush, color, direction);
 
-            _buttons.Add(GetBrushButtonKey(brush, color), button);
+            _buttons.Add(GetBrushButtonKey(brush, color, direction), button);
         }
 
-        private void SetBrush(object brush, BoardColorGroup color)
+        private void SetBrush(object brush, BoardColorGroup color, BoardDirection direction)
         {
             GetActiveButton().RemoveFromClassList(ActiveBrushClass);
 
             switch (brush)
             {
                 case BoardTileType tileType:
-                    (Layer, TileType, ColorGroup) = (DrawingLayer.Tiles, tileType, color);
+                    _brush.Update(tileType, color, direction);
                     break;
                 case BoardObjectType objectType:
-                    (Layer, ObjectType, ColorGroup) = (DrawingLayer.Objects, objectType, color);
+                    Debug.Assert(color == default);
+                    _brush.Update(objectType);
                     break;
                 default:
                     Debug.LogError($"Unknown drawing brush: {brush.GetType()}, value: {brush}");
@@ -103,6 +109,16 @@ namespace Frog.LevelEditor.View
             return false;
         }
 
+        private static bool IsDirectedBrush(object brush)
+        {
+            if (brush is BoardTileType tileType)
+            {
+                return tileType == BoardTileType.Spring;
+            }
+
+            return false;
+        }
+
         private static Sprite GetBrushSprite(CellSpritesProvider csp, object brush)
         {
             switch (brush)
@@ -115,32 +131,31 @@ namespace Frog.LevelEditor.View
             }
         }
 
-        private static int GetBrushButtonKey(object brush, BoardColorGroup color)
+        private static int GetBrushButtonKey(object brush, BoardColorGroup color, BoardDirection direction)
         {
-            return brush switch
+            var brushState = new DrawingBrushState {Color = color};
+
+            switch (brush)
             {
-                BoardTileType tileType => (DrawingLayer.Tiles, tileType, cg: color).GetHashCode(),
-                BoardObjectType objectType => (DrawingLayer.Objects, objectType, cg: color).GetHashCode(),
-                _ => throw new IndexOutOfRangeException(),
-            };
+                case BoardTileType tileType:
+                    brushState.Layer = DrawingLayer.Tiles;
+                    brushState.TileType = tileType;
+                    brushState.Direction = direction;
+                    break;
+                case BoardObjectType objType:
+                    brushState.Layer = DrawingLayer.Objects;
+                    brushState.ObjectType = objType;
+                    break;
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+
+            return brushState.CalculateHash();
         }
 
         private Button GetActiveButton()
         {
-            var key = Layer switch
-            {
-                DrawingLayer.Tiles => (DrawingLayer.Tiles, TileType, ColorGroup).GetHashCode(),
-                DrawingLayer.Objects => (DrawingLayer.Objects, ObjectType, ColorGroup).GetHashCode(),
-                _ => throw new IndexOutOfRangeException(),
-            };
-
-            return _buttons[key];
+            return _buttons[_brush.CalculateHash()];
         }
-    }
-
-    internal enum DrawingLayer : uint
-    {
-        Tiles,
-        Objects,
     }
 }
