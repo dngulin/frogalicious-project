@@ -6,5 +6,6 @@ namespace Frog.Level.Primitives
         Ground = 1,
         Button = 2,
         Spikes = 3,
+        Spring = 4,
     }
 }

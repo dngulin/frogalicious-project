@@ -7,6 +7,5 @@ namespace Frog.Level.Primitives
         Obstacle = 2,
         Box = 3,
         Coin = 4,
-        Spring = 5,
     }
 }
