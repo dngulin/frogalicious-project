@@ -26,7 +26,7 @@ namespace Frog.Level.View
                     return config.SpikesVariants[spikes.Color].Spawn(parent, position).Initialized(spikes);
 
                 case BoardTileType.Spring:
-                    return config.Spring.Spawn(parent, position).Inintialized(tile.State.AsSpring);
+                    return config.Spring.Spawn(parent, position).Initialized(tile.State.AsSpring);
 
                 default:
                     throw new ArgumentOutOfRangeException();

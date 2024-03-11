@@ -6,7 +6,7 @@ namespace Frog.Level.View
 {
     public class SpringTileView : EntityView
     {
-        public SpringTileView Inintialized(in SpringState state)
+        public SpringTileView Initialized(in SpringState state)
         {
             var angle = state.Direction switch
             {
