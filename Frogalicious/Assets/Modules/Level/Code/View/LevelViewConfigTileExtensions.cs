@@ -2,7 +2,6 @@ using System;
 using Frog.Level.Primitives;
 using Frog.Level.State;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Frog.Level.View
 {
@@ -17,30 +16,28 @@ namespace Frog.Level.View
 
                 case BoardTileType.Ground:
                 {
-                    var ground = Object.Instantiate(config.Ground, position, Quaternion.identity, parent);
+                    var ground = config.Ground.Spawn(parent, position);
                     ground.Init();
                     return ground;
                 }
 
                 case BoardTileType.Button:
                 {
-                    var buttonPrefab = config.ButtonVariants[tile.State.AsButton.Color];
-                    var button = Object.Instantiate(buttonPrefab, position, Quaternion.identity, parent);
+                    var button = config.ButtonVariants[tile.State.AsButton.Color].Spawn(parent, position);
                     button.Init(tile.State.AsButton);
                     return button;
                 }
 
                 case BoardTileType.Spikes:
                 {
-                    var spikesPrefab = config.SpikesVariants[tile.State.AsSpikes.Color];
-                    var spikes = Object.Instantiate(spikesPrefab, position, Quaternion.identity, parent);
+                    var spikes = config.SpikesVariants[tile.State.AsSpikes.Color].Spawn(parent, position);
                     spikes.Init(tile.State.AsSpikes);
                     return spikes;
                 }
 
                 case BoardTileType.Spring:
                 {
-                    var spring = Object.Instantiate(config.Spring, position, Quaternion.identity, parent);
+                    var spring = config.Spring.Spawn(parent, position);
                     spring.Inint(tile.State.AsSpring);
                     return spring;
                 }
