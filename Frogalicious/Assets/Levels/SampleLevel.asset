@@ -12,66 +12,222 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b4ecb64cc84b498ebfffd25e06dd3d, type: 3}
   m_Name: SampleLevel
   m_EditorClassIdentifier: 
-  Width: 5
+  Width: 9
   Height: 6
   Cells:
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 1
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 1
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 1
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 1
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 2
-  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 3
-  - TileType: 1
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 2
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 1
-  - TileType: 1
-    ObjectType: 3
-  - TileType: 1
-    ObjectType: 3
-  - TileType: 1
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
-  - TileType: 1
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 3
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
-  - TileType: 1
-    ObjectType: 0
-  - TileType: 1
-    ObjectType: 2
-  - TileType: 1
-    ObjectType: 3
-  - TileType: 1
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 3
     ObjectType: 0
   - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 3
+    ObjectType: 0
+  - TileType: 0
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 4
+    TileColor: 0
+    TileDirection: 3
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
   - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 1
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
+    ObjectType: 0
+  - TileType: 3
+    TileColor: 0
+    TileDirection: 0
     ObjectType: 0
