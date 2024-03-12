@@ -273,6 +273,9 @@ namespace Frog.Level.Simulation
                 if (cell.Tile.Type != BoardTileType.Spring || cell.Object.Type == BoardObjectType.Nothing)
                     continue;
 
+                if (timeline.IsEntityMovedThisStep(cell.Object.Id))
+                    continue;
+
                 var direction = cell.Tile.State.AsSpring.Direction;
                 var shift = direction.ToBoardPoint() + direction.ToBoardPoint();
 

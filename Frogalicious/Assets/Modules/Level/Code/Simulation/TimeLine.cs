@@ -48,5 +48,20 @@ namespace Frog.Level.Simulation
                 Args = default,
             });
         }
+
+        public readonly bool IsEntityMovedThisStep(ushort entityId)
+        {
+            for (var i = _events.Count - 1; i >= 0; i--)
+            {
+                var evt = _events[i];
+                if (evt.Step < Step)
+                    break;
+
+                if (evt.EntityId == entityId && evt.Type == TimeLineEventType.Move)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }
