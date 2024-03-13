@@ -23,10 +23,10 @@ namespace Frog.LevelEditor
         {
             return new CellSprites
             {
-                Tile = _tiles[cellData.TileType],
-                TileTintColor = GetTintColor(cellData.TileType, cellData.TileColor),
-                TileRotation = GetRotation(cellData.TileDirection),
-                Object = _objects[cellData.ObjectType],
+                Tile = _tiles[cellData.Tile.Type],
+                TileTintColor = GetTintColor(cellData.Tile.Type, cellData.Tile.Color),
+                TileRotation = GetRotation(cellData.Tile.Direction),
+                Object = _objects[cellData.Object.Type],
             };
         }
 

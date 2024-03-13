@@ -25,32 +25,32 @@ namespace Frog.Level.Simulation
                 ref var cell = ref state.Cells.RefAt(point);
 
                 cell.WriteDefault();
-                cell.Object.Id = cellData.ObjectType == BoardObjectType.Nothing ? default : nextEntityId++;
-                cell.Tile.Id = cellData.TileType == BoardTileType.Nothing ? default : nextEntityId++;
+                cell.Object.Id = cellData.Object.Type == BoardObjectType.Nothing ? default : nextEntityId++;
+                cell.Tile.Id = cellData.Tile.Type == BoardTileType.Nothing ? default : nextEntityId++;
 
-                cell.Object.Type = cellData.ObjectType;
+                cell.Object.Type = cellData.Object.Type;
                 if (cell.Object.Type == BoardObjectType.Character)
                 {
                     state.Character.WriteDefault();
                     state.Character.Position = point;
                 }
 
-                cell.Tile.Type = cellData.TileType;
-                switch (cellData.TileType)
+                cell.Tile.Type = cellData.Tile.Type;
+                switch (cellData.Tile.Type)
                 {
                     case BoardTileType.Button:
                         ref var button = ref cell.Tile.State.AsButton;
                         button.WriteDefault();
-                        button.Color = cellData.TileColor;
+                        button.Color = cellData.Tile.Color;
                         break;
                     case BoardTileType.Spikes:
                         ref var spikes = ref cell.Tile.State.AsSpikes;
                         spikes.WriteDefault();
-                        spikes.Color = cellData.TileColor;
+                        spikes.Color = cellData.Tile.Color;
                         break;
                     case BoardTileType.Spring:
                         ref var spring = ref cell.Tile.State.AsSpring;
-                        spring.Direction = cellData.TileDirection;
+                        spring.Direction = cellData.Tile.Direction;
                         break;
                 }
             }

@@ -15,10 +15,24 @@ namespace Frog.Level.Data
     [Serializable]
     public struct CellData
     {
-        public BoardTileType TileType;
-        public BoardColorGroup TileColor;
-        public BoardDirection TileDirection;
+        public BoardObjectHandle Object;
+        public BoardTileHandle Tile;
+    }
 
-        public BoardObjectType ObjectType;
+    [Serializable]
+    public struct BoardObjectHandle
+    {
+        public BoardObjectType Type;
+        public ushort Variant;
+    }
+
+    [Serializable]
+    public struct BoardTileHandle
+    {
+        public BoardTileType Type;
+        public ushort Variant;
+
+        public readonly BoardColorGroup Color => (BoardColorGroup)Variant;
+        public readonly BoardDirection Direction => (BoardDirection)Variant;
     }
 }

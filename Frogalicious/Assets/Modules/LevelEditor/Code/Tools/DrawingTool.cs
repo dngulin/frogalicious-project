@@ -113,12 +113,11 @@ namespace Frog.LevelEditor.Tools
             switch (_panel.Brush.Layer)
             {
                 case DrawingLayer.Tiles:
-                    cell.TileType = _panel.Brush.TileType;
-                    cell.TileColor = _panel.Brush.Color;
-                    cell.TileDirection = _panel.Brush.Direction;
+                    cell.Tile.Type = _panel.Brush.TileType;
+                    cell.Tile.SetVariant(_panel.Brush.Color, _panel.Brush.Direction);
                     break;
                 case DrawingLayer.Objects:
-                    cell.ObjectType = _panel.Brush.ObjectType;
+                    cell.Object.Type = _panel.Brush.ObjectType;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

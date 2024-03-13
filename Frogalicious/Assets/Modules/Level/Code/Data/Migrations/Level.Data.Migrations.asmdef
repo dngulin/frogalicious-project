@@ -1,0 +1,18 @@
+{
+    "name": "Level.Data.Migrations",
+    "rootNamespace": "Frog.Level.Data.Migrations",
+    "references": [
+        "Frog.Level"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
