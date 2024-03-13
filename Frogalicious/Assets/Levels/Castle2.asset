@@ -9,117 +9,225 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b4ecb64cc84b498ebfffd25e06dd3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2235bd8fcbd4461baea9a14e6bba7057, type: 3}
   m_Name: Castle2
   m_EditorClassIdentifier: 
   Width: 6
   Height: 6
   Cells:
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 1
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 3
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 3
-  - TileType: 2
-    TileColor: 1
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 3
-    TileColor: 1
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 3
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 3
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 3
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 3
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 0
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 2
-  - TileType: 1
-    TileColor: 0
-    ObjectType: 4
-  - TileType: 2
-    TileColor: 0
-    ObjectType: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 1
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 3
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 3
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 2
+      Variant: 1
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 3
+      Variant: 1
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 3
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 3
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 3
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 3
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 2
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 4
+      Variant: 0
+    Tile:
+      Type: 1
+      Variant: 0
+  - Object:
+      Type: 0
+      Variant: 0
+    Tile:
+      Type: 2
+      Variant: 0
