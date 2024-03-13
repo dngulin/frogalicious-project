@@ -1,8 +1,7 @@
 using System;
 using Frog.Level.Data;
-using Frog.Level.Primitives;
 
-namespace Frog.LevelEditor.Data
+namespace Frog.Level.Primitives
 {
     public static class BoardTileHandleExtensions
     {
