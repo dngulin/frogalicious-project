@@ -25,7 +25,7 @@ namespace Frog.LevelEditor
             {
                 Tile = _tiles[cellData.Tile.Type],
                 TileTintColor = GetTintColor(cellData.Tile.Type, cellData.Tile.Color),
-                TileRotation = GetRotation(cellData.Tile.Direction),
+                TileRotation = GetRotation(cellData.Tile.Type, cellData.Tile.Direction),
                 Object = _objects[cellData.Object.Type],
             };
         }
@@ -55,6 +55,17 @@ namespace Frog.LevelEditor
                 BoardColorGroup.Green => Color.green,
                 _ => Color.black,
             };
+        }
+
+        private static Quaternion GetRotation(BoardTileType tileType, BoardDirection direction)
+        {
+            switch (tileType)
+            {
+                case BoardTileType.Spring:
+                    return GetRotation(direction);
+                default:
+                    return Quaternion.identity;
+            }
         }
 
         public static Quaternion GetRotation(BoardDirection direction)
