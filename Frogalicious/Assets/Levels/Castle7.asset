@@ -100,11 +100,11 @@ MonoBehaviour:
       Type: 1
       Variant: 0
   - Object:
-      Type: 4
+      Type: 0
       Variant: 0
     Tile:
-      Type: 1
-      Variant: 0
+      Type: 4
+      Variant: 2
   - Object:
       Type: 0
       Variant: 0
@@ -118,11 +118,11 @@ MonoBehaviour:
       Type: 3
       Variant: 1
   - Object:
-      Type: 4
+      Type: 0
       Variant: 0
     Tile:
-      Type: 1
-      Variant: 0
+      Type: 4
+      Variant: 2
   - Object:
       Type: 2
       Variant: 0
