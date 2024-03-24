@@ -1,5 +1,5 @@
 {
-    "name": "StateTracker",
+    "name": "Frog.StateTracker",
     "rootNamespace": "Frog.StateTracker",
     "references": [],
     "includePlatforms": [],
