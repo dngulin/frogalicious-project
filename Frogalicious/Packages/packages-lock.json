@@ -60,6 +60,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "frog.state-tracker": {
+      "version": "file:frog.state-tarcker",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.animation": {
       "version": "1.0.0",
       "depth": 0,

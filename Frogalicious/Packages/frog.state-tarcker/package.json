@@ -1,0 +1,6 @@
+{
+  "name": "frog.state-tracker",
+  "version": "0.0.1",
+  "displayName": "[Frog] State Tracker",
+  "description": "This package provides a stack-based state machine API"
+}
