@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Frog.StateTracker
 {
     public abstract class StateHandler<TScope> where TScope : struct
@@ -15,6 +17,7 @@ namespace Frog.StateTracker
 
             private Transition(TransitionType type, StateHandler<TScope> stateHandler)
             {
+                Debug.Assert(type == TransitionType.Pop || stateHandler != null);
                 Type = type;
                 StateHandler = stateHandler;
             }

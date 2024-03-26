@@ -20,6 +20,7 @@ namespace Frog.StateTracker
 
             private Transition(TransitionType type, AsyncStateHandler<TScope> stateHandler)
             {
+                Debug.Assert(type == TransitionType.Pop || stateHandler != null);
                 Type = type;
                 StateHandler = stateHandler;
             }
