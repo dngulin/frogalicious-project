@@ -4,33 +4,32 @@ using UnityEngine;
 
 namespace Frog.StateTracker
 {
-    public class AsyncStateTracker<TScope> where TScope : struct
+    public static class AsyncStateTracker<TScope> where TScope : struct
     {
-        private readonly Stack<AsyncStateHandler<TScope>> _handlers = new Stack<AsyncStateHandler<TScope>>();
-
-        public async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler)
+        public static async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler)
         {
-            await _handlers.PushPeek(initialHandler).Start(scope);
+            var handlers = new Stack<AsyncStateHandler<TScope>>();
+            await handlers.PushPeek(initialHandler).Start(scope);
 
-            while (_handlers.Count > 0)
+            while (handlers.Count > 0)
             {
-                var transition = await _handlers.Peek().Run(scope);
+                var transition = await handlers.Peek().Run(scope);
                 switch (transition.Type)
                 {
                     case TransitionType.Push:
-                        await _handlers.Peek().Pause(scope);
-                        await _handlers.PushPeek(transition.StateHandler).Start(scope);
+                        await handlers.Peek().Pause(scope);
+                        await handlers.PushPeek(transition.StateHandler).Start(scope);
                         break;
 
                     case TransitionType.Pop:
-                        await _handlers.Pop().Stop(scope);
-                        if (_handlers.Count > 0)
-                            await _handlers.Peek().Resume(scope);
+                        await handlers.Pop().Stop(scope);
+                        if (handlers.Count > 0)
+                            await handlers.Peek().Resume(scope);
                         break;
 
                     case TransitionType.Replace:
-                        await _handlers.Pop().Stop(scope);
-                        await _handlers.PushPeek(transition.StateHandler).Start(scope);
+                        await handlers.Pop().Stop(scope);
+                        await handlers.PushPeek(transition.StateHandler).Start(scope);
                         break;
 
                     default:
