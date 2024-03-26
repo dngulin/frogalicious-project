@@ -8,9 +8,9 @@ namespace Frog.StateTracker
     {
         private readonly Stack<AsyncStateHandler<TScope>> _handlers = new Stack<AsyncStateHandler<TScope>>();
 
-        public async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialState)
+        public async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler)
         {
-            _handlers.Push(initialState);
+            await _handlers.PushPeek(initialHandler).Start(scope);
 
             while (_handlers.Count > 0)
             {
@@ -18,22 +18,34 @@ namespace Frog.StateTracker
                 switch (transition.Type)
                 {
                     case TransitionType.Push:
-                        _handlers.Push(transition.StateHandler);
+                        await _handlers.Peek().Pause(scope);
+                        await _handlers.PushPeek(transition.StateHandler).Start(scope);
                         break;
 
                     case TransitionType.Pop:
-                        _handlers.Pop();
+                        await _handlers.Pop().Stop(scope);
+                        if (_handlers.Count > 0)
+                            await _handlers.Peek().Resume(scope);
                         break;
 
                     case TransitionType.Replace:
-                        _handlers.Pop();
-                        _handlers.Push(transition.StateHandler);
+                        await _handlers.Pop().Stop(scope);
+                        await _handlers.PushPeek(transition.StateHandler).Start(scope);
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+    }
+
+    internal static class StackExtensions
+    {
+        public static T PushPeek<T>(this Stack<T> stack, T item)
+        {
+            stack.Push(item);
+            return item;
         }
     }
 }
