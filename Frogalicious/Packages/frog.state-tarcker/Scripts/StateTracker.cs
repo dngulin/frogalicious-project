@@ -20,13 +20,12 @@ namespace Frog.StateTracker
             if (_handlers.Count == 0)
                 return true;
 
-            var transition = _handlers.Peek().Tick(scope);
+            var optTransition = _handlers.Peek().Tick(scope);
+            if (!optTransition.TryGetValue(out var transition))
+                return false;
 
             switch (transition.Type)
             {
-                case TransitionType.None:
-                    break;
-
                 case TransitionType.Push:
                     _handlers.Peek().Pause(scope);
                     StartNewState(transition.StateHandler, scope);
@@ -57,6 +56,21 @@ namespace Frog.StateTracker
 
             _handlers.Push(stateHandler);
             stateHandler.Start(scope);
+        }
+    }
+
+    internal static class NullableExtensions
+    {
+        public static bool TryGetValue<T>(this T? nullable, out T value) where T : struct
+        {
+            if (nullable.HasValue)
+            {
+                value = nullable.Value;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
     }
 }
