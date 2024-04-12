@@ -6,13 +6,6 @@ namespace Frog.StateTracker
     {
         public abstract Awaitable<Transition> Run(TScope scope);
 
-        public abstract Awaitable Start(TScope scope);
-        public abstract Awaitable Stop(TScope scope);
-
-        public abstract Awaitable Pause(TScope scope);
-        public abstract Awaitable Resume(TScope scope);
-
-
         public readonly struct Transition
         {
             public readonly TransitionType Type;
