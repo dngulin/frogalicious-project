@@ -1,0 +1,11 @@
+{
+    "name": "Frog.Meta",
+    "rootNamespace": "Frog.Meta",
+    "autoReferenced": false,
+    "references": [
+        "Frog.StateTracker",
+        "Frog.Core",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ]
+}
