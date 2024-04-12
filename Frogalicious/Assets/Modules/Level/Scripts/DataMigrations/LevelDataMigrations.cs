@@ -1,8 +1,9 @@
 using System.Linq;
+using Frog.Level.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace Frog.Level.Data.Migrations
+namespace Frog.Level.DataMigrations
 {
     public static class LevelDataMigrations
     {

@@ -1,8 +1,11 @@
 using System;
+using Frog.Level.Data;
 using Frog.Level.Primitives;
 using UnityEngine;
 
-namespace Frog.Level.Data.Migrations
+// ReSharper disable InconsistentNaming
+
+namespace Frog.Level.DataMigrations
 {
     public class LevelData_V1 : ScriptableObject
     {

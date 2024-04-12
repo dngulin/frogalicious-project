@@ -1,6 +1,6 @@
 {
-    "name": "Frog.Level.Data.Migrations",
-    "rootNamespace": "Frog.Level.Data.Migrations",
+    "name": "Frog.Level.DataMigrations",
+    "rootNamespace": "Frog.Level.DataMigrations",
     "references": [
         "Frog.Level"
     ],
