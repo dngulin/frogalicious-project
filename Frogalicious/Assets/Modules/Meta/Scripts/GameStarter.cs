@@ -21,11 +21,13 @@ namespace Frog.Meta
 
             var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
             var mainMenuPrefab = go.GetComponent<MainMenuUi>();
+            var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
 
             using (scope)
             {
-                await AsyncStateTracker<RootScope>.Run(scope, new MainMenuStateHandler(mainMenuPrefab));
+                await AsyncStateTracker<RootScope>.Run(scope, initialStateHandler, destroyCancellationToken);
             }
+
 
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

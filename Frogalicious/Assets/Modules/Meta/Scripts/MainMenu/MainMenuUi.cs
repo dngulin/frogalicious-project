@@ -1,3 +1,4 @@
+using System.Threading;
 using Frog.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,6 @@ namespace Frog.Meta.MainMenu
             _exitButton.onClick.AddListener(() => _process.End(Command.Exit));
         }
 
-        public Awaitable<Command> WaitForCommand() => _process.Begin();
+        public Awaitable<Command> WaitForCommand(CancellationToken ct) => _process.Begin(ct);
     }
 }

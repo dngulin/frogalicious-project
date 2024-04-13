@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Frog.StateTracker;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -14,14 +15,16 @@ namespace Frog.Meta.MainMenu
             _mainMenuPrefab = mainMenuPrefab;
         }
 
-        public override async Awaitable<Transition> Run(RootScope scope)
+        public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {
             var menu = Object.Instantiate(_mainMenuPrefab);
             await scope.Ui.OpenWindow(menu.transform);
 
             while (true)
             {
-                var command = await menu.WaitForCommand();
+                ct.ThrowIfCancellationRequested();
+
+                var command = await menu.WaitForCommand(ct);
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
