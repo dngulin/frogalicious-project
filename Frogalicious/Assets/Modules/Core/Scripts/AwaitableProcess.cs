@@ -1,46 +1,59 @@
+using System;
 using System.Threading;
 using UnityEngine;
 
 namespace Frog.Core
 {
-    public class AwaitableProcess<T>
+    public class AwaitableProcess<T> : IDisposable
     {
         private readonly AwaitableCompletionSource<T> _acs = new AwaitableCompletionSource<T>();
-        private bool _isRunning;
+        private CancellationTokenRegistration? _ctr;
 
         public Awaitable<T> Begin(CancellationToken ct)
         {
-            if (_isRunning)
-            {
-                _acs.SetCanceled();
-            }
-
-            ct.Register(() => TryCancel());
+            TryCancel();
 
             _acs.Reset();
-            _isRunning = true;
+
+            Debug.Assert(_ctr == null);
+            _ctr = ct.Register(() => TryCancel());
 
             return _acs.Awaitable;
         }
 
         public bool TryEnd(T result)
         {
-            if (!_isRunning)
+            if (_ctr == null)
                 return false;
 
-            _isRunning = false;
+            _ctr.Value.Dispose();
+            _ctr = null;
+
             _acs.SetResult(result);
             return true;
         }
 
         public bool TryCancel()
         {
-            if (!_isRunning)
+            if (_ctr == null)
                 return false;
 
-            _isRunning = false;
+            _ctr.Value.Dispose();
+            _ctr = null;
+
             _acs.SetCanceled();
             return true;
+        }
+
+        public void Dispose() => TryCancel();
+    }
+
+    public static class AwaitableProcessExtensions
+    {
+        public static void EndWithAssert<T>(this AwaitableProcess<T> proc, T result)
+        {
+            var ended = proc.TryEnd(result);
+            Debug.Assert(ended, $"Failed to end the process with result {result}. Process is not being awaited!");
         }
     }
 }

@@ -20,10 +20,12 @@ namespace Frog.Meta.MainMenu
 
         private void Start()
         {
-            _playButton.onClick.AddListener(() => _process.TryEnd(Command.Play));
-            _exitButton.onClick.AddListener(() => _process.TryEnd(Command.Exit));
+            _playButton.onClick.AddListener(() => _process.EndWithAssert(Command.Play));
+            _exitButton.onClick.AddListener(() => _process.EndWithAssert(Command.Exit));
         }
 
         public Awaitable<Command> WaitForCommand(CancellationToken ct) => _process.Begin(ct);
+
+        private void OnDestroy() => _process.Dispose();
     }
 }
