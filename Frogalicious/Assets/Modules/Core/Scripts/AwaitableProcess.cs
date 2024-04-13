@@ -15,7 +15,7 @@ namespace Frog.Core
                 _acs.SetCanceled();
             }
 
-            ct.Register(Cancel);
+            ct.Register(() => TryCancel());
 
             _acs.Reset();
             _isRunning = true;
@@ -23,22 +23,24 @@ namespace Frog.Core
             return _acs.Awaitable;
         }
 
-        public void End(T result)
+        public bool TryEnd(T result)
         {
             if (!_isRunning)
-                return;
+                return false;
 
             _isRunning = false;
             _acs.SetResult(result);
+            return true;
         }
 
-        public void Cancel()
+        public bool TryCancel()
         {
             if (!_isRunning)
-                return;
+                return false;
 
             _isRunning = false;
             _acs.SetCanceled();
+            return true;
         }
     }
 }

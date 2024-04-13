@@ -20,8 +20,8 @@ namespace Frog.Meta.MainMenu
 
         private void Start()
         {
-            _playButton.onClick.AddListener(() => _process.End(Command.Play));
-            _exitButton.onClick.AddListener(() => _process.End(Command.Exit));
+            _playButton.onClick.AddListener(() => _process.TryEnd(Command.Play));
+            _exitButton.onClick.AddListener(() => _process.TryEnd(Command.Exit));
         }
 
         public Awaitable<Command> WaitForCommand(CancellationToken ct) => _process.Begin(ct);
