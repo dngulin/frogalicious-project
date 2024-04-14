@@ -12,22 +12,16 @@ namespace Frog.Core
         public Awaitable<T> Begin(CancellationToken ct)
         {
             TryCancel();
+            RegisterCancellation(ct);
 
             _acs.Reset();
-
-            Debug.Assert(_ctr == null);
-            _ctr = ct.Register(() => TryCancel());
-
             return _acs.Awaitable;
         }
 
         public bool TryEnd(T result)
         {
-            if (_ctr == null)
+            if (!TryUnregisterCancellation())
                 return false;
-
-            _ctr.Value.Dispose();
-            _ctr = null;
 
             _acs.SetResult(result);
             return true;
@@ -35,17 +29,30 @@ namespace Frog.Core
 
         public bool TryCancel()
         {
-            if (_ctr == null)
+            if (!TryUnregisterCancellation())
                 return false;
-
-            _ctr.Value.Dispose();
-            _ctr = null;
 
             _acs.SetCanceled();
             return true;
         }
 
         public void Dispose() => TryCancel();
+
+        private void RegisterCancellation(CancellationToken ct)
+        {
+            Debug.Assert(_ctr == null, "CancellationTokenRegistration will be overwritten!");
+            _ctr = ct.Register(() => TryCancel());
+        }
+
+        private bool TryUnregisterCancellation()
+        {
+            if (_ctr == null)
+                return false;
+
+            _ctr.Value.Dispose();
+            _ctr = null;
+            return true;
+        }
     }
 
     public static class AwaitableProcessExtensions
