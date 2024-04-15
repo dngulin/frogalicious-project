@@ -1,3 +1,4 @@
+using System;
 using Frog.Core.Ui;
 using Frog.Meta.MainMenu;
 using Frog.StateTracker;
@@ -19,13 +20,20 @@ namespace Frog.Meta
             RootScope scope;
             scope.Ui = new UiSystem(_canvas);
 
-            var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
-            var mainMenuPrefab = go.GetComponent<MainMenuUi>();
-            var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
-
             using (scope)
             {
-                await AsyncStateTracker<RootScope>.Run(scope, initialStateHandler, destroyCancellationToken);
+                try
+                {
+                    var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
+
+                    var mainMenuPrefab = go.GetComponent<MainMenuUi>();
+                    var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
+
+                    await AsyncStateTracker<RootScope>.Run(scope, initialStateHandler, destroyCancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                }
             }
 
 
