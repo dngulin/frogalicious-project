@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Frog.StateTracker
 {
-    public static class AsyncStateTracker<TScope> where TScope : struct
+    public static class AsyncStateTracker
     {
-        public static async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct)
+        public static async Awaitable Run<TScope>(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct) where TScope : struct
         {
             var handlers = new Stack<AsyncStateHandler<TScope>>();
             handlers.Push(initialHandler);
