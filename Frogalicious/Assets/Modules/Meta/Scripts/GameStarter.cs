@@ -20,6 +20,9 @@ namespace Frog.Meta
             scope.Camera = _camera;
             scope.Ui = new UiSystem(_canvas);
 
+            var stateTracker = new AsyncStateTracker<RootScope>();
+
+            using (stateTracker)
             using (scope)
             {
                 try
@@ -29,7 +32,7 @@ namespace Frog.Meta
                     var mainMenuPrefab = go.GetComponent<MainMenuUi>();
                     var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
 
-                    await AsyncStateTracker.Run(scope, initialStateHandler, destroyCancellationToken);
+                    await stateTracker.Run(scope, initialStateHandler, destroyCancellationToken);
                 }
                 catch (OperationCanceledException)
                 {

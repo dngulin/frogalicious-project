@@ -23,5 +23,7 @@ namespace Frog.Meta.Level
                 await Awaitable.NextFrameAsync(ct);
             }
         }
+
+        public override void Dispose() {}
     }
 }

@@ -15,6 +15,8 @@ namespace Frog.Meta.MainMenu
             _mainMenuPrefab = mainMenuPrefab;
         }
 
+        public override void Dispose() {}
+
         public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {
             var menu = UnityEngine.Object.Instantiate(_mainMenuPrefab);

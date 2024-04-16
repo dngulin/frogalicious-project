@@ -1,11 +1,14 @@
+using System;
 using System.Threading;
 using UnityEngine;
 
 namespace Frog.StateTracker
 {
-    public abstract class AsyncStateHandler<TScope> where TScope : struct
+    public abstract class AsyncStateHandler<TScope> : IDisposable where TScope : struct
     {
         public abstract Awaitable<Transition> Run(TScope scope, CancellationToken ct);
+
+        public abstract void Dispose();
 
         public readonly struct Transition
         {

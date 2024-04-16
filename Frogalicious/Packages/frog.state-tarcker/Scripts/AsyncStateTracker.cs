@@ -5,36 +5,46 @@ using UnityEngine;
 
 namespace Frog.StateTracker
 {
-    public static class AsyncStateTracker
+    public class AsyncStateTracker<TScope> : IDisposable where TScope : struct
     {
-        public static async Awaitable Run<TScope>(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct) where TScope : struct
-        {
-            var handlers = new Stack<AsyncStateHandler<TScope>>();
-            handlers.Push(initialHandler);
+        private readonly Stack<AsyncStateHandler<TScope>> _handlers = new Stack<AsyncStateHandler<TScope>>();
 
-            while (handlers.Count > 0)
+        public async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct)
+        {
+            Debug.Assert(_handlers.Count == 0);
+            _handlers.Push(initialHandler);
+
+            while (_handlers.Count > 0)
             {
                 ct.ThrowIfCancellationRequested();
 
-                var transition = await handlers.Peek().Run(scope, ct);
+                var transition = await _handlers.Peek().Run(scope, ct);
                 switch (transition.Type)
                 {
                     case TransitionType.Push:
-                        handlers.Push(transition.StateHandler);
+                        _handlers.Push(transition.StateHandler);
                         break;
 
                     case TransitionType.Pop:
-                        handlers.Pop();
+                        _handlers.Pop().Dispose();
                         break;
 
                     case TransitionType.Replace:
-                        handlers.Pop();
-                        handlers.Push(transition.StateHandler);
+                        _handlers.Pop().Dispose();
+                        _handlers.Push(transition.StateHandler);
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            while (_handlers.Count > 0)
+            {
+                _handlers.Pop().Dispose();
             }
         }
     }
