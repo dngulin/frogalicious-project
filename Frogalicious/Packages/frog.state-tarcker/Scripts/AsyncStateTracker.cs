@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Frog.StateTracker
 {
-    public class AsyncStateTracker<TScope> : IDisposable where TScope : struct
+    public class AsyncStateTracker<TScope> where TScope : struct
     {
         private readonly Stack<AsyncStateHandler<TScope>> _handlers = new Stack<AsyncStateHandler<TScope>>();
 
@@ -26,11 +26,11 @@ namespace Frog.StateTracker
                         break;
 
                     case TransitionType.Pop:
-                        _handlers.Pop().Dispose();
+                        _handlers.Pop().Dispose(scope);
                         break;
 
                     case TransitionType.Replace:
-                        _handlers.Pop().Dispose();
+                        _handlers.Pop().Dispose(scope);
                         _handlers.Push(transition.StateHandler);
                         break;
 
@@ -40,11 +40,11 @@ namespace Frog.StateTracker
             }
         }
 
-        public void Dispose()
+        public void Dispose(TScope scope)
         {
             while (_handlers.Count > 0)
             {
-                _handlers.Pop().Dispose();
+                _handlers.Pop().Dispose(scope);
             }
         }
     }

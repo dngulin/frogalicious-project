@@ -31,7 +31,7 @@ namespace Frog.Meta
 
         private void OnDestroy()
         {
-            _stateTracker.Dispose();
+            _stateTracker.Dispose(_scope);
             _scope.Dispose();
         }
 

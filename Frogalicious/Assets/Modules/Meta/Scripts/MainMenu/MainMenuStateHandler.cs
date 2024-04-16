@@ -15,7 +15,7 @@ namespace Frog.Meta.MainMenu
             _mainMenuPrefab = mainMenuPrefab;
         }
 
-        public override void Dispose() {}
+        public override void Dispose(RootScope scope) {}
 
         public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {

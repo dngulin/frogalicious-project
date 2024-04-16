@@ -10,6 +10,8 @@ namespace Frog.Meta.Level
 {
     public class LevelStateHandler : AsyncStateHandler<RootScope>
     {
+        public override void Dispose(RootScope scope) {}
+
         public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {
             var data = await Addressables.LoadAssetAsync<LevelData>("Assets/Levels/Castle1.asset").Task;
@@ -23,7 +25,5 @@ namespace Frog.Meta.Level
                 await Awaitable.NextFrameAsync(ct);
             }
         }
-
-        public override void Dispose() {}
     }
 }
