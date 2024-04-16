@@ -7,7 +7,9 @@ namespace Frog.StateTracker
     {
         public abstract Awaitable<Transition> Run(TScope scope, CancellationToken ct);
 
-        public abstract void Dispose(TScope scope);
+        public abstract void Tick(in TScope scope, float dt);
+
+        public abstract void Dispose(in TScope scope);
 
         public readonly struct Transition
         {

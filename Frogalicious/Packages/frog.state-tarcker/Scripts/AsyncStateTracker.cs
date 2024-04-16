@@ -40,7 +40,15 @@ namespace Frog.StateTracker
             }
         }
 
-        public void Dispose(TScope scope)
+        public void Tick(in TScope scope, float dt)
+        {
+            if (_handlers.Count > 0)
+            {
+                _handlers.Peek().Tick(scope, dt);
+            }
+        }
+
+        public void Dispose(in TScope scope)
         {
             while (_handlers.Count > 0)
             {

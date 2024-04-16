@@ -50,8 +50,12 @@ namespace Frog.Meta
             {
             }
 
-
             ExitGame();
+        }
+
+        private void Update()
+        {
+            _stateTracker.Tick(_scope, Time.unscaledDeltaTime);
         }
 
         private static void ExitGame()

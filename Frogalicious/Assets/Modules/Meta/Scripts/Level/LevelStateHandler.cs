@@ -10,7 +10,9 @@ namespace Frog.Meta.Level
 {
     public class LevelStateHandler : AsyncStateHandler<RootScope>
     {
-        public override void Dispose(RootScope scope) {}
+        public override void Dispose(in RootScope scope) {}
+
+        public override void Tick(in RootScope scope, float dt) {}
 
         public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {
