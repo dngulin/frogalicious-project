@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
+using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Frog.Meta.MainMenu
 {
@@ -17,8 +17,8 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
         {
-            var menu = Object.Instantiate(_mainMenuPrefab);
-            await scope.Ui.OpenWindow(menu.transform);
+            var menu = UnityEngine.Object.Instantiate(_mainMenuPrefab);
+            var window = await scope.Ui.OpenWindow(menu.transform);
 
             while (true)
             {
@@ -28,10 +28,11 @@ namespace Frog.Meta.MainMenu
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        Debug.Log("Under construction!");
-                        break;
+                        await scope.Ui.CloseWindow(window);
+                        return Transition.Replace(new LevelStateHandler());
 
                     case MainMenuUi.Command.Exit:
+                        await scope.Ui.CloseWindow(window);
                         return Transition.Pop();
 
                     default:

@@ -3,9 +3,10 @@
     "rootNamespace": "Frog.Meta",
     "autoReferenced": false,
     "references": [
+        "Unity.Addressables",
+        "Unity.ResourceManager",
         "Frog.StateTracker",
         "Frog.Core",
-        "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Frog.Level"
     ]
 }

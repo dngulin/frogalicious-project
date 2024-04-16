@@ -23,6 +23,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - ui
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 372136727219e0145b2195eac746e14c
+    m_Address: Assets/Levels/Castle1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12e4ae520f0c461549bed72b603c6c90
+    m_Address: Assets/Modules/Level/Config/LevelViewConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e9980fa9f2f9adaab99d6483ff9fc70d, type: 2}
   m_SchemaSet:

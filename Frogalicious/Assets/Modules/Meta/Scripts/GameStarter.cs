@@ -9,15 +9,15 @@ namespace Frog.Meta
 {
     public class GameStarter : MonoBehaviour
     {
-        [SerializeField]
-        private Canvas _canvas;
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private Camera _camera;
 
-        [SerializeField]
-        private AssetReferenceGameObject _mainMenuPrefabRef;
+        [SerializeField] private AssetReferenceGameObject _mainMenuPrefabRef;
 
         private async void Start()
         {
             RootScope scope;
+            scope.Camera = _camera;
             scope.Ui = new UiSystem(_canvas);
 
             using (scope)
