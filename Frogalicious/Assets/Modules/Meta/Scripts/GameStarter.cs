@@ -14,32 +14,48 @@ namespace Frog.Meta
 
         [SerializeField] private AssetReferenceGameObject _mainMenuPrefabRef;
 
-        private async void Start()
+        private AsyncStateTracker<RootScope> _stateTracker;
+        private RootScope _scope;
+
+        private void Awake()
         {
             RootScope scope;
-            scope.Camera = _camera;
-            scope.Ui = new UiSystem(_canvas);
-
-            var stateTracker = new AsyncStateTracker<RootScope>();
-
-            using (stateTracker)
-            using (scope)
             {
-                try
-                {
-                    var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
+                scope.Camera = _camera;
+                scope.Ui = new UiSystem(_canvas);
+            }
 
-                    var mainMenuPrefab = go.GetComponent<MainMenuUi>();
-                    var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
+            _scope = scope;
+            _stateTracker = new AsyncStateTracker<RootScope>();
+        }
 
-                    await stateTracker.Run(scope, initialStateHandler, destroyCancellationToken);
-                }
-                catch (OperationCanceledException)
-                {
-                }
+        private void OnDestroy()
+        {
+            _stateTracker.Dispose();
+            _scope.Dispose();
+        }
+
+        private async void Start()
+        {
+            try
+            {
+                var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
+
+                var mainMenuPrefab = go.GetComponent<MainMenuUi>();
+                var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
+
+                await _stateTracker.Run(_scope, initialStateHandler, destroyCancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
             }
 
 
+            ExitGame();
+        }
+
+        private static void ExitGame()
+        {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
