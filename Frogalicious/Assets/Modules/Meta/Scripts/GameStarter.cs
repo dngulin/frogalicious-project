@@ -44,7 +44,7 @@ namespace Frog.Meta
                 var mainMenuPrefab = go.GetComponent<MainMenuUi>();
                 var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
 
-                await _stateTracker.Run(_scope, initialStateHandler, destroyCancellationToken);
+                await _stateTracker.ExecuteAsync(_scope, initialStateHandler, destroyCancellationToken);
             }
             catch (OperationCanceledException)
             {

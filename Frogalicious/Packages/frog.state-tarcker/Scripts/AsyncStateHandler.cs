@@ -5,7 +5,7 @@ namespace Frog.StateTracker
 {
     public abstract class AsyncStateHandler<TScope> where TScope : struct
     {
-        public abstract Awaitable<Transition> Run(TScope scope, CancellationToken ct);
+        public abstract Awaitable<Transition> ExecuteAsync(TScope scope, CancellationToken ct);
 
         public abstract void Tick(in TScope scope, float dt);
 

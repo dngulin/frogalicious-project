@@ -14,7 +14,7 @@ namespace Frog.Meta.Level
 
         public override void Tick(in RootScope scope, float dt) {}
 
-        public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
+        public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
             var data = await Addressables.LoadAssetAsync<LevelData>("Assets/Levels/Castle1.asset").Task;
             var viewConfig = await Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset").Task;

@@ -9,7 +9,7 @@ namespace Frog.StateTracker
     {
         private readonly Stack<AsyncStateHandler<TScope>> _handlers = new Stack<AsyncStateHandler<TScope>>();
 
-        public async Awaitable Run(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct)
+        public async Awaitable ExecuteAsync(TScope scope, AsyncStateHandler<TScope> initialHandler, CancellationToken ct)
         {
             Debug.Assert(_handlers.Count == 0);
             _handlers.Push(initialHandler);
@@ -18,7 +18,7 @@ namespace Frog.StateTracker
             {
                 ct.ThrowIfCancellationRequested();
 
-                var transition = await _handlers.Peek().Run(scope, ct);
+                var transition = await _handlers.Peek().ExecuteAsync(scope, ct);
                 switch (transition.Type)
                 {
                     case TransitionType.Push:

@@ -39,7 +39,7 @@ namespace Frog.Meta.MainMenu
             }
         }
 
-        public override async Awaitable<Transition> Run(RootScope scope, CancellationToken ct)
+        public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
             if (!_menuOpened)
             {
