@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Frog.Core
 {
-    public class AwaitableProcess<T> : IDisposable
+    public class AwaitableOperation<T> : IDisposable
     {
         private readonly AwaitableCompletionSource<T> _acs = new AwaitableCompletionSource<T>();
         private CancellationTokenRegistration? _ctr;
 
-        public Awaitable<T> Begin(CancellationToken ct)
+        public Awaitable<T> ExecuteAsync(CancellationToken ct)
         {
             TryCancel();
             RegisterCancellation(ct);
@@ -18,7 +18,7 @@ namespace Frog.Core
             return _acs.Awaitable;
         }
 
-        public bool TryEnd(T result)
+        public bool TrySetResult(T result)
         {
             if (!TryUnregisterCancellation())
                 return false;
@@ -57,9 +57,9 @@ namespace Frog.Core
 
     public static class AwaitableProcessExtensions
     {
-        public static void EndWithAssert<T>(this AwaitableProcess<T> proc, T result)
+        public static void EndAssertive<T>(this AwaitableOperation<T> proc, T result)
         {
-            var ended = proc.TryEnd(result);
+            var ended = proc.TrySetResult(result);
             Debug.Assert(ended, $"Failed to end the process with result {result}. Process is not being awaited!");
         }
     }

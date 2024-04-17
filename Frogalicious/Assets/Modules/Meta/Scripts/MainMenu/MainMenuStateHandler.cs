@@ -15,7 +15,7 @@ namespace Frog.Meta.MainMenu
         private bool _menuOpened;
         private UiWindowHandle _windowHandle;
         private MainMenuUi _menu;
-        private readonly AwaitableProcess<MainMenuUi.Command> _menuAwaiter = new AwaitableProcess<MainMenuUi.Command>();
+        private readonly AwaitableOperation<MainMenuUi.Command> _uiPoll = new AwaitableOperation<MainMenuUi.Command>();
 
         public MainMenuStateHandler(MainMenuUi mainMenuPrefab)
         {
@@ -27,7 +27,7 @@ namespace Frog.Meta.MainMenu
             Debug.Assert(_menuOpened);
             Debug.Assert(_menu != null);
 
-            _menuAwaiter.Dispose();
+            _uiPoll.Dispose();
             UnityEngine.Object.Destroy(_menu);
         }
 
@@ -35,7 +35,7 @@ namespace Frog.Meta.MainMenu
         {
             if (_menuOpened && _menu.Poll().TryGetValue(out var command))
             {
-                _menuAwaiter.EndWithAssert(command);
+                _uiPoll.EndAssertive(command);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Frog.Meta.MainMenu
             {
                 ct.ThrowIfCancellationRequested();
 
-                var command = await _menuAwaiter.Begin(ct);
+                var command = await _uiPoll.ExecuteAsync(ct);
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
