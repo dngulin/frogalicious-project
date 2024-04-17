@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 namespace Frog.Core.Ui
@@ -13,13 +14,13 @@ namespace Frog.Core.Ui
             gameObject.SetActive(visible);
         }
 
-        public override Awaitable Show()
+        public override Awaitable Show(CancellationToken _)
         {
             SetVisible(true);
             return CreateCompletedAwaitable();
         }
 
-        public override Awaitable Hide()
+        public override Awaitable Hide(CancellationToken _)
         {
             SetVisible(false);
             return CreateCompletedAwaitable();

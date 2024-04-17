@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -19,7 +20,7 @@ namespace Frog.Core.Ui
             _windowsStack.Dispose();
         }
 
-        public async Awaitable<UiWindowHandle> OpenWindow(Transform contents)
+        public async Awaitable<UiWindowHandle> OpenWindow(Transform contents, CancellationToken ct)
         {
             var window = new GameObject(nameof(UiEntityStatic), typeof(RectTransform)).AddComponent<UiEntityStatic>(); // TODO: Pooling
             window.CreateContentsRoot();
@@ -31,11 +32,11 @@ namespace Frog.Core.Ui
             using var stackAccessor = _windowsStack.CreateAccessor();
 
             var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
-            await window.Show();
+            await window.Show(ct);
             return (UiWindowHandle)handle;
         }
 
-        public async Awaitable<Transform> CloseWindow(UiWindowHandle handle)
+        public async Awaitable<Transform> CloseWindow(UiWindowHandle handle, CancellationToken ct)
         {
             using var stackAccessor = _windowsStack.CreateAccessor();
 
@@ -43,7 +44,7 @@ namespace Frog.Core.Ui
             Debug.Assert(windowFound, $"No {nameof(window)} found with the handle {(uint)handle}");
 
             Debug.Assert(window.State == UiEntityState.Visible);
-            await window.Hide();
+            await window.Hide(ct);
 
             window.DetachContents(out var contents);
             UnityEngine.Object.Destroy(window); // TODO: Pooling

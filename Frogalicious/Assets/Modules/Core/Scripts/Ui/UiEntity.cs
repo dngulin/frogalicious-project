@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 namespace Frog.Core.Ui
@@ -13,8 +14,8 @@ namespace Frog.Core.Ui
     public abstract class UiEntity : MonoBehaviour
     {
         public abstract void SetVisible(bool visible);
-        public abstract Awaitable Show();
-        public abstract Awaitable Hide();
+        public abstract Awaitable Show(CancellationToken ct);
+        public abstract Awaitable Hide(CancellationToken ct);
         public abstract UiEntityState State { get; }
 
         public abstract CanvasGroup ContentsRoot { get; }

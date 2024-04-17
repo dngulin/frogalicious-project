@@ -43,7 +43,7 @@ namespace Frog.Meta.MainMenu
         {
             if (!_menuOpened)
             {
-                await OpenMenuAsync(scope);
+                await OpenMenuAsync(scope, ct);
                 _menuOpened = true;
             }
 
@@ -55,11 +55,11 @@ namespace Frog.Meta.MainMenu
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        await scope.Ui.CloseWindow(_windowHandle);
+                        await scope.Ui.CloseWindow(_windowHandle, ct);
                         return Transition.Replace(new LevelStateHandler());
 
                     case MainMenuUi.Command.Exit:
-                        await scope.Ui.CloseWindow(_windowHandle);
+                        await scope.Ui.CloseWindow(_windowHandle, ct);
                         return Transition.Pop();
 
                     default:
@@ -68,12 +68,12 @@ namespace Frog.Meta.MainMenu
             }
         }
 
-        private async Awaitable OpenMenuAsync(RootScope scope)
+        private async Awaitable OpenMenuAsync(RootScope scope, CancellationToken ct)
         {
             Debug.Assert(_menu == null);
 
             _menu = UnityEngine.Object.Instantiate(_mainMenuPrefab);
-            _windowHandle = await scope.Ui.OpenWindow(_menu.transform);
+            _windowHandle = await scope.Ui.OpenWindow(_menu.transform, ct);
         }
     }
 }
