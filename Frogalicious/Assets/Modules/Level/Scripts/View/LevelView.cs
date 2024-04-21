@@ -24,6 +24,7 @@ namespace Frog.Level.View
 
             var center = new Vector2(data.Width - 1, data.Height - 1) * 0.5f;
             camera.transform.position = new Vector3(center.x, center.y, -10);
+            camera.backgroundColor = viewConfig.BackgroundColor;
 
             _viewConfig = viewConfig;
             _camera = camera;

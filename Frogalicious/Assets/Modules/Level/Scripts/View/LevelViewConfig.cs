@@ -7,6 +7,8 @@ namespace Frog.Level.View
     [CreateAssetMenu(menuName = "Level View Config", fileName = nameof(LevelViewConfig))]
     public class LevelViewConfig : ScriptableObject
     {
+        public Color BackgroundColor;
+
         [Header("Tiles")]
         public GroundTileView Ground;
         public ColorVariants<ButtonTileView> ButtonVariants;
