@@ -8,18 +8,35 @@ namespace Frog.Level.View
 {
     public static class LevelViewConfigObjectExtensions
     {
-        public static EntityView CreateObject(this LevelViewConfig config, in ObjectState obj, Transform parent, in Vector2 position)
+        public static EntityView CreateObject(this LevelViewConfig config, in LevelState state, in BoardPoint point, Transform parent)
         {
-            var rotation = Quaternion.identity;
+            ref readonly var obj = ref state.Cells.RefReadonlyAt(point).Object;
             return obj.Type switch
             {
                 BoardObjectType.Nothing => throw new InvalidOperationException(),
-                BoardObjectType.Character => Object.Instantiate(config.Character, position, rotation, parent),
-                BoardObjectType.Obstacle => Object.Instantiate(config.Obstacle, position, rotation, parent),
-                BoardObjectType.Box => Object.Instantiate(config.Box, position, rotation, parent),
-                BoardObjectType.Coin => Object.Instantiate(config.Coin, position, rotation, parent),
-                _ => throw new ArgumentOutOfRangeException()
+                BoardObjectType.Character => Spawn(config.Character, point, parent),
+                BoardObjectType.Obstacle => SpawnObstacle(config, state, point, parent),
+                BoardObjectType.Box => Spawn(config.Box, point, parent),
+                BoardObjectType.Coin => Spawn(config.Coin, point, parent),
+                _ => throw new ArgumentOutOfRangeException(),
             };
+        }
+        
+        private static T Spawn<T>(T prefab, in BoardPoint p, Transform parent) where T : Object
+        {
+            return Object.Instantiate(prefab, p.ToVector2(), Quaternion.identity, parent);
+        }
+
+        private static EntityView SpawnObstacle(LevelViewConfig config, in LevelState state, in BoardPoint point, Transform parent)
+        {
+            var l = HasObj(state.Cells, BoardObjectType.Obstacle, point + BoardPoint.Left);
+            var r = HasObj(state.Cells, BoardObjectType.Obstacle, point + BoardPoint.Right);
+            return Spawn(config.Obstacle, point, parent).Initialized(l, r);
+        }
+
+        private static bool HasObj(in CellsState cells, BoardObjectType type, in BoardPoint point)
+        {
+            return cells.HasPoint(point) && cells.RefReadonlyAt(point).Object.Type == type;
         }
     }
 }

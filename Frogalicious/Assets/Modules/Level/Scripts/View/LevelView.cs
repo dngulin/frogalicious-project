@@ -47,7 +47,7 @@ namespace Frog.Level.View
 
                 if (cell.Object.Type != BoardObjectType.Nothing)
                 {
-                    var obj = _viewConfig.CreateObject(cell.Object, _root, point.ToVector2());
+                    var obj = _viewConfig.CreateObject(state, point, _root);
                     _objects.Add(cell.Object.Id, obj);
                 }
             }

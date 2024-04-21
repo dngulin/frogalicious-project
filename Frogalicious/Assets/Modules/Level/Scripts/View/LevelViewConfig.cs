@@ -17,7 +17,7 @@ namespace Frog.Level.View
 
         [Header("Objects")]
         public StaticEntityView Character;
-        public StaticEntityView Obstacle;
+        public ObstacleObjectView Obstacle;
         public StaticEntityView Box;
         public StaticEntityView Coin;
     }
