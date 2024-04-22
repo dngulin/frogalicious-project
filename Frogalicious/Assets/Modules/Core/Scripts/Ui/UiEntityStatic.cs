@@ -40,10 +40,7 @@ namespace Frog.Core.Ui
 
         public void CreateContentsRoot()
         {
-            var go = new GameObject(nameof(_contentsRoot), typeof(RectTransform));
-            go.GetComponent<RectTransform>().SetParentAndExpand(transform);
-
-            _contentsRoot = go.AddComponent<CanvasGroup>();
+            _contentsRoot = gameObject.AddComponent<CanvasGroup>();
         }
     }
 }
