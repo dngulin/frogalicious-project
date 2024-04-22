@@ -26,6 +26,6 @@ MonoBehaviour:
     _green: {fileID: 2993411733128338243, guid: 1453795f62c52d0159e86b6df6ec0879, type: 3}
   Spring: {fileID: 4495402327481284440, guid: 162c911e38bb3e088bc3175d3135de0b, type: 3}
   Character: {fileID: 8766369095581473314, guid: c1bc20c067cdde453914c116b8950657, type: 3}
-  Obstacle: {fileID: -6555553432740161383, guid: e390f17400939e27890984ae8ec7d064, type: 3}
+  Obstacle: {fileID: -4530098953611894849, guid: e390f17400939e27890984ae8ec7d064, type: 3}
   Box: {fileID: -1337075441224353445, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
   Coin: {fileID: 1238313054251440815, guid: 9ab54a32e3eafbaa99c5d66e669c08ea, type: 3}
