@@ -13,7 +13,7 @@ namespace Frog.Meta.MainMenu
         private readonly MainMenuUi _mainMenuPrefab;
 
         private bool _menuOpened;
-        private UiWindowHandle _windowHandle;
+        private UiDialogHandle _windowHandle;
         private MainMenuUi _menu;
         private readonly AwaitableOperation<MainMenuUi.Command> _uiPoll = new AwaitableOperation<MainMenuUi.Command>();
 
@@ -55,11 +55,11 @@ namespace Frog.Meta.MainMenu
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        await scope.Ui.CloseWindow(_windowHandle, ct);
+                        await scope.Ui.CloseDialogWindow(_windowHandle, ct);
                         return Transition.Replace(new LevelStateHandler());
 
                     case MainMenuUi.Command.Exit:
-                        await scope.Ui.CloseWindow(_windowHandle, ct);
+                        await scope.Ui.CloseDialogWindow(_windowHandle, ct);
                         return Transition.Pop();
 
                     default:
@@ -73,7 +73,7 @@ namespace Frog.Meta.MainMenu
             Debug.Assert(_menu == null);
 
             _menu = UnityEngine.Object.Instantiate(_mainMenuPrefab);
-            _windowHandle = await scope.Ui.OpenWindow(_menu.transform, ct);
+            _windowHandle = await scope.Ui.OpenDialogWindow(_menu.transform, ct);
         }
     }
 }
