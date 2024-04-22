@@ -13,7 +13,7 @@ namespace Frog.Meta.MainMenu
         private readonly MainMenuUi _mainMenuPrefab;
 
         private bool _menuOpened;
-        private UiDialogHandle _windowHandle;
+        private UiStaticWindowHandle _windowHandle;
         private MainMenuUi _menu;
         private readonly AwaitableOperation<MainMenuUi.Command> _uiPoll = new AwaitableOperation<MainMenuUi.Command>();
 
@@ -43,7 +43,7 @@ namespace Frog.Meta.MainMenu
         {
             if (!_menuOpened)
             {
-                await OpenMenuAsync(scope, ct);
+                CreateMenu(scope);
                 _menuOpened = true;
             }
 
@@ -55,11 +55,11 @@ namespace Frog.Meta.MainMenu
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        await scope.Ui.CloseDialogWindow(_windowHandle, ct);
+                        scope.Ui.RemoveStaticWindow(_windowHandle);
                         return Transition.Replace(new LevelStateHandler());
 
                     case MainMenuUi.Command.Exit:
-                        await scope.Ui.CloseDialogWindow(_windowHandle, ct);
+                        scope.Ui.RemoveStaticWindow(_windowHandle);
                         return Transition.Pop();
 
                     default:
@@ -68,12 +68,12 @@ namespace Frog.Meta.MainMenu
             }
         }
 
-        private async Awaitable OpenMenuAsync(RootScope scope, CancellationToken ct)
+        private void CreateMenu(RootScope scope)
         {
             Debug.Assert(_menu == null);
 
             _menu = UnityEngine.Object.Instantiate(_mainMenuPrefab);
-            _windowHandle = await scope.Ui.OpenDialogWindow(_menu.transform, ct);
+            _windowHandle = scope.Ui.AddStaticWindow(_menu.transform);
         }
     }
 }

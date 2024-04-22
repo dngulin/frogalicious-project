@@ -22,46 +22,69 @@ namespace Frog.Core.Ui
 
         public async Awaitable<UiWindowHandle> OpenWindow(UiEntity window, CancellationToken ct)
         {
-            using var stackAccessor = _windowsStack.CreateAccessor();
+            Debug.Assert(window.State == UiEntityState.Hidden);
 
-            var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
-            await window.Show(ct);
-            return (UiWindowHandle)handle;
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
+                await window.Show(ct);
+                return (UiWindowHandle)handle;
+            }
         }
 
         public async Awaitable<UiEntity> CloseWindow(UiWindowHandle handle, CancellationToken ct)
         {
-            using var stackAccessor = _windowsStack.CreateAccessor();
-
-            var windowFound = stackAccessor.RemoveItem((uint)handle, out var window);
-            Debug.Assert(windowFound, $"No {nameof(window)} found with the handle {(uint)handle}");
-
-            Debug.Assert(window.State == UiEntityState.Visible);
-            await window.Hide(ct);
-
-            return window;
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var window = stackAccessor.RemoveItemAssertive((uint)handle);
+                await window.Hide(ct);
+                return window;
+            }
         }
 
-        public async Awaitable<UiDialogHandle> OpenDialogWindow(Transform contents, CancellationToken ct)
+        public async Awaitable<UiDialogWindowHandle> OpenDialogWindow(Transform contents, CancellationToken ct)
         {
             var window = new GameObject(nameof(UiEntityStatic), typeof(RectTransform)).AddComponent<UiEntityStatic>(); // TODO: Pooling
             window.CreateContentsRoot();
             window.SetVisible(false);
-
-            Debug.Assert(window.State == UiEntityState.Hidden);
             window.AttachContents(contents);
 
-            return (UiDialogHandle) await OpenWindow(window, ct);
+            return (UiDialogWindowHandle) await OpenWindow(window, ct);
         }
 
-        public async Awaitable<Transform> CloseDialogWindow(UiDialogHandle handle, CancellationToken ct)
+        public async Awaitable<Transform> CloseDialogWindow(UiDialogWindowHandle handle, CancellationToken ct)
         {
             var window = await CloseWindow((UiWindowHandle) handle, ct);
-
             window.DetachContents(out var contents);
             UnityEngine.Object.Destroy(window); // TODO: Pooling
 
             return contents;
+        }
+
+        public UiStaticWindowHandle AddStaticWindow(Transform contents)
+        {
+            var window = new GameObject(nameof(UiEntityStatic), typeof(RectTransform)).AddComponent<UiEntityStatic>(); // TODO: Pooling
+            window.CreateContentsRoot();
+            window.AttachContents(contents);
+
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
+                window.SetVisible(true);
+                return (UiStaticWindowHandle)handle;
+            }
+        }
+
+        public Transform RemoveStaticWindow(UiStaticWindowHandle handle)
+        {
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var window = stackAccessor.RemoveItemAssertive((uint)handle);
+                window.DetachContents(out var contents);
+                UnityEngine.Object.Destroy(window);
+
+                return contents;
+            }
         }
     }
 
@@ -70,7 +93,11 @@ namespace Frog.Core.Ui
     {
     }
 
-    public enum UiDialogHandle : uint
+    public enum UiDialogWindowHandle : uint
+    {
+    }
+
+    public enum UiStaticWindowHandle : uint
     {
     }
 }

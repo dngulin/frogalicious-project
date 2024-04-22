@@ -76,7 +76,7 @@ namespace Frog.Core.Ui
             return handle;
         }
 
-        public bool RemoveItem(uint handle, out UiEntity window)
+        public bool TryRemoveItem(uint handle, out UiEntity window)
         {
             for (var i = 0; i < _entities.Count; i++)
             {
@@ -92,6 +92,18 @@ namespace Frog.Core.Ui
 
             window = default;
             return false;
+        }
+    }
+
+    public static class UiStackAccessorExtensions
+    {
+        public static UiEntity RemoveItemAssertive(in this UiStackAccessor stackAccessor, uint handle)
+        {
+            var itemFound = stackAccessor.TryRemoveItem(handle, out var item);
+            Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
+            Debug.Assert(item.State == UiEntityState.Visible);
+
+            return item;
         }
     }
 }
