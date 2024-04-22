@@ -44,9 +44,7 @@ namespace Frog.Core.Ui
 
         public async Awaitable<UiDialogWindowHandle> OpenDialogWindow(Transform contents, CancellationToken ct)
         {
-            var window = new GameObject(nameof(UiEntityStatic), typeof(RectTransform)).AddComponent<UiEntityStatic>(); // TODO: Pooling
-            window.CreateContentsRoot();
-            window.SetVisible(false);
+            var window = UiEntityStatic.Create();
             window.AttachContents(contents);
 
             return (UiDialogWindowHandle) await OpenWindow(window, ct);
@@ -56,15 +54,14 @@ namespace Frog.Core.Ui
         {
             var window = await CloseWindow((UiWindowHandle) handle, ct);
             window.DetachContents(out var contents);
-            UnityEngine.Object.Destroy(window); // TODO: Pooling
+            UnityEngine.Object.Destroy(window);
 
             return contents;
         }
 
         public UiStaticWindowHandle AddStaticWindow(Transform contents)
         {
-            var window = new GameObject(nameof(UiEntityStatic), typeof(RectTransform)).AddComponent<UiEntityStatic>(); // TODO: Pooling
-            window.CreateContentsRoot();
+            var window = UiEntityStatic.Create();
             window.AttachContents(contents);
 
             using (var stackAccessor = _windowsStack.CreateAccessor())
