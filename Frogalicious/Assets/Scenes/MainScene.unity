@@ -321,11 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 2006956077}
   _camera: {fileID: 374251460}
-  _mainMenuPrefabRef:
-    m_AssetGUID: ba204de3cf158e887b31ad7b2edb586b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  _splashUiPrefab: {fileID: 4688201266120539548, guid: 42fa83839ce3c6c7c8a0a29311cc5ddb, type: 3}
 --- !u!4 &1034679408
 Transform:
   m_ObjectHideFlags: 0

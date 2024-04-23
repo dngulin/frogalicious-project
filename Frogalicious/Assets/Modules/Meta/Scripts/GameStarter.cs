@@ -1,9 +1,8 @@
 using System;
 using Frog.Core.Ui;
-using Frog.Meta.MainMenu;
+using Frog.Meta.Splash;
 using Frog.StateTracker;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Frog.Meta
 {
@@ -12,7 +11,7 @@ namespace Frog.Meta
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Camera _camera;
 
-        [SerializeField] private AssetReferenceGameObject _mainMenuPrefabRef;
+        [SerializeField] private SplashUi _splashUiPrefab;
 
         private AsyncStateTracker<RootScope> _stateTracker;
         private RootScope _scope;
@@ -39,12 +38,8 @@ namespace Frog.Meta
         {
             try
             {
-                var go = await _mainMenuPrefabRef.LoadAssetAsync().Task;
-
-                var mainMenuPrefab = go.GetComponent<MainMenuUi>();
-                var initialStateHandler = new MainMenuStateHandler(mainMenuPrefab);
-
-                await _stateTracker.ExecuteAsync(_scope, initialStateHandler, destroyCancellationToken);
+                var initialHandler = new SplashStateHandler(_splashUiPrefab);
+                await _stateTracker.ExecuteAsync(_scope, initialHandler, destroyCancellationToken);
             }
             catch (OperationCanceledException)
             {

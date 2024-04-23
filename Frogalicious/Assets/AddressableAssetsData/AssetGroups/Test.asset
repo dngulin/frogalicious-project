@@ -18,10 +18,9 @@ MonoBehaviour:
   m_GUID: 70a06253ae932819bbd1a92259f1adff
   m_SerializeEntries:
   - m_GUID: ba204de3cf158e887b31ad7b2edb586b
-    m_Address: Assets/Modules/Meta/Prefabs/MainMenuUi.prefab
+    m_Address: MainMenuUi.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - ui
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 372136727219e0145b2195eac746e14c
     m_Address: Assets/Levels/Castle1.asset
