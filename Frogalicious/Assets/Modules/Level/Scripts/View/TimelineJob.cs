@@ -14,7 +14,7 @@ namespace Frog.Level.View
         private readonly TimeLineEventArgs _jobArgs;
         private readonly EntityView _target;
 
-        public TimelineJob(TimeLineEvent evt, EntityView target)
+        public TimelineJob(in TimeLineEvent evt, EntityView target)
         {
             _startTime = evt.Step * StepDuration;
             _jobType = evt.Type;

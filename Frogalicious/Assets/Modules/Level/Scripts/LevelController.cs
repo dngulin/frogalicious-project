@@ -1,19 +1,18 @@
 using System;
-using System.Collections.Generic;
 using Frog.Level.Data;
 using Frog.Level.Simulation;
 using Frog.Level.State;
 using Frog.Level.View;
+using Frog.RefList;
 
 namespace Frog.Level
 {
     public partial class LevelController : IDisposable
     {
         private LevelState _state;
+        private TimeLine _timeLine = new TimeLine(32);
 
         private readonly LevelView _view;
-
-        private readonly List<TimeLineEvent> _timeLineEvents = new List<TimeLineEvent>();
 
         private LevelController(LevelView view, LevelData data)
         {
@@ -33,15 +32,13 @@ namespace Frog.Level
             if (_view.IsPlayingTimeline)
                 return;
 
-            var input = InputStateProvider.Poll();
-            var timeline = new TimeLine(_timeLineEvents);
-            LevelSimulation.Simulate(ref _state, input, ref timeline);
+            LevelSimulation.Simulate(ref _state, InputStateProvider.Poll(), ref _timeLine);
 
-            if (_timeLineEvents.Count == 0)
+            if (_timeLine.Events.Count() == 0)
                 return;
 
-            _view.StartPlayingTimeline(_timeLineEvents);
-            _timeLineEvents.Clear();
+            _view.StartPlayingTimeline(in _timeLine.Events);
+            _timeLine.Reset();
         }
     }
 }

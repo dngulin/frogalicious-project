@@ -5,6 +5,7 @@ using Frog.Level.Primitives;
 using Frog.Level.Simulation;
 using Frog.Level.State;
 using UnityEngine;
+using Frog.RefList;
 using Object = UnityEngine.Object;
 
 namespace Frog.Level.View
@@ -60,14 +61,17 @@ namespace Frog.Level.View
         }
 
         private float _timelinePos;
-        private readonly List<TimelineJob> _timeline = new List<TimelineJob>();
+        private RefList<TimelineJob> _timeline = RefList<TimelineJob>.CreateWithCapacity(32);
 
-        public void StartPlayingTimeline(List<TimeLineEvent> timeLineEvents)
+        public void StartPlayingTimeline(in RefList<TimeLineEvent> timeLineEvents)
         {
             _timelinePos = 0;
 
-            foreach (var evt in timeLineEvents)
+            for (var i = 0; i < timeLineEvents.Count(); i++)
+            {
+                ref readonly var evt = ref timeLineEvents.RefReadonlyAt(i);
                 _timeline.Add(new TimelineJob(evt, _objects[evt.EntityId]));
+            }
         }
 
         public void Tick(float dt)
@@ -77,9 +81,9 @@ namespace Frog.Level.View
             if (!IsPlayingTimeline)
                 return;
 
-            for (var i = 0; i < _timeline.Count; i++)
+            for (var i = 0; i < _timeline.Count(); i++)
             {
-                var finished = _timeline[i].Update(_timelinePos, dt);
+                var finished = _timeline.RefReadonlyAt(i).Update(_timelinePos, dt);
                 if (finished)
                 {
                     _timeline.RemoveAt(i);
@@ -90,7 +94,7 @@ namespace Frog.Level.View
             _timelinePos += dt;
         }
 
-        public bool IsPlayingTimeline => _timeline.Count > 0;
+        public bool IsPlayingTimeline => _timeline.Count() > 0;
 
         private const float MaxHeight = 7f;
         private const float MaxWidth = 11f;

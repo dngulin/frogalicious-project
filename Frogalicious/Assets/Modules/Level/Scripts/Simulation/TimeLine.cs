@@ -1,60 +1,73 @@
-using System.Collections.Generic;
 using Frog.Level.Primitives;
+using Frog.RefList;
 
 namespace Frog.Level.Simulation
 {
     public struct TimeLine
     {
-        private readonly List<TimeLineEvent> _events;
+        public RefList<TimeLineEvent> Events;
         public ushort Step;
 
-        public readonly bool IsEmpty => _events.Count == 0;
-
-        public TimeLine(List<TimeLineEvent> events)
+        public TimeLine(int capacity)
         {
-            _events = events;
+            Events = RefList<TimeLineEvent>.CreateWithCapacity(capacity);
             Step = 0;
         }
+    }
 
-        public readonly void AddMove(ushort entityId, BoardPoint from, BoardPoint to)
+    public static class TimeLineExtensions
+    {
+        public static void Reset(this ref TimeLine timeline)
         {
-            _events.Add(new TimeLineEvent
+            timeline.Events.Clear();
+            timeline.Step = 0;
+        }
+    }
+
+    public static class TimeLineEventsExtensions
+    {
+        public static void AddMove(this ref TimeLine timeline, ushort entityId, BoardPoint from, BoardPoint to)
+        {
+            timeline.Events.Add(new TimeLineEvent
             {
                 Type = TimeLineEventType.Move,
-                Step = Step,
+                Step = timeline.Step,
                 EntityId = entityId,
                 Args = { AsMove = (from, to) },
             });
         }
 
-        public readonly void AddFlipFlop(ushort entityId, bool state)
+        public static void AddFlipFlop(this ref TimeLine timeline, ushort entityId, bool state)
         {
-            _events.Add(new TimeLineEvent
+            timeline.Events.Add(new TimeLineEvent
             {
                 Type = TimeLineEventType.FlipFlop,
-                Step = Step,
+                Step = timeline.Step,
                 EntityId = entityId,
                 Args = { AsFlipFlopState = state },
             });
         }
 
-        public readonly void AddDisappear(ushort entityId)
+        public static void AddDisappear(this ref TimeLine timeline, ushort entityId)
         {
-            _events.Add(new TimeLineEvent
+            timeline.Events.Add(new TimeLineEvent
             {
                 Type = TimeLineEventType.Disappear,
-                Step = Step,
+                Step = timeline.Step,
                 EntityId = entityId,
                 Args = default,
             });
         }
+    }
 
-        public readonly bool IsEntityMovedThisStep(ushort entityId)
+    public static class TimeLineCheckExtensions
+    {
+        public static bool IsEntityMovedThisStep(this in TimeLine timeline, ushort entityId)
         {
-            for (var i = _events.Count - 1; i >= 0; i--)
+            for (var i = timeline.Events.Count() - 1; i >= 0; i--)
             {
-                var evt = _events[i];
-                if (evt.Step < Step)
+                ref readonly var evt = ref timeline.Events.RefReadonlyAt(i);
+                if (evt.Step < timeline.Step)
                     break;
 
                 if (evt.EntityId == entityId && evt.Type == TimeLineEventType.Move)
