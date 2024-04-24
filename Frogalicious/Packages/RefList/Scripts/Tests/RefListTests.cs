@@ -30,6 +30,31 @@ namespace Frog.RefList.Tests
             Assert.That(list.Count() == 0, $"{nameof(AddAndClear)}.Clear");
         }
 
+        [TestCase(4)]
+        [TestCase(8)]
+        [TestCase(16)]
+        public void RefAddAndClear(int count)
+        {
+            var list = RefList<int>.CreateWithCapacity(count);
+            for (var i = 0; i < count; i++)
+            {
+                list.RefAdd() = i;
+                var value = list.Count();
+                var expected = i + 1;
+                Assert.That(value == expected, $" {nameof(RefAddAndClear)}.Count: {value} != {expected}");
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var value = list.RefReadonlyAt(i);
+                var expected = i;
+                Assert.That(value == expected, $" {nameof(RefAddAndClear)}.Value: {value} != {expected}");
+            }
+
+            list.Clear();
+            Assert.That(list.Count() == 0, $"{nameof(RefAddAndClear)}.Clear");
+        }
+
         [TestCase(9)]
         [TestCase(17)]
         [TestCase(21)]

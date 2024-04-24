@@ -35,16 +35,23 @@ namespace Frog.RefList
 
         public static void Add<T>(this ref RefList<T> list, in T item) where T : struct
         {
-            var index = list.ItemCount;
+            list.EnsureCanAdd();
+            list.ItemArray[list.ItemCount++] = item;
+        }
 
-            if (index >= list.ItemArray.Length)
-            {
-                var newSize = Math.Max(list.ItemArray.Length * 2, 1);
-                Array.Resize(ref list.ItemArray, newSize);
-            }
+        public static ref T RefAdd<T>(this ref RefList<T> list) where T : struct
+        {
+            list.EnsureCanAdd();
+            return ref list.ItemArray[list.ItemCount++];
+        }
 
-            list.ItemCount++;
-            list.ItemArray[index] = item;
+        private static void EnsureCanAdd<T>(this ref RefList<T> list) where T : struct
+        {
+            if (list.ItemCount < list.ItemArray.Length)
+                return;
+
+            var newSize = Math.Max(list.ItemArray.Length * 2, 1);
+            Array.Resize(ref list.ItemArray, newSize);
         }
 
         public static void RemoveAt<T>(this ref RefList<T> list, int index) where T : struct
