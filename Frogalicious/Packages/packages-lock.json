@@ -81,8 +81,8 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "frog.ref-list": {
-      "version": "file:RefList",
+    "frog.collections": {
+      "version": "file:Collections",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Frog.RefList
+namespace Frog.Collections
 {
     public struct RefList<T> where T : struct
     {

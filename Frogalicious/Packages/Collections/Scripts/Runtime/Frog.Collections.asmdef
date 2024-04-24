@@ -1,6 +1,6 @@
 {
-    "name": "Frog.RefList",
-    "rootNamespace": "Frog.RefList",
+    "name": "Frog.Collections",
+    "rootNamespace": "Frog.Collections",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,8 +1,8 @@
 {
-    "name": "Frog.RefList.Tests",
-    "rootNamespace": "Frog.RefList.Tests",
+    "name": "Frog.Collections.Tests",
+    "rootNamespace": "Frog.Collections.Tests",
     "references": [
-      "Frog.RefList"
+      "Frog.Collections"
     ],
     "includePlatforms": [
         "Editor"
