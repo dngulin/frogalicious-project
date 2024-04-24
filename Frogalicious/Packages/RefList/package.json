@@ -1,0 +1,6 @@
+{
+  "name": "frog.ref-list",
+  "version": "0.0.1",
+  "displayName": "[Frog] Referencable list of structures",
+  "description": "This package provides the RefList structure, that provides list-like API. It allows to access items by reference depending ion access modifiers (ref/in)"
+}

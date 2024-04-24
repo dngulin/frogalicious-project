@@ -81,6 +81,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "frog.ref-list": {
+      "version": "file:RefList",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "frog.state-tracker": {
       "version": "file:frog.state-tarcker",
       "depth": 0,
