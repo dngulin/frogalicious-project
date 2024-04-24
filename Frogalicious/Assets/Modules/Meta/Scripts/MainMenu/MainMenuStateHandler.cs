@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Frog.Core;
-using Frog.Core.Ui;
 using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
