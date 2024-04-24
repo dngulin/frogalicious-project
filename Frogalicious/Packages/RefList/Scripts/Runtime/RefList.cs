@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Frog.RefList
 {
@@ -70,6 +71,16 @@ namespace Frog.RefList
         {
             Array.Clear(list.ItemArray, 0, list.ItemCount);
             list.ItemCount = 0;
+        }
+
+        public static void Sort<T>(this ref RefList<T> list) where T : struct
+        {
+            Array.Sort(list.ItemArray, 0, list.ItemCount);
+        }
+
+        public static void Sort<T>(this ref RefList<T> list, IComparer<T> comparer) where T : struct
+        {
+            Array.Sort(list.ItemArray, 0, list.ItemCount, comparer);
         }
     }
 }
