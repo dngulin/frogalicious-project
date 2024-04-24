@@ -38,9 +38,11 @@ namespace Frog.Core.Ui
             return _acs.Awaitable;
         }
 
-        public static UiEntityStatic Create()
+        public static UiEntityStatic Create(Transform parent = null)
         {
             var go = new GameObject(nameof(UiEntityStatic), typeof(RectTransform));
+            go.GetComponent<RectTransform>().SetParentAndExpand(parent);
+
             var entity = go.AddComponent<UiEntityStatic>();
             entity._contentsRoot = go.AddComponent<CanvasGroup>();
 
