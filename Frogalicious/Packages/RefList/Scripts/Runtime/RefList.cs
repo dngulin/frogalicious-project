@@ -33,7 +33,7 @@ namespace Frog.RefList
         public static ref T RefAt<T>(this ref RefList<T> list, int index) where T : struct => ref list.ItemArray[index];
 
 
-        public static void Add<T>(this ref RefList<T> list, T item) where T : struct
+        public static void Add<T>(this ref RefList<T> list, in T item) where T : struct
         {
             var index = list.ItemCount;
 
@@ -43,7 +43,7 @@ namespace Frog.RefList
                 Array.Resize(ref list.ItemArray, newSize);
             }
 
-            list.ItemCount = index;
+            list.ItemCount++;
             list.ItemArray[index] = item;
         }
 

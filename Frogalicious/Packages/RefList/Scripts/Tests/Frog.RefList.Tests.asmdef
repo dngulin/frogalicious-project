@@ -1,0 +1,20 @@
+{
+    "name": "Frog.RefList.Tests",
+    "rootNamespace": "Frog.RefList.Tests",
+    "references": [
+      "Frog.RefList"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
