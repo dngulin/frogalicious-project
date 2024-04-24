@@ -6,6 +6,16 @@ namespace Frog.RefList
     {
         internal T[] ItemArray;
         internal int ItemCount;
+
+        private RefList(T[] array, int itemCount)
+        {
+            ItemArray = array;
+            ItemCount = itemCount;
+        }
+
+        public static RefList<T> CreateEmpty() => new RefList<T>(Array.Empty<T>(), 0);
+        public static RefList<T> CreateWithCapacity(int capacity) => new RefList<T>(new T[capacity], 0);
+        public static RefList<T> CreateWithDefaultItems(int count) => new RefList<T>(new T[count], count);
     }
 
     public static class RefListImpl
