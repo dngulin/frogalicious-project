@@ -3,6 +3,7 @@ using Frog.Level.Collections;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.State;
+using Frog.RefList;
 using UnityEngine;
 
 namespace Frog.Level.Simulation
@@ -12,6 +13,7 @@ namespace Frog.Level.Simulation
         public static void SetupInitialState(ref LevelState state, LevelData data)
         {
             var dataGrid = data.AsBoardGrid();
+            state.Cells.Array = RefList<CellState>.CreateWithDefaultItems(data.Cells.Length);
             state.Cells.Width = dataGrid.Width;
             state.Cells.Height = dataGrid.Height;
 
@@ -24,14 +26,13 @@ namespace Frog.Level.Simulation
                 ref readonly var cellData = ref dataGrid.RefAt(point);
                 ref var cell = ref state.Cells.RefAt(point);
 
-                cell.WriteDefault();
                 cell.Object.Id = cellData.Object.Type == BoardObjectType.Nothing ? default : nextEntityId++;
                 cell.Tile.Id = cellData.Tile.Type == BoardTileType.Nothing ? default : nextEntityId++;
 
                 cell.Object.Type = cellData.Object.Type;
                 if (cell.Object.Type == BoardObjectType.Character)
                 {
-                    state.Character.WriteDefault();
+                    state.Character.IsAlive = true;
                     state.Character.Position = point;
                 }
 
@@ -40,12 +41,11 @@ namespace Frog.Level.Simulation
                 {
                     case BoardTileType.Button:
                         ref var button = ref cell.Tile.State.AsButton;
-                        button.WriteDefault();
                         button.Color = cellData.Tile.Color;
                         break;
                     case BoardTileType.Spikes:
                         ref var spikes = ref cell.Tile.State.AsSpikes;
-                        spikes.WriteDefault();
+                        spikes.IsActive = true;
                         spikes.Color = cellData.Tile.Color;
                         break;
                     case BoardTileType.Spring:
@@ -181,7 +181,7 @@ namespace Frog.Level.Simulation
             {
                 case BoardObjectType.Coin:
                     timeline.AddDisappear(obj.Id);
-                    obj.WriteDefault();
+                    obj = default;
                     if (byObjType == BoardObjectType.Character)
                         state.Character.Coins++;
                     break;

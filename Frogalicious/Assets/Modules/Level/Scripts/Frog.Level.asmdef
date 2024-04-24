@@ -2,7 +2,8 @@
     "name": "Frog.Level",
     "rootNamespace": "Frog.Level",
     "references": [
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Frog.RefList"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
