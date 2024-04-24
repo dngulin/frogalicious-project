@@ -55,12 +55,7 @@ namespace Frog.RefList
             }
 
             list.ItemCount--;
-
-            for (var i = index; i < list.ItemCount; i++)
-            {
-                list.ItemArray[i] = list.ItemArray[i + 1];
-            }
-
+            Array.Copy(list.ItemArray, index + 1, list.ItemArray, index, list.ItemCount - index);
             list.ItemArray[list.ItemCount] = default;
         }
 
