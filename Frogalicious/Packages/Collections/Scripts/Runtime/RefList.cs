@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Frog.Collections
 {
+    [NoCopy]
     public struct RefList<T> where T : struct
     {
         internal T[] ItemArray;
