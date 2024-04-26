@@ -3,6 +3,7 @@ using Frog.Level.Primitives;
 
 namespace Frog.Level.Simulation
 {
+    [NoCopy]
     public struct TimeLine
     {
         public RefList<TimeLineEvent> Events;

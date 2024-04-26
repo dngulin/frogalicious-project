@@ -4,12 +4,14 @@ using Frog.Level.Primitives;
 
 namespace Frog.Level.State
 {
+    [NoCopy]
     public struct LevelState
     {
         public CellsState Cells;
         public CharacterState Character;
     }
 
+    [NoCopy]
     public struct CellsState {
         public RefList<CellState> Array;
         public ushort Width;

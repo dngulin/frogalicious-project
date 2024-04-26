@@ -70,7 +70,7 @@ namespace Frog.Level.Simulation
             {
                 UpdateButtons(ref state, ref timeline);
                 timeline.Step++;
-                CheckCharacterAlive(ref state, timeline);
+                CheckCharacterAlive(ref state, ref timeline);
 
                 if (timeline.Step > 1000)
                 {
@@ -253,7 +253,7 @@ namespace Frog.Level.Simulation
             }
         }
 
-        private static void CheckCharacterAlive(ref LevelState state, TimeLine timeline)
+        private static void CheckCharacterAlive(ref LevelState state, ref TimeLine timeline)
         {
             ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
             if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
