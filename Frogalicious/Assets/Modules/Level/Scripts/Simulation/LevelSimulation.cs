@@ -56,9 +56,9 @@ namespace Frog.Level.Simulation
             }
         }
 
-        public static void Simulate(ref LevelState state, in InputState input, ref TimeLine timeline)
+        public static void Simulate(ref SimState state, in InputState input)
         {
-            Debug.Assert(timeline.Events.Count() == 0);
+            Debug.Assert(state.TimeLine.Events.Count() == 0);
 
             if (input == InputState.None)
                 return;
@@ -66,13 +66,13 @@ namespace Frog.Level.Simulation
             if (!input.TryGetMoveDirection(out var direction))
                 return;
 
-            while (MakeMovements(ref state, direction, ref timeline))
+            while (MakeMovements(ref state, direction))
             {
-                UpdateButtons(ref state, ref timeline);
-                timeline.Step++;
-                CheckCharacterAlive(ref state, ref timeline);
+                UpdateButtons(ref state);
+                state.TimeLine.Step++;
+                CheckCharacterAlive(ref state);
 
-                if (timeline.Step > 1000)
+                if (state.TimeLine.Step > 1000)
                 {
                     Debug.LogError("Too many iterations");
                     break;
@@ -80,42 +80,42 @@ namespace Frog.Level.Simulation
             }
         }
 
-        private static bool MakeMovements(ref LevelState state, BoardDirection dir, ref TimeLine timeline)
+        private static bool MakeMovements(ref SimState state, BoardDirection dir)
         {
-            if (timeline.Step == 0 && MoveCharacter(ref state, dir, ref timeline))
+            if (state.TimeLine.Step == 0 && MoveCharacter(ref state, dir))
                 return true;
 
-            return UpdateSprings(ref state, ref timeline);
+            return UpdateSprings(ref state);
         }
 
-        private static bool MoveCharacter(ref LevelState state, BoardDirection dir, ref TimeLine timeline)
+        private static bool MoveCharacter(ref SimState state, BoardDirection dir)
         {
             var shift = dir.ToBoardPoint();
-            return MoveObject(ref state, state.Character.Position, shift, ref timeline);
+            return MoveObject(ref state, state.Level.Character.Position, shift);
         }
 
-        private static bool MoveObject(ref LevelState state, BoardPoint pos, BoardPoint shift, ref TimeLine timeline)
+        private static bool MoveObject(ref SimState state, BoardPoint pos, BoardPoint shift)
         {
             var newPos = pos + shift;
-            if (!state.Cells.HasPoint(newPos))
+            if (!state.Level.Cells.HasPoint(newPos))
                 return false;
 
-            ref var oldCell = ref state.Cells.RefAt(pos);
+            ref var oldCell = ref state.Level.Cells.RefAt(pos);
             if (!IsMovableObject(oldCell.Object.Type))
                 return false;
 
             if (!CanLeaveTile(in oldCell.Tile))
                 return false;
 
-            ref var newCell = ref state.Cells.RefAt(newPos);
+            ref var newCell = ref state.Level.Cells.RefAt(newPos);
             if (!CanEnterTile(newCell.Tile, oldCell.Object.Type))
                 return false;
 
-            if (!CanReplaceObject(newCell.Object, oldCell.Object.Type) && !MoveObject(ref state, newPos, shift, ref timeline))
+            if (!CanReplaceObject(newCell.Object, oldCell.Object.Type) && !MoveObject(ref state, newPos, shift))
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing)
-                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type, ref timeline);
+                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type);
 
             Debug.Assert(newCell.Object.Type == BoardObjectType.Nothing);
             newCell.Object = oldCell.Object;
@@ -123,13 +123,13 @@ namespace Frog.Level.Simulation
 
             if (newCell.Object.Type == BoardObjectType.Character)
             {
-                state.Character.Position = newPos;
+                state.Level.Character.Position = newPos;
             }
 
-            TileLeft(ref oldCell.Tile, ref timeline);
-            TileEntered(ref newCell.Tile, ref timeline);
+            TileLeft(ref oldCell.Tile, ref state.TimeLine);
+            TileEntered(ref newCell.Tile, ref state.TimeLine);
 
-            timeline.AddMove(newCell.Object.Id, pos, newPos);
+            state.TimeLine.AddMove(newCell.Object.Id, pos, newPos);
             return true;
         }
 
@@ -178,15 +178,15 @@ namespace Frog.Level.Simulation
             return obj.Type == BoardObjectType.Coin;
         }
 
-        private static void CollectObject(ref LevelState state, ref ObjectState obj, BoardObjectType byObjType, ref TimeLine timeline)
+        private static void CollectObject(ref SimState state, ref ObjectState obj, BoardObjectType byObjType)
         {
             switch (obj.Type)
             {
                 case BoardObjectType.Coin:
-                    timeline.AddDisappear(obj.Id);
+                    state.TimeLine.AddDisappear(obj.Id);
                     obj = default;
                     if (byObjType == BoardObjectType.Character)
-                        state.Character.Coins++;
+                        state.Level.Character.Coins++;
                     break;
                 default:
                     throw new InvalidOperationException();
@@ -215,29 +215,29 @@ namespace Frog.Level.Simulation
             }
         }
 
-        private static void UpdateButtons(ref LevelState state, ref TimeLine timeline)
+        private static void UpdateButtons(ref SimState state)
         {
-            for (var y = 0; y < state.Cells.Height; y++)
-            for (var x = 0; x < state.Cells.Width; x++)
+            for (var y = 0; y < state.Level.Cells.Height; y++)
+            for (var x = 0; x < state.Level.Cells.Width; x++)
             {
                 var point = new BoardPoint(x, y);
-                ref readonly var cell = ref state.Cells.RefReadonlyAt(point);
+                ref readonly var cell = ref state.Level.Cells.RefReadonlyAt(point);
                 if (cell.Tile.Type != BoardTileType.Button)
                     continue;
 
                 ref readonly var button = ref cell.Tile.State.AsButton;
 
-                UpdateSpikes(ref state, !button.IsPressed, button.Color, ref timeline);
+                UpdateSpikes(ref state, !button.IsPressed, button.Color);
             }
         }
 
-        private static void UpdateSpikes(ref LevelState state, bool isActive, BoardColorGroup color, ref TimeLine timeline)
+        private static void UpdateSpikes(ref SimState state, bool isActive, BoardColorGroup color)
         {
-            for (var y = 0; y < state.Cells.Height; y++)
-            for (var x = 0; x < state.Cells.Width; x++)
+            for (var y = 0; y < state.Level.Cells.Height; y++)
+            for (var x = 0; x < state.Level.Cells.Width; x++)
             {
                 var point = new BoardPoint(x, y);
-                ref var cell = ref state.Cells.RefAt(point);
+                ref var cell = ref state.Level.Cells.RefAt(point);
                 if (cell.Tile.Type != BoardTileType.Spikes)
                     continue;
 
@@ -248,57 +248,58 @@ namespace Frog.Level.Simulation
                 if (spikes.IsActive != isActive)
                 {
                     spikes.IsActive = isActive;
-                    timeline.AddFlipFlop(cell.Tile.Id, isActive);
+                    state.TimeLine.AddFlipFlop(cell.Tile.Id, isActive);
                 }
             }
         }
 
-        private static void CheckCharacterAlive(ref LevelState state, ref TimeLine timeline)
+        private static void CheckCharacterAlive(ref SimState state)
         {
-            ref readonly var charCell = ref state.Cells.RefReadonlyAt(state.Character.Position);
+            var charPos = state.Level.Character.Position;
+            ref readonly var charCell = ref state.Level.Cells.RefReadonlyAt(charPos);
             if (charCell.Tile.Type == BoardTileType.Spikes && charCell.Tile.State.AsSpikes.IsActive)
             {
                 Debug.Assert(charCell.Object.Type == BoardObjectType.Character);
-                timeline.AddDisappear(charCell.Object.Id);
-                state.Character.IsAlive = false;
+                state.TimeLine.AddDisappear(charCell.Object.Id);
+                state.Level.Character.IsAlive = false;
             }
         }
 
-        private static bool UpdateSprings(ref LevelState state, ref TimeLine timeline)
+        private static bool UpdateSprings(ref SimState state)
         {
             var result = false;
 
-            for (var y = 0; y < state.Cells.Height; y++)
-            for (var x = 0; x < state.Cells.Width; x++)
+            for (var y = 0; y < state.Level.Cells.Height; y++)
+            for (var x = 0; x < state.Level.Cells.Width; x++)
             {
                 var point = new BoardPoint(x, y);
-                ref var cell = ref state.Cells.RefAt(point);
+                ref var cell = ref state.Level.Cells.RefAt(point);
                 if (cell.Tile.Type != BoardTileType.Spring || cell.Object.Type == BoardObjectType.Nothing)
                     continue;
 
-                if (timeline.IsEntityMovedThisStep(cell.Object.Id))
+                if (state.TimeLine.IsEntityMovedThisStep(cell.Object.Id))
                     continue;
 
                 var direction = cell.Tile.State.AsSpring.Direction;
                 var shift = direction.ToBoardPoint() + direction.ToBoardPoint();
 
-                result |= ThrowObject(ref state, point, shift, ref timeline);
+                result |= ThrowObject(ref state, point, shift);
             }
 
             return result;
         }
 
-        private static bool ThrowObject(ref LevelState state, BoardPoint pos, BoardPoint shift, ref TimeLine timeline)
+        private static bool ThrowObject(ref SimState state, BoardPoint pos, BoardPoint shift)
         {
             var newPos = pos + shift;
-            if (!state.Cells.HasPoint(newPos))
+            if (!state.Level.Cells.HasPoint(newPos))
                 return false;
 
-            ref var oldCell = ref state.Cells.RefAt(pos);
+            ref var oldCell = ref state.Level.Cells.RefAt(pos);
             if (!IsMovableObject(oldCell.Object.Type))
                 return false;
 
-            ref var newCell = ref state.Cells.RefAt(newPos);
+            ref var newCell = ref state.Level.Cells.RefAt(newPos);
             if (!CanEnterTile(newCell.Tile, oldCell.Object.Type))
                 return false;
 
@@ -306,7 +307,7 @@ namespace Frog.Level.Simulation
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing)
-                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type, ref timeline);
+                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type);
 
             Debug.Assert(newCell.Object.Type == BoardObjectType.Nothing);
             newCell.Object = oldCell.Object;
@@ -314,13 +315,13 @@ namespace Frog.Level.Simulation
 
             if (newCell.Object.Type == BoardObjectType.Character)
             {
-                state.Character.Position = newPos;
+                state.Level.Character.Position = newPos;
             }
 
-            TileLeft(ref oldCell.Tile, ref timeline);
-            TileEntered(ref newCell.Tile, ref timeline);
+            TileLeft(ref oldCell.Tile, ref state.TimeLine);
+            TileEntered(ref newCell.Tile, ref state.TimeLine);
 
-            timeline.AddMove(newCell.Object.Id, pos, newPos);
+            state.TimeLine.AddMove(newCell.Object.Id, pos, newPos);
             return true;
         }
     }
