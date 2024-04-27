@@ -1,14 +1,13 @@
 using Frog.Level.Primitives;
-using Frog.Level.State;
 using UnityEngine;
 
 namespace Frog.Level.View
 {
     public class SpringTileView : EntityView
     {
-        public SpringTileView Initialized(in SpringState state)
+        public SpringTileView Initialized(in BoardDirection direction)
         {
-            var angle = state.Direction switch
+            var angle = direction switch
             {
                 BoardDirection.Up => 0f,
                 BoardDirection.Right => 90f,

@@ -19,14 +19,14 @@ namespace Frog.Level.View
 
                 case BoardTileType.Button:
                     var button = tile.State.AsButton;
-                    return config.ButtonVariants[button.Color].Spawn(parent, position).Initialized(button);
+                    return config.ButtonVariants[tile.CfgHandle.AsColor].Spawn(parent, position).Initialized(button);
 
                 case BoardTileType.Spikes:
                     var spikes = tile.State.AsSpikes;
-                    return config.SpikesVariants[spikes.Color].Spawn(parent, position).Initialized(spikes);
+                    return config.SpikesVariants[tile.CfgHandle.AsColor].Spawn(parent, position).Initialized(spikes);
 
                 case BoardTileType.Spring:
-                    return config.Spring.Spawn(parent, position).Initialized(tile.State.AsSpring);
+                    return config.Spring.Spawn(parent, position).Initialized(tile.CfgHandle.AsDirection);
 
                 default:
                     throw new ArgumentOutOfRangeException();

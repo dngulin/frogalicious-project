@@ -46,23 +46,22 @@ namespace Frog.Level.Simulation
                     level.Character.Position = point;
                 }
 
-                cell.Tile.Type = cellData.Tile.Type;
-                switch (cellData.Tile.Type)
+                ref var tile = ref cell.Tile;
+                tile.Type = cellData.Tile.Type;
+
+                switch (tile.Type)
                 {
                     case BoardTileType.Button:
-                        ref var button = ref cell.Tile.State.AsButton;
-                        button.Color = cellData.Tile.Color;
+                        tile.CfgHandle.AsColor = cellData.Tile.Color;
                         indices.Buttons.RefAdd() = point;
                         break;
                     case BoardTileType.Spikes:
-                        ref var spikes = ref cell.Tile.State.AsSpikes;
-                        spikes.IsActive = true;
-                        spikes.Color = cellData.Tile.Color;
+                        tile.State.AsSpikes.IsActive = true;
+                        tile.CfgHandle.AsColor = cellData.Tile.Color;
                         indices.Spikes.RefAdd() = point;
                         break;
                     case BoardTileType.Spring:
-                        ref var spring = ref cell.Tile.State.AsSpring;
-                        spring.Direction = cellData.Tile.Direction;
+                        tile.CfgHandle.AsDirection = cellData.Tile.Direction;
                         indices.Springs.RefAdd() = point;
                         break;
                 }
@@ -238,7 +237,7 @@ namespace Frog.Level.Simulation
                 Debug.Assert(tile.Type == BoardTileType.Button);
                 ref readonly var button = ref tile.State.AsButton;
 
-                UpdateSpikes(ref state, !button.IsPressed, button.Color);
+                UpdateSpikes(ref state, !button.IsPressed, tile.CfgHandle.AsColor);
             }
         }
 
@@ -252,7 +251,7 @@ namespace Frog.Level.Simulation
                 Debug.Assert(tile.Type == BoardTileType.Spikes);
                 ref var spikes = ref tile.State.AsSpikes;
 
-                if (spikes.Color != color || spikes.IsActive == isActive)
+                if (tile.CfgHandle.AsColor != color || spikes.IsActive == isActive)
                     continue;
 
                 spikes.IsActive = isActive;
@@ -289,7 +288,7 @@ namespace Frog.Level.Simulation
                 if (state.TimeLine.IsEntityMovedThisStep(cell.Object.Id))
                     continue;
 
-                var direction = cell.Tile.State.AsSpring.Direction;
+                var direction = cell.Tile.CfgHandle.AsDirection;
                 var shift = direction.ToBoardPoint() + direction.ToBoardPoint();
 
                 result |= ThrowObject(ref state, point, shift);

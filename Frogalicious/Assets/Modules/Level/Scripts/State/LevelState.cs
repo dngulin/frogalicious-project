@@ -40,6 +40,7 @@ namespace Frog.Level.State
     public struct TileState
     {
         public BoardTileType Type;
+        public TileConfigHandle CfgHandle;
         public ushort Id;
         public ExtendedTileState State;
     }
@@ -49,23 +50,22 @@ namespace Frog.Level.State
     {
         [FieldOffset(0)] public ButtonState AsButton;
         [FieldOffset(0)] public SpikesState AsSpikes;
-        [FieldOffset(0)] public SpringState AsSpring;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct TileConfigHandle
+    {
+        [FieldOffset(0)] public BoardColorGroup AsColor;
+        [FieldOffset(0)] public BoardDirection AsDirection;
     }
 
     public struct ButtonState
     {
-        public BoardColorGroup Color;
         public bool IsPressed;
     }
 
     public struct SpikesState
     {
-        public BoardColorGroup Color;
         public bool IsActive;
-    }
-
-    public struct SpringState
-    {
-        public BoardDirection Direction;
     }
 }
