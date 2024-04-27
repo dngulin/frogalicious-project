@@ -15,8 +15,13 @@ namespace Frog.Collections
             ItemCount = itemCount;
         }
 
+        [NoCopyInstanceConstructor]
         public static RefList<T> CreateEmpty() => new RefList<T>(Array.Empty<T>(), 0);
+
+        [NoCopyInstanceConstructor]
         public static RefList<T> CreateWithCapacity(int capacity) => new RefList<T>(new T[capacity], 0);
+
+        [NoCopyInstanceConstructor]
         public static RefList<T> CreateWithDefaultItems(int count) => new RefList<T>(new T[count], count);
     }
 
