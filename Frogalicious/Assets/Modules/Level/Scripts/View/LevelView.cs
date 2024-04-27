@@ -61,7 +61,7 @@ namespace Frog.Level.View
         }
 
         private float _timelinePos;
-        private RefList<TimelineJob> _timeline = RefList<TimelineJob>.CreateWithCapacity(32);
+        private RefList<TimelineJob> _timeline = RefList.WithCapacity<TimelineJob>(32);
 
         public void StartPlayingTimeline(in RefList<TimeLineEvent> timeLineEvents)
         {

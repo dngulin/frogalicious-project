@@ -10,7 +10,7 @@ namespace Frog.Collections.Tests
         [TestCase(32)]
         public void AddAndClear(int count)
         {
-            var list = RefList<int>.CreateEmpty();
+            var list = RefList.Empty<int>();
             for (var i = 0; i < count; i++)
             {
                 list.Add(i);
@@ -35,7 +35,7 @@ namespace Frog.Collections.Tests
         [TestCase(16)]
         public void RefAddAndClear(int count)
         {
-            var list = RefList<int>.CreateWithCapacity(count);
+            var list = RefList.WithCapacity<int>(count);
             for (var i = 0; i < count; i++)
             {
                 list.RefAdd() = i;
@@ -60,7 +60,7 @@ namespace Frog.Collections.Tests
         [TestCase(21)]
         public void UpdateValue(int count)
         {
-            var list = RefList<int>.CreateWithDefaultItems(count);
+            var list = RefList.WithDefaultItems<int>(count);
             for (var i = 0; i < count; i++)
             {
                 list.RefAt(i) = -i * 2;
@@ -82,7 +82,7 @@ namespace Frog.Collections.Tests
         [TestCase(29)]
         public void RemoveAtBegin(int count)
         {
-            var list = RefList<int>.CreateEmpty();
+            var list = RefList.Empty<int>();
             for (var i = 0; i < count; i++)
             {
                 list.Add(i * 3);

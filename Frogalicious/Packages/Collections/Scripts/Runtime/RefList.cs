@@ -9,20 +9,32 @@ namespace Frog.Collections
         internal T[] ItemArray;
         internal int ItemCount;
 
-        private RefList(T[] array, int itemCount)
+        internal RefList(T[] array, int itemCount)
         {
             ItemArray = array;
             ItemCount = itemCount;
         }
+    }
+
+    public static class RefList
+    {
+        [NoCopyInstanceConstructor]
+        public static RefList<T> Empty<T>() where T : struct
+        {
+            return new RefList<T>(Array.Empty<T>(), 0);
+        }
 
         [NoCopyInstanceConstructor]
-        public static RefList<T> CreateEmpty() => new RefList<T>(Array.Empty<T>(), 0);
+        public static RefList<T> WithCapacity<T>(int capacity) where T : struct
+        {
+            return new RefList<T>(new T[capacity], 0);
+        }
 
         [NoCopyInstanceConstructor]
-        public static RefList<T> CreateWithCapacity(int capacity) => new RefList<T>(new T[capacity], 0);
-
-        [NoCopyInstanceConstructor]
-        public static RefList<T> CreateWithDefaultItems(int count) => new RefList<T>(new T[count], count);
+        public static RefList<T> WithDefaultItems<T>(int count) where T : struct
+        {
+            return new RefList<T>(new T[count], count);
+        }
     }
 
     public static class RefListImpl

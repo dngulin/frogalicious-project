@@ -13,7 +13,7 @@ namespace Frog.Level.Simulation
         public static void SetupInitialState(ref LevelState state, LevelData data)
         {
             var dataGrid = data.AsBoardGrid();
-            state.Cells.Array = RefList<CellState>.CreateWithDefaultItems(data.Cells.Length);
+            state.Cells.Array = RefList.WithDefaultItems<CellState>(data.Cells.Length);
             state.Cells.Width = dataGrid.Width;
             state.Cells.Height = dataGrid.Height;
 

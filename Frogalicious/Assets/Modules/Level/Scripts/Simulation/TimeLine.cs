@@ -11,7 +11,7 @@ namespace Frog.Level.Simulation
 
         public TimeLine(int capacity)
         {
-            Events = RefList<TimeLineEvent>.CreateWithCapacity(capacity);
+            Events = RefList.WithCapacity<TimeLineEvent>(capacity);
             Step = 0;
         }
     }
