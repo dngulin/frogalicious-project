@@ -12,8 +12,6 @@ namespace Frog.Meta.Splash
         private readonly SplashUi _ui;
         private readonly AwaitableOperation _poll = new AwaitableOperation();
 
-        private bool _enablePolling;
-
         public SplashStateHandler(SplashUi uiPrefab)
         {
             _ui = Object.Instantiate(uiPrefab);
@@ -29,7 +27,7 @@ namespace Frog.Meta.Splash
 
         public override void Tick(in RootScope scope, float dt)
         {
-            if (_enablePolling && _ui.Poll())
+            if (_poll.IsRunning && _ui.Poll())
                 _poll.EndAssertive();
         }
 
@@ -37,11 +35,9 @@ namespace Frog.Meta.Splash
         {
             var handle = scope.Ui.AddStaticWindow(_ui.transform);
 
-            _enablePolling = true;
             await _poll.ExecuteAsync(ct);
-            _enablePolling = false;
-
             var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
+
             scope.Ui.RemoveStaticWindow(handle);
 
             return Transition.Replace(new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>()));

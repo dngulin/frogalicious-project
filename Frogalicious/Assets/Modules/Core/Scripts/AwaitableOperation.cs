@@ -18,6 +18,8 @@ namespace Frog.Core
             return _acs.Awaitable;
         }
 
+        public bool IsRunning => _ctr != null;
+
         public bool TryEnd(T result)
         {
             if (!TryUnregisterCancellation())
@@ -68,6 +70,8 @@ namespace Frog.Core
             _acs.Reset();
             return _acs.Awaitable;
         }
+
+        public bool IsRunning => _ctr != null;
 
         public bool TryEnd()
         {
