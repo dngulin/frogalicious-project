@@ -10,12 +10,22 @@ namespace Frog.Level.Simulation
 {
     public static class LevelSimulation
     {
-        public static void SetupInitialState(ref LevelState state, LevelData data)
+        public static void SetupInitialState(ref SimState state, LevelData data)
         {
+            state.TimeLine = new TimeLine(32);
+
+            ref var indices = ref state.Indices;
+
+            indices.Buttons = RefList.WithCapacity<BoardPoint>(8);
+            indices.Spikes = RefList.WithCapacity<BoardPoint>(8);
+            indices.Springs = RefList.WithCapacity<BoardPoint>(8);
+
+            ref var level = ref state.Level;
+
             var dataGrid = data.AsBoardGrid();
-            state.Cells.Array = RefList.WithDefaultItems<CellState>(data.Cells.Length);
-            state.Cells.Width = dataGrid.Width;
-            state.Cells.Height = dataGrid.Height;
+            level.Cells.Array = RefList.WithDefaultItems<CellState>(data.Cells.Length);
+            level.Cells.Width = dataGrid.Width;
+            level.Cells.Height = dataGrid.Height;
 
             ushort nextEntityId = 1; // Do not assign a zero id to anything
 
@@ -24,7 +34,7 @@ namespace Frog.Level.Simulation
             {
                 var point = new BoardPoint(x, y);
                 ref readonly var cellData = ref dataGrid.RefAt(point);
-                ref var cell = ref state.Cells.RefAt(point);
+                ref var cell = ref level.Cells.RefAt(point);
 
                 cell.Object.Id = cellData.Object.Type == BoardObjectType.Nothing ? default : nextEntityId++;
                 cell.Tile.Id = cellData.Tile.Type == BoardTileType.Nothing ? default : nextEntityId++;
@@ -32,8 +42,8 @@ namespace Frog.Level.Simulation
                 cell.Object.Type = cellData.Object.Type;
                 if (cell.Object.Type == BoardObjectType.Character)
                 {
-                    state.Character.IsAlive = true;
-                    state.Character.Position = point;
+                    level.Character.IsAlive = true;
+                    level.Character.Position = point;
                 }
 
                 cell.Tile.Type = cellData.Tile.Type;
@@ -42,15 +52,18 @@ namespace Frog.Level.Simulation
                     case BoardTileType.Button:
                         ref var button = ref cell.Tile.State.AsButton;
                         button.Color = cellData.Tile.Color;
+                        indices.Buttons.RefAdd() = point;
                         break;
                     case BoardTileType.Spikes:
                         ref var spikes = ref cell.Tile.State.AsSpikes;
                         spikes.IsActive = true;
                         spikes.Color = cellData.Tile.Color;
+                        indices.Spikes.RefAdd() = point;
                         break;
                     case BoardTileType.Spring:
                         ref var spring = ref cell.Tile.State.AsSpring;
                         spring.Direction = cellData.Tile.Direction;
+                        indices.Springs.RefAdd() = point;
                         break;
                 }
             }
@@ -217,15 +230,13 @@ namespace Frog.Level.Simulation
 
         private static void UpdateButtons(ref SimState state)
         {
-            for (var y = 0; y < state.Level.Cells.Height; y++)
-            for (var x = 0; x < state.Level.Cells.Width; x++)
+            for (var i = 0; i < state.Indices.Buttons.Count(); i++)
             {
-                var point = new BoardPoint(x, y);
-                ref readonly var cell = ref state.Level.Cells.RefReadonlyAt(point);
-                if (cell.Tile.Type != BoardTileType.Button)
-                    continue;
+                var point = state.Indices.Buttons.RefAt(i);
+                ref readonly var tile = ref state.Level.Cells.RefReadonlyAt(point).Tile;
 
-                ref readonly var button = ref cell.Tile.State.AsButton;
+                Debug.Assert(tile.Type == BoardTileType.Button);
+                ref readonly var button = ref tile.State.AsButton;
 
                 UpdateSpikes(ref state, !button.IsPressed, button.Color);
             }
@@ -233,23 +244,19 @@ namespace Frog.Level.Simulation
 
         private static void UpdateSpikes(ref SimState state, bool isActive, BoardColorGroup color)
         {
-            for (var y = 0; y < state.Level.Cells.Height; y++)
-            for (var x = 0; x < state.Level.Cells.Width; x++)
+            for (var i = 0; i < state.Indices.Spikes.Count(); i++)
             {
-                var point = new BoardPoint(x, y);
-                ref var cell = ref state.Level.Cells.RefAt(point);
-                if (cell.Tile.Type != BoardTileType.Spikes)
+                var point = state.Indices.Spikes.RefAt(i);
+                ref var tile = ref state.Level.Cells.RefAt(point).Tile;
+
+                Debug.Assert(tile.Type == BoardTileType.Spikes);
+                ref var spikes = ref tile.State.AsSpikes;
+
+                if (spikes.Color != color || spikes.IsActive == isActive)
                     continue;
 
-                ref var spikes = ref cell.Tile.State.AsSpikes;
-                if (spikes.Color != color)
-                    continue;
-
-                if (spikes.IsActive != isActive)
-                {
-                    spikes.IsActive = isActive;
-                    state.TimeLine.AddFlipFlop(cell.Tile.Id, isActive);
-                }
+                spikes.IsActive = isActive;
+                state.TimeLine.AddFlipFlop(tile.Id, isActive);
             }
         }
 
@@ -269,12 +276,14 @@ namespace Frog.Level.Simulation
         {
             var result = false;
 
-            for (var y = 0; y < state.Level.Cells.Height; y++)
-            for (var x = 0; x < state.Level.Cells.Width; x++)
+            for (var i = 0; i < state.Indices.Springs.Count(); i++)
             {
-                var point = new BoardPoint(x, y);
+                var point = state.Indices.Springs.RefAt(i);
                 ref var cell = ref state.Level.Cells.RefAt(point);
-                if (cell.Tile.Type != BoardTileType.Spring || cell.Object.Type == BoardObjectType.Nothing)
+
+                Debug.Assert(cell.Tile.Type == BoardTileType.Spring);
+
+                if (cell.Object.Type == BoardObjectType.Nothing)
                     continue;
 
                 if (state.TimeLine.IsEntityMovedThisStep(cell.Object.Id))

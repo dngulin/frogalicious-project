@@ -14,8 +14,7 @@ namespace Frog.Level
 
         private LevelController(LevelView view, LevelData data)
         {
-            _state.TimeLine = new TimeLine(32);
-            LevelSimulation.SetupInitialState(ref _state.Level, data);
+            LevelSimulation.SetupInitialState(ref _state, data);
             view.CreateInitialObjects(in _state.Level);
             _view = view;
         }
