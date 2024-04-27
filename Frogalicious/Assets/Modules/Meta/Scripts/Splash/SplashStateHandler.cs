@@ -36,14 +36,14 @@ namespace Frog.Meta.Splash
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
             var handle = scope.Ui.AddStaticWindow(_ui.transform);
+
             _enablePolling = true;
-
             await _poll.ExecuteAsync(ct);
-
             _enablePolling = false;
-            scope.Ui.RemoveStaticWindow(handle);
 
             var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
+            scope.Ui.RemoveStaticWindow(handle);
+
             return Transition.Replace(new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>()));
         }
     }
