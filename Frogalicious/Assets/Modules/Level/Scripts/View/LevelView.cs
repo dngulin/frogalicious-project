@@ -70,7 +70,7 @@ namespace Frog.Level.View
             for (var i = 0; i < timeLineEvents.Count(); i++)
             {
                 ref readonly var evt = ref timeLineEvents.RefReadonlyAt(i);
-                _timeline.Add(new TimelineJob(evt, _objects[evt.EntityId]));
+                _timeline.RefAdd() = new TimelineJob(evt, _objects[evt.EntityId]);
             }
         }
 
