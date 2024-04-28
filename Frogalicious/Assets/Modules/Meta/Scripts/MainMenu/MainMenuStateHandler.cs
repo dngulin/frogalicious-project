@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
@@ -33,21 +34,15 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var windowHandle = scope.Ui.AddStaticWindow(_menu.transform);
-
-            var command = await _uiPoll.ExecuteAsync(ct);
-            switch (command)
+            using (scope.Ui.AddStaticWindow(_menu.transform).AsDisposable(scope.Ui))
             {
-                case MainMenuUi.Command.Play:
-                    scope.Ui.RemoveStaticWindow(windowHandle);
-                    return Transition.Replace(new LevelStateHandler());
-
-                case MainMenuUi.Command.Exit:
-                    scope.Ui.RemoveStaticWindow(windowHandle);
-                    return Transition.Pop();
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+                var command = await _uiPoll.ExecuteAsync(ct);
+                return command switch
+                {
+                    MainMenuUi.Command.Play => Transition.Replace(new LevelStateHandler()),
+                    MainMenuUi.Command.Exit => Transition.Pop(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
             }
         }
     }
