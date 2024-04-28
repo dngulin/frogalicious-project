@@ -61,7 +61,6 @@ namespace Frog.Meta.Level
         {
             var window = UiEntityStatic.Create();
             window.AttachContents(_ui.transform);
-            window.SetVisible(false);
 
             var menuHandle = await scope.Ui.OpenWindow(window, ct);
 

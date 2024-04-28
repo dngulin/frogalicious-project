@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Level.Data;
 using Frog.Level.Ui;
 using Frog.Level.View;
@@ -44,7 +45,10 @@ namespace Frog.Meta.MainMenu
             switch (command)
             {
                 case MainMenuUi.Command.Play:
+                    var splash = await scope.Ui.OpenWindow(UiEntityStatic.Create(), ct);
                     var levelStateHandler = await CreateLevelStateHandler(scope, ct);
+                    UnityEngine.Object.Destroy((await scope.Ui.CloseWindow(splash, ct)).gameObject);
+
                     scope.Ui.RemoveStaticWindow(handle);
                     return Transition.Push(levelStateHandler);
 

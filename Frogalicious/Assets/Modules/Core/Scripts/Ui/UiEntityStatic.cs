@@ -38,13 +38,15 @@ namespace Frog.Core.Ui
             return _acs.Awaitable;
         }
 
-        public static UiEntityStatic Create(Transform parent = null)
+        public static UiEntityStatic Create(bool visible = false, Transform parent = null)
         {
             var go = new GameObject(nameof(UiEntityStatic), typeof(RectTransform));
             go.GetComponent<RectTransform>().SetParentAndExpand(parent);
 
             var entity = go.AddComponent<UiEntityStatic>();
             entity._contentsRoot = go.AddComponent<CanvasGroup>();
+
+            entity.SetVisible(visible);
 
             return entity;
         }
