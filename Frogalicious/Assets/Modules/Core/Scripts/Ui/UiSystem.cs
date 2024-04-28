@@ -54,7 +54,7 @@ namespace Frog.Core.Ui
         {
             var window = await CloseWindow((UiWindowHandle) handle, ct);
             window.DetachContents(out var contents);
-            UnityEngine.Object.Destroy(window);
+            window.DestroyGameObject();
 
             return contents;
         }
@@ -78,7 +78,7 @@ namespace Frog.Core.Ui
             {
                 var window = stackAccessor.RemoveItemAssertive((uint)handle);
                 window.DetachContents(out var contents);
-                UnityEngine.Object.Destroy(window.gameObject);
+                window.DestroyGameObject();
 
                 return contents;
             }

@@ -34,6 +34,7 @@ namespace Frog.Meta.Level
         public override void Dispose(in RootScope scope)
         {
             _view.Dispose();
+            _ui.DestroyGameObject();
         }
 
         public override void Tick(in RootScope scope, float dt)
@@ -67,7 +68,9 @@ namespace Frog.Meta.Level
             await _gameplay.ExecuteAsync(ct);
 
             await scope.Ui.CloseWindow(menuHandle, ct);
-            Object.Destroy(window.gameObject);
+
+            window.DetachContents(out _);
+            window.DestroyGameObject();
 
             return Transition.Pop();
         }

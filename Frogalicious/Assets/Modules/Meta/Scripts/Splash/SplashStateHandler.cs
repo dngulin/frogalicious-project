@@ -20,9 +20,7 @@ namespace Frog.Meta.Splash
         public override void Dispose(in RootScope scope)
         {
             _poll.TryCancel();
-
-            if (_ui != null)
-                Object.Destroy(_ui.gameObject);
+            _ui.DestroyGameObject();
         }
 
         public override void Tick(in RootScope scope, float dt)

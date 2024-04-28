@@ -8,26 +8,22 @@ namespace Frog.Core.Ui
 {
     public readonly struct UiStack : IDisposable
     {
-        private readonly GameObject _root;
+        private readonly Transform _root;
         private readonly List<(uint, UiEntity)> _items;
 
         public UiStack(string name, Transform parent, int capacity = 16)
         {
             Debug.Assert(parent.GetComponent<Canvas>() != null);
 
-            _root = new GameObject(name, typeof(RectTransform));
+            _root = new GameObject(name, typeof(RectTransform)).transform;
             _root.GetComponent<RectTransform>().SetParentAndExpand(parent);
 
             _items = new List<(uint, UiEntity)>(capacity);
         }
 
-        public void Dispose()
-        {
-            if (_root != null)
-                UnityEngine.Object.Destroy(_root);
-        }
+        public void Dispose() => _root.DestroyGameObject();
 
-        public UiStackAccessor CreateAccessor() => new UiStackAccessor(_root.transform, _items);
+        public UiStackAccessor CreateAccessor() => new UiStackAccessor(_root, _items);
     }
 
     public readonly struct UiStackAccessor : IDisposable

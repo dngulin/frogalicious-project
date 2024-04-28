@@ -25,8 +25,7 @@ namespace Frog.Meta.MainMenu
         public override void Dispose(in RootScope scope)
         {
             _uiPoll.Dispose();
-            if (_menu != null)
-                UnityEngine.Object.Destroy(_menu.gameObject);
+            _menu.DestroyGameObject();
         }
 
         public override void Tick(in RootScope scope, float dt)
@@ -47,7 +46,7 @@ namespace Frog.Meta.MainMenu
                 case MainMenuUi.Command.Play:
                     var splash = await scope.Ui.OpenWindow(UiEntityStatic.Create(), ct);
                     var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                    UnityEngine.Object.Destroy((await scope.Ui.CloseWindow(splash, ct)).gameObject);
+                    (await scope.Ui.CloseWindow(splash, ct)).DestroyGameObject();
 
                     scope.Ui.RemoveStaticWindow(handle);
                     return Transition.Push(levelStateHandler);

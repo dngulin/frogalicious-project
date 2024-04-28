@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Frog.Collections;
+using Frog.Core;
 using Frog.Level.Data;
 using Frog.Level.Primitives;
 using Frog.Level.Simulation;
 using Frog.Level.State;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Frog.Level.View
 {
@@ -54,11 +54,7 @@ namespace Frog.Level.View
             }
         }
 
-        public void Dispose()
-        {
-            if (_root != null)
-                Object.Destroy(_root.gameObject);
-        }
+        public void Dispose() => _root.DestroyGameObject();
 
         private float _timelinePos;
         private RefList<TimelineJob> _timeline = RefList.WithCapacity<TimelineJob>(32);
