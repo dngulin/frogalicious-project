@@ -1,5 +1,6 @@
 using Frog.Collections;
 using Frog.Level.Primitives;
+using UnityEditor.PackageManager;
 
 namespace Frog.Level.Simulation
 {
@@ -29,35 +30,23 @@ namespace Frog.Level.Simulation
     {
         public static void AddMove(this ref TimeLine timeline, ushort entityId, BoardPoint from, BoardPoint to)
         {
-            timeline.Events.Add(new TimeLineEvent
-            {
-                Type = TimeLineEventType.Move,
-                Step = timeline.Step,
-                EntityId = entityId,
-                Args = { AsMove = (from, to) },
-            });
+            timeline.Events
+                .RefAdd()
+                .WithEventInfo(TimeLineEventType.Move, timeline.Step, entityId)
+                .WithMoveData(from, to);
         }
 
         public static void AddFlipFlop(this ref TimeLine timeline, ushort entityId, bool state)
         {
-            timeline.Events.Add(new TimeLineEvent
-            {
-                Type = TimeLineEventType.FlipFlop,
-                Step = timeline.Step,
-                EntityId = entityId,
-                Args = { AsFlipFlopState = state },
-            });
+            timeline.Events
+                .RefAdd()
+                .WithEventInfo(TimeLineEventType.FlipFlop, timeline.Step, entityId)
+                .WithFlipFlopState(state);
         }
 
         public static void AddDisappear(this ref TimeLine timeline, ushort entityId)
         {
-            timeline.Events.Add(new TimeLineEvent
-            {
-                Type = TimeLineEventType.Disappear,
-                Step = timeline.Step,
-                EntityId = entityId,
-                Args = default,
-            });
+            timeline.Events.RefAdd().WithEventInfo(TimeLineEventType.Disappear, timeline.Step, entityId);
         }
     }
 
