@@ -25,7 +25,8 @@ namespace Frog.Meta.MainMenu
         public override void Dispose(in RootScope scope)
         {
             _uiPoll.Dispose();
-            UnityEngine.Object.Destroy(_menu);
+            if (_menu != null)
+                UnityEngine.Object.Destroy(_menu.gameObject);
         }
 
         public override void Tick(in RootScope scope, float dt)

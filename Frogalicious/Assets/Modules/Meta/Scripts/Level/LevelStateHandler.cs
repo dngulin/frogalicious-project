@@ -68,7 +68,7 @@ namespace Frog.Meta.Level
             await _gameplay.ExecuteAsync(ct);
 
             await scope.Ui.CloseWindow(menuHandle, ct);
-            Object.Destroy(window);
+            Object.Destroy(window.gameObject);
 
             return Transition.Pop();
         }

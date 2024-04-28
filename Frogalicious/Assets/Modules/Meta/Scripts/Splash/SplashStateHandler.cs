@@ -23,7 +23,7 @@ namespace Frog.Meta.Splash
             _poll.TryCancel();
 
             if (_ui != null)
-                Object.Destroy(_ui);
+                Object.Destroy(_ui.gameObject);
         }
 
         public override void Tick(in RootScope scope, float dt)

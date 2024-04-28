@@ -78,7 +78,7 @@ namespace Frog.Core.Ui
             {
                 var window = stackAccessor.RemoveItemAssertive((uint)handle);
                 window.DetachContents(out var contents);
-                UnityEngine.Object.Destroy(window);
+                UnityEngine.Object.Destroy(window.gameObject);
 
                 return contents;
             }
