@@ -2,9 +2,13 @@ using System;
 using System.Threading;
 using Frog.Core;
 using Frog.Core.Ui;
+using Frog.Level.Data;
+using Frog.Level.Ui;
+using Frog.Level.View;
 using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Frog.Meta.MainMenu
 {
@@ -37,13 +41,33 @@ namespace Frog.Meta.MainMenu
             using (scope.Ui.AddStaticWindow(_menu.transform).AsDisposable(scope.Ui))
             {
                 var command = await _uiPoll.ExecuteAsync(ct);
-                return command switch
+                switch (command)
                 {
-                    MainMenuUi.Command.Play => Transition.Replace(new LevelStateHandler()),
-                    MainMenuUi.Command.Exit => Transition.Pop(),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+                    case MainMenuUi.Command.Play:
+                        var levelStateHandler = await CreateLevelStateHandler(scope, ct);
+                        return Transition.Push(levelStateHandler);
+
+                    case MainMenuUi.Command.Exit:
+                        return Transition.Pop();
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+        }
+
+        private static async Awaitable<LevelStateHandler> CreateLevelStateHandler(RootScope scope, CancellationToken ct)
+        {
+            var data = await Addressables.LoadAssetAsync<LevelData>("Assets/Levels/Castle1.asset").Task;
+            ct.ThrowIfCancellationRequested();
+
+            var viewConfig = await Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset").Task;
+            ct.ThrowIfCancellationRequested();
+
+            var panelPrefab = await Addressables.LoadAssetAsync<GameObject>("Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab").Task;
+            ct.ThrowIfCancellationRequested();
+
+            return new LevelStateHandler(scope, data, viewConfig, panelPrefab.GetComponent<LevelPanelUi>());
         }
     }
 }

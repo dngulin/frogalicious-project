@@ -7,6 +7,7 @@
         "Unity.ResourceManager",
         "Frog.StateTracker",
         "Frog.Core",
-        "Frog.Level"
+        "Frog.Level",
+        "Frog.Collections"
     ]
 }
