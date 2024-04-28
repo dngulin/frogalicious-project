@@ -28,7 +28,7 @@ namespace Frog.Core.Ui
             {
                 var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
                 await window.Show(ct);
-                return (UiWindowHandle)handle;
+                return (UiWindowHandle) handle;
             }
         }
 
@@ -59,29 +59,41 @@ namespace Frog.Core.Ui
             return contents;
         }
 
+        public UiWindowHandle AddWindow(UiEntity window)
+        {
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
+                window.SetVisible(true);
+                return (UiWindowHandle) handle;
+            }
+        }
+
+        public UiEntity RemoveWindow(UiWindowHandle handle)
+        {
+            using (var stackAccessor = _windowsStack.CreateAccessor())
+            {
+                var window = stackAccessor.RemoveItemAssertive((uint)handle);
+                window.SetVisible(false);
+                return window;
+            }
+        }
+
         public UiStaticWindowHandle AddStaticWindow(Transform contents)
         {
             var window = UiEntityStatic.Create();
             window.AttachContents(contents);
 
-            using (var stackAccessor = _windowsStack.CreateAccessor())
-            {
-                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
-                window.SetVisible(true);
-                return (UiStaticWindowHandle)handle;
-            }
+            return (UiStaticWindowHandle) AddWindow(window);
         }
 
         public Transform RemoveStaticWindow(UiStaticWindowHandle handle)
         {
-            using (var stackAccessor = _windowsStack.CreateAccessor())
-            {
-                var window = stackAccessor.RemoveItemAssertive((uint)handle);
-                window.DetachContents(out var contents);
-                window.DestroyGameObject();
+            var window = RemoveWindow((UiWindowHandle) handle);
+            window.DetachContents(out var contents);
+            window.DestroyGameObject();
 
-                return contents;
-            }
+            return contents;
         }
     }
 }

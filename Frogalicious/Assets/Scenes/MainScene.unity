@@ -322,6 +322,7 @@ MonoBehaviour:
   _canvas: {fileID: 2006956077}
   _camera: {fileID: 374251460}
   _splashUiPrefab: {fileID: 4688201266120539548, guid: 42fa83839ce3c6c7c8a0a29311cc5ddb, type: 3}
+  _loadingPrefab: {fileID: 3264561088110626483, guid: ba5d30d6e30b9781180b939f2cd47d24, type: 3}
 --- !u!4 &1034679408
 Transform:
   m_ObjectHideFlags: 0

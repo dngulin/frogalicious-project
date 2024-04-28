@@ -12,6 +12,7 @@ namespace Frog.Meta
         [SerializeField] private Camera _camera;
 
         [SerializeField] private SplashUi _splashUiPrefab;
+        [SerializeField] private LoadingUi _loadingPrefab;
 
         private AsyncStateTracker<RootScope> _stateTracker;
         private RootScope _scope;
@@ -22,6 +23,7 @@ namespace Frog.Meta
             {
                 scope.Camera = _camera;
                 scope.Ui = new UiSystem(_canvas);
+                scope.LoadingUi = Instantiate(_loadingPrefab);
             }
 
             _scope = scope;

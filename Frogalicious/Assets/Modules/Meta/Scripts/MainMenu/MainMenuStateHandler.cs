@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Frog.Core;
-using Frog.Core.Ui;
 using Frog.Level.Data;
 using Frog.Level.Ui;
 using Frog.Level.View;
@@ -38,21 +37,21 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var handle = scope.Ui.AddStaticWindow(_menu.transform);
+            var menuHandle = scope.Ui.AddStaticWindow(_menu.transform);
 
             var command = await _uiPoll.ExecuteAsync(ct);
             switch (command)
             {
                 case MainMenuUi.Command.Play:
-                    var splash = await scope.Ui.OpenWindow(UiEntityStatic.Create(), ct);
+                    var splashHandle = scope.Ui.AddWindow(scope.LoadingUi);
                     var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                    (await scope.Ui.CloseWindow(splash, ct)).DestroyGameObject();
+                    scope.Ui.RemoveWindow(splashHandle);
 
-                    scope.Ui.RemoveStaticWindow(handle);
+                    scope.Ui.RemoveStaticWindow(menuHandle);
                     return Transition.Push(levelStateHandler);
 
                 case MainMenuUi.Command.Exit:
-                    scope.Ui.RemoveStaticWindow(handle);
+                    scope.Ui.RemoveStaticWindow(menuHandle);
                     return Transition.Pop();
 
                 default:

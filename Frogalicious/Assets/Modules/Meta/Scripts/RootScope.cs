@@ -1,4 +1,5 @@
 using System;
+using Frog.Core;
 using Frog.Core.Ui;
 using UnityEngine;
 
@@ -8,11 +9,13 @@ namespace Frog.Meta
     {
         public Camera Camera;
         public UiSystem Ui;
+        public LoadingUi LoadingUi;
 
 
         public void Dispose()
         {
             Ui.Dispose();
+            LoadingUi.DestroyGameObject();
         }
     }
 }
