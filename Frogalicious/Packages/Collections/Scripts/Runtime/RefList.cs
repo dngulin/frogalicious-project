@@ -18,25 +18,25 @@ namespace Frog.Collections
 
     public static class RefList
     {
-        [NoCopyInstanceConstructor]
+        [NoCopyReturn]
         public static RefList<T> Empty<T>() where T : struct
         {
             return new RefList<T>(Array.Empty<T>(), 0);
         }
 
-        [NoCopyInstanceConstructor]
+        [NoCopyReturn]
         public static RefList<T> WithCapacity<T>(int capacity) where T : struct
         {
             return new RefList<T>(new T[capacity], 0);
         }
 
-        [NoCopyInstanceConstructor]
+        [NoCopyReturn]
         public static RefList<T> WithDefaultItems<T>(int count) where T : struct
         {
             return new RefList<T>(new T[count], count);
         }
 
-        [NoCopyInstanceConstructor]
+        [NoCopyReturn]
         public static RefList<T> Move<T>(ref RefList<T> other) where T : struct
         {
             var list = new RefList<T>(other.ItemArray, other.ItemCount);
@@ -44,7 +44,7 @@ namespace Frog.Collections
             return list;
         }
 
-        [NoCopyInstanceConstructor]
+        [NoCopyReturn]
         public static RefList<T> Copy<T>(in RefList<T> other) where T : struct
         {
             if (other.ItemArray == null)

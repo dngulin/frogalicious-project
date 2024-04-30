@@ -3,7 +3,7 @@ using System;
 namespace Frog.Collections
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class NoCopyInstanceConstructorAttribute : Attribute
+    public class NoCopyReturnAttribute : Attribute
     {
 
     }
