@@ -35,6 +35,25 @@ namespace Frog.Collections
         {
             return new RefList<T>(new T[count], count);
         }
+
+        [NoCopyInstanceConstructor]
+        public static RefList<T> Move<T>(ref RefList<T> other) where T : struct
+        {
+            var list = new RefList<T>(other.ItemArray, other.ItemCount);
+            other = default;
+            return list;
+        }
+
+        [NoCopyInstanceConstructor]
+        public static RefList<T> Copy<T>(in RefList<T> other) where T : struct
+        {
+            if (other.ItemArray == null)
+                return default;
+
+            var items = new T[other.ItemArray.Length];
+            Array.Copy(other.ItemArray, items, other.ItemCount);
+            return new RefList<T>(other.ItemArray, other.ItemCount);
+        }
     }
 
     public static class RefListImpl
