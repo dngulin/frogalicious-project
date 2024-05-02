@@ -37,21 +37,21 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var menuHandle = scope.Ui.AddStaticWindow(_menu.transform);
+            var menuHandle = scope.Ui.ShowFullscreenWindow(_menu.transform);
 
             var command = await _uiPoll.ExecuteAsync(ct);
             switch (command)
             {
                 case MainMenuUi.Command.Play:
-                    var splashHandle = scope.Ui.AddWindow(scope.LoadingUi);
+                    var splashHandle = scope.Ui.ShowWindow(scope.LoadingUi);
                     var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                    scope.Ui.RemoveWindow(splashHandle);
+                    scope.Ui.HideWindow(splashHandle);
 
-                    scope.Ui.RemoveStaticWindow(menuHandle);
+                    scope.Ui.HideFullscreenWindow(menuHandle);
                     return Transition.Push(levelStateHandler);
 
                 case MainMenuUi.Command.Exit:
-                    scope.Ui.RemoveStaticWindow(menuHandle);
+                    scope.Ui.HideFullscreenWindow(menuHandle);
                     return Transition.Pop();
 
                 default:
