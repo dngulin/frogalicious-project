@@ -20,56 +20,39 @@ namespace Frog.Core.Ui
             _windowsStack.Dispose();
         }
 
-        public async Awaitable<UiWindowHandle> OpenWindow(UiEntity window, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntityHandle> OpenWindow(AnimatedUiEntity window, CancellationToken ct)
         {
-            Debug.Assert(window.State == UiEntityState.Hidden);
+            Debug.Assert(window.State == AnimatedUiEntityState.Hidden);
 
             using (var stackAccessor = _windowsStack.CreateAccessor())
             {
                 var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
                 await window.Show(ct);
-                return (UiWindowHandle) handle;
+                return (AnimatedUiEntityHandle) handle;
             }
         }
 
-        public async Awaitable<UiEntity> CloseWindow(UiWindowHandle handle, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntity> CloseWindow(AnimatedUiEntityHandle handle, CancellationToken ct)
         {
             using (var stackAccessor = _windowsStack.CreateAccessor())
             {
-                var window = stackAccessor.RemoveItemAssertive((uint)handle);
+                var window = (AnimatedUiEntity) stackAccessor.RemoveItemAssertive((uint)handle);
                 await window.Hide(ct);
                 return window;
             }
         }
 
-        public async Awaitable<UiDialogWindowHandle> OpenDialogWindow(Transform contents, CancellationToken ct)
-        {
-            var window = UiEntityStatic.Create();
-            window.AttachContents(contents);
-
-            return (UiDialogWindowHandle) await OpenWindow(window, ct);
-        }
-
-        public async Awaitable<Transform> CloseDialogWindow(UiDialogWindowHandle handle, CancellationToken ct)
-        {
-            var window = await CloseWindow((UiWindowHandle) handle, ct);
-            window.DetachContents(out var contents);
-            window.DestroyGameObject();
-
-            return contents;
-        }
-
-        public UiWindowHandle AddWindow(UiEntity window)
+        public UiEntityHandle AddWindow(UiEntity window)
         {
             using (var stackAccessor = _windowsStack.CreateAccessor())
             {
                 var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
                 window.SetVisible(true);
-                return (UiWindowHandle) handle;
+                return (UiEntityHandle) handle;
             }
         }
 
-        public UiEntity RemoveWindow(UiWindowHandle handle)
+        public UiEntity RemoveWindow(UiEntityHandle handle)
         {
             using (var stackAccessor = _windowsStack.CreateAccessor())
             {
@@ -79,17 +62,17 @@ namespace Frog.Core.Ui
             }
         }
 
-        public UiStaticWindowHandle AddStaticWindow(Transform contents)
+        public UiEntityHandle AddStaticWindow(Transform contents)
         {
             var window = UiEntityStatic.Create();
             window.AttachContents(contents);
 
-            return (UiStaticWindowHandle) AddWindow(window);
+            return AddWindow(window);
         }
 
-        public Transform RemoveStaticWindow(UiStaticWindowHandle handle)
+        public Transform RemoveStaticWindow(UiEntityHandle handle)
         {
-            var window = RemoveWindow((UiWindowHandle) handle);
+            var window = RemoveWindow(handle);
             window.DetachContents(out var contents);
             window.DestroyGameObject();
 

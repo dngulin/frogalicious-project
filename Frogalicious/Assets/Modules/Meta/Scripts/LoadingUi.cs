@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using Frog.Core.Ui;
 using UnityEngine;
 
@@ -17,11 +15,6 @@ namespace Frog.Meta
         private float _maxTime;
 
         public override CanvasGroup ContentsRoot => _contentsRoot;
-
-        public override Awaitable Show(CancellationToken ct) => throw new NotSupportedException();
-        public override Awaitable Hide(CancellationToken ct) => throw new NotSupportedException();
-
-        public override UiEntityState State => gameObject.activeSelf ? UiEntityState.Visible : UiEntityState.Hidden;
 
         public override void SetVisible(bool visible)
         {

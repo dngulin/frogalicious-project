@@ -63,11 +63,11 @@ namespace Frog.Meta.Level
             var window = UiEntityStatic.Create();
             window.AttachContents(_ui.transform);
 
-            var menuHandle = await scope.Ui.OpenWindow(window, ct);
+            var menuHandle = scope.Ui.AddWindow(window);
 
             await _gameplay.ExecuteAsync(ct);
 
-            await scope.Ui.CloseWindow(menuHandle, ct);
+            scope.Ui.RemoveWindow(menuHandle);
 
             window.DetachContents(out _);
             window.DestroyGameObject();

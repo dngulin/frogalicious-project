@@ -97,7 +97,6 @@ namespace Frog.Core.Ui
         {
             var itemFound = stackAccessor.TryRemoveItem(handle, out var item);
             Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
-            Debug.Assert(item.State == UiEntityState.Visible);
 
             return item;
         }
