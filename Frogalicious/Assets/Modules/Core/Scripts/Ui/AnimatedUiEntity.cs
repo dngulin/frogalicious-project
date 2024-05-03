@@ -6,9 +6,9 @@ namespace Frog.Core.Ui
     public enum AnimatedUiEntityState
     {
         Appearing,
-        Visible,
+        Appeared,
         Disappearing,
-        Hidden,
+        Disappeared,
     }
 
     public abstract class AnimatedUiEntity : UiEntity
