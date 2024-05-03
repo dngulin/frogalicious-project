@@ -17,24 +17,32 @@ namespace Frog.Core.Ui
             _windows.Dispose();
         }
 
-        public UiEntityHandle ShowWindow(UiEntity entity) => _windows.ShowImmediate(entity);
+        public WindowId ShowWindow(UiEntity entity) => (WindowId)_windows.ShowImmediate(entity);
 
-        public UiEntity HideWindow(UiEntityHandle handle, Transform parent) => _windows.HideImmediate(handle, parent);
+        public UiEntity HideWindow(WindowId id, Transform parent) => _windows.HideImmediate((UiEntityId)id, parent);
 
 
-        public UiEntityHandle ShowFullscreenWindow(Transform contents)
+        public FullScreenWindowId ShowFullscreenWindow(Transform contents)
         {
             var window = UiEntityStatic.Create();
             window.AttachContents(contents);
-            return _windows.ShowImmediate(window);
+            return (FullScreenWindowId)_windows.ShowImmediate(window);
         }
 
-        public Transform HideFullscreenWindow(UiEntityHandle handle, Transform parent)
+        public Transform HideFullscreenWindow(FullScreenWindowId id, Transform parent)
         {
-            var window = _windows.HideImmediate(handle, parent);
+            var window = _windows.HideImmediate((UiEntityId)id, parent);
             window.DetachContents(out var contents);
             window.DestroyGameObject();
             return contents;
         }
+    }
+
+    public enum WindowId : uint
+    {
+    }
+
+    public enum FullScreenWindowId : uint
+    {
     }
 }

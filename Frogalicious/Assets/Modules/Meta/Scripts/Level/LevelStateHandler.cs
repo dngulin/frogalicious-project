@@ -59,9 +59,9 @@ namespace Frog.Meta.Level
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var menuHandle = scope.Ui.ShowFullscreenWindow(_ui.transform);
+            var menuWindowId = scope.Ui.ShowFullscreenWindow(_ui.transform);
             await _gameplay.ExecuteAsync(ct);
-            scope.Ui.HideFullscreenWindow(menuHandle, null);
+            scope.Ui.HideFullscreenWindow(menuWindowId, null);
 
             return Transition.Pop();
         }

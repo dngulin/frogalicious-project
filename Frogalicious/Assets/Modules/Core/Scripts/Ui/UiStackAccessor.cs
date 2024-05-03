@@ -9,12 +9,12 @@ namespace Frog.Core.Ui
     public readonly struct UiStackAccessor : IDisposable
     {
         private readonly Transform _root;
-        private readonly List<(uint, UiEntity)> _entities;
+        private readonly List<(uint, UiEntity)> _items;
 
-        public UiStackAccessor(Transform root, List<(uint, UiEntity)> entities)
+        public UiStackAccessor(Transform root, List<(uint, UiEntity)> items)
         {
             _root = root;
-            _entities = entities;
+            _items = items;
 
             SetTopWindowInteractable(false);
             CheckConsistency();
@@ -30,52 +30,52 @@ namespace Frog.Core.Ui
         private void CheckConsistency()
         {
             Debug.Assert(
-                _root.childCount == _entities.Count,
+                _root.childCount == _items.Count,
                 "Ui stack is in an inconsistent state (items count)"
             );
         }
 
         private void SetTopWindowInteractable(bool interactable)
         {
-            if (_entities.Count == 0)
+            if (_items.Count == 0)
                 return;
 
-            var (_, window) = _entities[^1];
-            window.SetInteractable(interactable);
+            var (_, entity) = _items[^1];
+            entity.SetInteractable(interactable);
         }
 
-        public uint AddItem(UiEntity window, ref uint nextEntityId)
+        public void AddItem(UiEntity entity, uint entityId)
         {
-            var handle = nextEntityId++;
-            _entities.Add((handle, window));
-            window.GetComponent<RectTransform>().SetParentAndExpand(_root);
-            return handle;
+            entity.GetComponent<RectTransform>().SetParentAndExpand(_root);
+
+            var item = (entityId, entity);
+            _items.Add(item);
         }
 
-        public bool TryRemoveItem(uint handle, out UiEntity window, Transform parent)
+        public bool TryRemoveItem(uint entityId, out UiEntity result, Transform parent)
         {
-            for (var i = 0; i < _entities.Count; i++)
+            for (var i = 0; i < _items.Count; i++)
             {
-                var (h, w) = _entities[i];
-                if (h != handle)
+                var (id, entity) = _items[i];
+                if (id != entityId)
                     continue;
 
-                _entities.RemoveAt(i);
-                window = w;
-                window.transform.SetParent(parent, false);
+                _items.RemoveAt(i);
+                result = entity;
+                result.transform.SetParent(parent, false);
                 return true;
             }
 
-            window = default;
+            result = default;
             return false;
         }
     }
 
     public static class UiStackAccessorExtensions
     {
-        public static UiEntity RemoveItemAssertive(in this UiStackAccessor stackAccessor, uint handle, Transform parent)
+        public static UiEntity RemoveItemAssertive(in this UiStackAccessor accessor, uint handle, Transform parent)
         {
-            var itemFound = stackAccessor.TryRemoveItem(handle, out var item, parent);
+            var itemFound = accessor.TryRemoveItem(handle, out var item, parent);
             Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
 
             return item;

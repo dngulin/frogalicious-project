@@ -26,46 +26,56 @@ namespace Frog.Core.Ui
 
         public void Dispose() => _root.DestroyGameObject();
 
-        public async Awaitable<AnimatedUiEntityHandle> Show(AnimatedUiEntity window, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
-            Debug.Assert(window.State == AnimatedUiEntityState.Hidden);
+            Debug.Assert(entity.State == AnimatedUiEntityState.Hidden);
 
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
-                await window.Show(ct);
-                return (AnimatedUiEntityHandle) handle;
+                var entityId = _nextUiEntityId++;
+                stackAccessor.AddItem(entity, entityId);
+                await entity.Show(ct);
+                return (AnimatedUiEntityId)entityId;
             }
         }
 
-        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityHandle handle, Transform parent, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = (AnimatedUiEntity) stackAccessor.RemoveItemAssertive((uint)handle, parent);
+                var window = (AnimatedUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
                 await window.Hide(ct);
                 return window;
             }
         }
 
-        public UiEntityHandle ShowImmediate(UiEntity window)
+        public UiEntityId ShowImmediate(UiEntity entity)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var handle = stackAccessor.AddItem(window, ref _nextUiEntityId);
-                window.SetVisible(true);
-                return (UiEntityHandle) handle;
+                var entityId = _nextUiEntityId++;
+                stackAccessor.AddItem(entity, entityId);
+                entity.SetVisible(true);
+                return (UiEntityId)entityId;
             }
         }
 
-        public UiEntity HideImmediate(UiEntityHandle handle, Transform parent)
+        public UiEntity HideImmediate(UiEntityId id, Transform parent)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = stackAccessor.RemoveItemAssertive((uint)handle, parent);
+                var window = stackAccessor.RemoveItemAssertive((uint)id, parent);
                 window.SetVisible(false);
                 return window;
             }
         }
+    }
+
+    public enum UiEntityId : uint
+    {
+    }
+
+    public enum AnimatedUiEntityId : uint
+    {
     }
 }

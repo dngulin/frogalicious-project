@@ -31,13 +31,13 @@ namespace Frog.Meta.Splash
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var handle = scope.Ui.ShowFullscreenWindow(_ui.transform);
+            var windowId = scope.Ui.ShowFullscreenWindow(_ui.transform);
 
             await _poll.ExecuteAsync(ct);
             var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
             var stateHandler = new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>());
 
-            scope.Ui.HideFullscreenWindow(handle, null);
+            scope.Ui.HideFullscreenWindow(windowId, null);
 
             return Transition.Replace(stateHandler);
         }
