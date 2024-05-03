@@ -16,11 +16,12 @@ namespace Frog.Core.Ui
             contents.SetParent(entity.ContentsRoot.transform, false);
         }
 
-        public static void DetachContents(this UiEntity entity, out Transform contents)
+        public static Transform DetachContents(this UiEntity entity, Transform contentsParent)
         {
             Debug.Assert(entity.ContentsRoot.transform.childCount == 1);
-            contents = entity.ContentsRoot.transform.GetChild(0);
-            contents.SetParent(null, false);
+            var contents = entity.ContentsRoot.transform.GetChild(0);
+            contents.SetParent(contentsParent, false);
+            return contents;
         }
 
         public static void SetInteractable(this UiEntity entity, bool interactive)

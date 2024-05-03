@@ -29,10 +29,10 @@ namespace Frog.Core.Ui
             return (FullScreenWindowId)_windows.ShowImmediate(window);
         }
 
-        public Transform HideFullscreenWindow(FullScreenWindowId id, Transform parent)
+        public Transform HideFullscreenWindow(FullScreenWindowId id, Transform contentsParent)
         {
-            var window = _windows.HideImmediate((UiEntityId)id, parent);
-            window.DetachContents(out var contents);
+            var window = _windows.HideImmediate((UiEntityId)id, null);
+            var contents = window.DetachContents(contentsParent);
             window.DestroyGameObject();
             return contents;
         }
