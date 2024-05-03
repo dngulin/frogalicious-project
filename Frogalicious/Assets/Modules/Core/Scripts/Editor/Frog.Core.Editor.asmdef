@@ -1,0 +1,6 @@
+{
+  "name": "Frog.Core.Editor",
+    "rootNamespace": "Frog.Core.Editor",
+    "autoReferenced": false,
+    "references":[ "GUID:e84be365558946e9b66c17d522b06c79" ]
+}

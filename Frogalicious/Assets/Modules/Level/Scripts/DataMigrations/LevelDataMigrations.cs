@@ -7,7 +7,7 @@ namespace Frog.Level.DataMigrations
 {
     public static class LevelDataMigrations
     {
-        [MenuItem("Tools/Update LevelData Format")]
+        [MenuItem("Tools/Migrations/Update LevelData Format", priority = 0)]
         public static void Execute()
         {
             foreach (var path in GetGuids(nameof(LevelData_V1)))
