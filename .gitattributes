@@ -33,3 +33,6 @@
 # Other
 *.[Bb][Ii][Nn]          lfs
 *.[Bb][Yy][Tt][Ee][Ss]  lfs
+
+# Text Mesh Pro
+*SDF.asset             lfs
