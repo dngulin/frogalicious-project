@@ -15,6 +15,8 @@ namespace Frog.Core.Editor
                 Namespace = "Frog.Core.Ui",
                 Type = "AnimatedUiEntityHashes",
                 OutDir = "Assets/Modules/Core/Scripts/Ui",
+                TestNamespace = "Frog.Core.Tests",
+                TestOutDir = "Assets/Modules/Core/Scripts/Tests",
             };
 
             var contents = new GenContents
@@ -30,10 +32,11 @@ namespace Frog.Core.Editor
                 Layers = new[] { "Main" },
             };
 
-            Generate(target, contents);
+            GenerateImpl(target, contents);
+            GenerateTest(target, contents);
         }
 
-        private static void Generate(in GenTarget target, in GenContents contents)
+        private static void GenerateImpl(in GenTarget target, in GenContents contents)
         {
             using var fs = File.Create($"{target.OutDir}/{target.Type}.g.cs");
             using var writer = new StreamWriter(fs);
@@ -77,6 +80,49 @@ namespace Frog.Core.Editor
             writer.WriteLine("}");
         }
 
+        private static void GenerateTest(in GenTarget target, in GenContents contents)
+        {
+            using var fs = File.Create($"{target.TestOutDir}/{target.Type}Tests.g.cs");
+            using var writer = new StreamWriter(fs);
+
+            writer.WriteLine("using NUnit.Framework;");
+            writer.WriteLine("using UnityEngine;");
+            writer.WriteLine($"using {target.Namespace};");
+            writer.WriteLine();
+
+            writer.WriteLine($"namespace {target.TestNamespace}");
+            writer.WriteLine("{");
+            {
+                WriteWithIndent(writer, 4, "[TestFixture]");
+                WriteWithIndent(writer, 4, $"public class {target.Type}Tests");
+                WriteWithIndent(writer, 4, "{");
+                {
+                    WriteWithIndent(writer, 8, "[Test]");
+                    WriteWithIndent(writer, 8, "public void CompareHashes()");
+                    WriteWithIndent(writer, 8, "{");
+                    {
+                        var t = target.Type;
+
+                        foreach (var s in contents.States)
+                        {
+                            var line = $"Assert.That({t}.State.{s} == Animator.StringToHash(\"{s}\"));";
+                            WriteWithIndent(writer, 12, line);
+                        }
+
+                        foreach (var p in contents.Parameters)
+                        {
+                            var line = $"Assert.That({t}.Parameter.{p} == Animator.StringToHash(\"{p}\"));";
+                            WriteWithIndent(writer, 12, line);
+                        }
+                    }
+                    WriteWithIndent(writer, 8, "}");
+                }
+                WriteWithIndent(writer, 4, "}");
+
+            }
+            writer.WriteLine("}");
+        }
+
         private static void WriteWithIndent(StreamWriter w, int indent, string msg)
         {
             w.Write(new string(' ', indent));
@@ -89,6 +135,8 @@ namespace Frog.Core.Editor
         public string Namespace;
         public string Type;
         public string OutDir;
+        public string TestNamespace;
+        public string TestOutDir;
     }
 
     internal struct GenContents
