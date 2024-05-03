@@ -24,7 +24,10 @@ namespace Frog.Meta
                 scope.Camera = _camera;
                 scope.Ui = new UiSystem(_canvas);
                 scope.LoadingUi = Instantiate(_loadingPrefab);
+                scope.GameObjectStash = RootScope.CreateGameObjectStash();
             }
+
+            scope.GameObjectStash.gameObject.SetActive(false);
 
             _scope = scope;
             _stateTracker = new AsyncStateTracker<RootScope>();
@@ -40,7 +43,7 @@ namespace Frog.Meta
         {
             try
             {
-                var initialHandler = new SplashStateHandler(_splashUiPrefab);
+                var initialHandler = new SplashStateHandler(_scope, _splashUiPrefab);
                 await _stateTracker.ExecuteAsync(_scope, initialHandler, destroyCancellationToken);
             }
             catch (OperationCanceledException)

@@ -13,9 +13,9 @@ namespace Frog.Meta.Splash
         private readonly SplashUi _ui;
         private readonly AwaitableOperation _poll = new AwaitableOperation();
 
-        public SplashStateHandler(SplashUi uiPrefab)
+        public SplashStateHandler(in RootScope scope, SplashUi uiPrefab)
         {
-            _ui = Object.Instantiate(uiPrefab);
+            _ui = Object.Instantiate(uiPrefab, scope.GameObjectStash);
         }
 
         public override void Dispose(in RootScope scope)
@@ -36,7 +36,7 @@ namespace Frog.Meta.Splash
             {
                 await _poll.ExecuteAsync(ct);
                 var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
-                var stateHandler = new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>());
+                var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>());
 
                 return Transition.Replace(stateHandler);
             }

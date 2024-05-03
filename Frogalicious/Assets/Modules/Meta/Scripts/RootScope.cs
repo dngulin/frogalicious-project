@@ -10,12 +10,21 @@ namespace Frog.Meta
         public Camera Camera;
         public UiSystem Ui;
         public LoadingUi LoadingUi;
+        public Transform GameObjectStash;
 
 
         public void Dispose()
         {
             Ui.Dispose();
             LoadingUi.DestroyGameObject();
+            GameObjectStash.DestroyGameObject();
+        }
+
+        public static Transform CreateGameObjectStash()
+        {
+            var go = new GameObject("Stash");
+            go.SetActive(false);
+            return go.transform;
         }
     }
 }

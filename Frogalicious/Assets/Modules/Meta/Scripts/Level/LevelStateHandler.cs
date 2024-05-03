@@ -25,7 +25,7 @@ namespace Frog.Meta.Level
         public LevelStateHandler(in RootScope scope, LevelData data, LevelViewConfig viewConfig, LevelPanelUi uiPrefab)
         {
             _view = new LevelView(viewConfig, data, scope.Camera);
-            _ui = Object.Instantiate(uiPrefab);
+            _ui = Object.Instantiate(uiPrefab, scope.GameObjectStash);
 
             LevelSimulation.SetupInitialState(ref _state, data);
             _view.CreateInitialObjects(in _state.Level);

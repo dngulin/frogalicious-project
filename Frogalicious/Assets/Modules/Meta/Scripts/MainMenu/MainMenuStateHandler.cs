@@ -17,9 +17,9 @@ namespace Frog.Meta.MainMenu
         private readonly MainMenuUi _menu;
         private readonly AwaitableOperation<MainMenuUi.Command> _uiPoll = new AwaitableOperation<MainMenuUi.Command>();
 
-        public MainMenuStateHandler(MainMenuUi mainMenuPrefab)
+        public MainMenuStateHandler(in RootScope scope, MainMenuUi mainMenuPrefab)
         {
-            _menu = UnityEngine.Object.Instantiate(mainMenuPrefab);
+            _menu = UnityEngine.Object.Instantiate(mainMenuPrefab, scope.GameObjectStash);
         }
 
         public override void Dispose(in RootScope scope)
