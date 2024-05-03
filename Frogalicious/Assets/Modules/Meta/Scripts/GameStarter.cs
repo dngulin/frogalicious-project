@@ -22,9 +22,8 @@ namespace Frog.Meta
             RootScope scope;
             {
                 scope.Camera = _camera;
-                scope.Ui = new UiSystem(_canvas);
-                scope.LoadingUi = Instantiate(_loadingPrefab);
                 scope.GameObjectStash = RootScope.CreateGameObjectStash();
+                scope.Ui = new UiSystem(_canvas, Instantiate(_loadingPrefab, scope.GameObjectStash));
             }
 
             scope.GameObjectStash.gameObject.SetActive(false);

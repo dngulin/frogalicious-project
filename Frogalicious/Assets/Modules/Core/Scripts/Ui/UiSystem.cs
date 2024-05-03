@@ -7,14 +7,21 @@ namespace Frog.Core.Ui
     {
         private UiStack _windows;
 
-        public UiSystem(Canvas canvas)
+        private readonly Transform _loadingUiParent;
+        private readonly UiEntity _loadingUi;
+        private UiEntityId? _loadingWindowId;
+
+        public UiSystem(Canvas canvas, UiEntity loadingUi)
         {
             _windows = new UiStack(nameof(_windows), canvas.transform);
+            _loadingUiParent = loadingUi.transform.parent;
+            _loadingUi = loadingUi;
         }
 
         public void Dispose()
         {
             _windows.Dispose();
+            _loadingUi.DestroyGameObject();
         }
 
         public WindowId ShowWindow(UiEntity entity) => (WindowId)_windows.ShowImmediate(entity);
@@ -35,6 +42,23 @@ namespace Frog.Core.Ui
             var contents = window.DetachContents(contentsParent);
             window.DestroyGameObject();
             return contents;
+        }
+
+        public void ShowLoading()
+        {
+            if (_loadingWindowId.HasValue)
+                throw new InvalidOperationException();
+
+            _loadingWindowId = _windows.ShowImmediate(_loadingUi);
+        }
+
+        public void HideLoading()
+        {
+            if (!_loadingWindowId.HasValue)
+                throw new InvalidOperationException();
+
+            _windows.HideImmediate(_loadingWindowId.Value, _loadingUiParent);
+            _loadingWindowId = null;
         }
     }
 

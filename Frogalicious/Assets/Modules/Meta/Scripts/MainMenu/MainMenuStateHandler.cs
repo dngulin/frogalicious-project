@@ -44,11 +44,11 @@ namespace Frog.Meta.MainMenu
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        var splashWindowId = scope.Ui.ShowWindow(scope.LoadingUi);
-                        var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                        scope.Ui.HideWindow(splashWindowId, null);
-
-                        return Transition.Push(levelStateHandler);
+                        using (scope.Ui.LoadingWindow())
+                        {
+                            var levelStateHandler = await CreateLevelStateHandler(scope, ct);
+                            return Transition.Push(levelStateHandler);
+                        }
 
                     case MainMenuUi.Command.Exit:
                         return Transition.Pop();
