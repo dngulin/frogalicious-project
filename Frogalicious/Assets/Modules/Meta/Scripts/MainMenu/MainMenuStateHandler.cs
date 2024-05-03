@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Level.Data;
 using Frog.Level.Ui;
 using Frog.Level.View;
@@ -37,25 +38,24 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var menuWindowId = scope.Ui.ShowFullscreenWindow(_menu.transform);
-
-            var command = await _uiPoll.ExecuteAsync(ct);
-            switch (command)
+            using (scope.Ui.FullscreenWindow(_menu.transform))
             {
-                case MainMenuUi.Command.Play:
-                    var splashWindowId = scope.Ui.ShowWindow(scope.LoadingUi);
-                    var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                    scope.Ui.HideWindow(splashWindowId, null);
+                var command = await _uiPoll.ExecuteAsync(ct);
+                switch (command)
+                {
+                    case MainMenuUi.Command.Play:
+                        var splashWindowId = scope.Ui.ShowWindow(scope.LoadingUi);
+                        var levelStateHandler = await CreateLevelStateHandler(scope, ct);
+                        scope.Ui.HideWindow(splashWindowId, null);
 
-                    scope.Ui.HideFullscreenWindow(menuWindowId, null);
-                    return Transition.Push(levelStateHandler);
+                        return Transition.Push(levelStateHandler);
 
-                case MainMenuUi.Command.Exit:
-                    scope.Ui.HideFullscreenWindow(menuWindowId, null);
-                    return Transition.Pop();
+                    case MainMenuUi.Command.Exit:
+                        return Transition.Pop();
 
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 

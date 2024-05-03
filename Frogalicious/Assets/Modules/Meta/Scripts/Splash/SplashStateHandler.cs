@@ -1,5 +1,6 @@
 using System.Threading;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Meta.MainMenu;
 using Frog.StateTracker;
 using UnityEngine;
@@ -31,15 +32,14 @@ namespace Frog.Meta.Splash
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var windowId = scope.Ui.ShowFullscreenWindow(_ui.transform);
+            using (scope.Ui.FullscreenWindow(_ui.transform))
+            {
+                await _poll.ExecuteAsync(ct);
+                var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
+                var stateHandler = new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>());
 
-            await _poll.ExecuteAsync(ct);
-            var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
-            var stateHandler = new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>());
-
-            scope.Ui.HideFullscreenWindow(windowId, null);
-
-            return Transition.Replace(stateHandler);
+                return Transition.Replace(stateHandler);
+            }
         }
     }
 }

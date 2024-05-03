@@ -1,6 +1,7 @@
 using System.Threading;
 using Frog.Collections;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Level;
 using Frog.Level.Data;
 using Frog.Level.Simulation;
@@ -59,11 +60,11 @@ namespace Frog.Meta.Level
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var menuWindowId = scope.Ui.ShowFullscreenWindow(_ui.transform);
-            await _gameplay.ExecuteAsync(ct);
-            scope.Ui.HideFullscreenWindow(menuWindowId, null);
-
-            return Transition.Pop();
+            using (scope.Ui.FullscreenWindow(_ui.transform))
+            {
+                await _gameplay.ExecuteAsync(ct);
+                return Transition.Pop();
+            }
         }
     }
 }
