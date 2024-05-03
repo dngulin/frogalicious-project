@@ -38,11 +38,11 @@ namespace Frog.Core.Ui
             }
         }
 
-        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityHandle handle, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityHandle handle, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = (AnimatedUiEntity) stackAccessor.RemoveItemAssertive((uint)handle);
+                var window = (AnimatedUiEntity) stackAccessor.RemoveItemAssertive((uint)handle, parent);
                 await window.Hide(ct);
                 return window;
             }
@@ -58,11 +58,11 @@ namespace Frog.Core.Ui
             }
         }
 
-        public UiEntity HideImmediate(UiEntityHandle handle)
+        public UiEntity HideImmediate(UiEntityHandle handle, Transform parent)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = stackAccessor.RemoveItemAssertive((uint)handle);
+                var window = stackAccessor.RemoveItemAssertive((uint)handle, parent);
                 window.SetVisible(false);
                 return window;
             }

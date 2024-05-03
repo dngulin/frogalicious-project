@@ -19,7 +19,7 @@ namespace Frog.Core.Ui
 
         public UiEntityHandle ShowWindow(UiEntity entity) => _windows.ShowImmediate(entity);
 
-        public UiEntity HideWindow(UiEntityHandle handle) => _windows.HideImmediate(handle);
+        public UiEntity HideWindow(UiEntityHandle handle, Transform parent) => _windows.HideImmediate(handle, parent);
 
 
         public UiEntityHandle ShowFullscreenWindow(Transform contents)
@@ -29,9 +29,9 @@ namespace Frog.Core.Ui
             return _windows.ShowImmediate(window);
         }
 
-        public Transform HideFullscreenWindow(UiEntityHandle handle)
+        public Transform HideFullscreenWindow(UiEntityHandle handle, Transform parent)
         {
-            var window = _windows.HideImmediate(handle);
+            var window = _windows.HideImmediate(handle, parent);
             window.DetachContents(out var contents);
             window.DestroyGameObject();
             return contents;

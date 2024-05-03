@@ -37,7 +37,7 @@ namespace Frog.Meta.Splash
             var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
             var stateHandler = new MainMenuStateHandler(menuGoPrefab.GetComponent<MainMenuUi>());
 
-            scope.Ui.HideFullscreenWindow(handle);
+            scope.Ui.HideFullscreenWindow(handle, null);
 
             return Transition.Replace(stateHandler);
         }

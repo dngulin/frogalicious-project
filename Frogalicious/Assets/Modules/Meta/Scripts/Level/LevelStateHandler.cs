@@ -61,7 +61,7 @@ namespace Frog.Meta.Level
         {
             var menuHandle = scope.Ui.ShowFullscreenWindow(_ui.transform);
             await _gameplay.ExecuteAsync(ct);
-            scope.Ui.HideFullscreenWindow(menuHandle);
+            scope.Ui.HideFullscreenWindow(menuHandle, null);
 
             return Transition.Pop();
         }

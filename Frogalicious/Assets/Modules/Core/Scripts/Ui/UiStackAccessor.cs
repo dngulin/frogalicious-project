@@ -52,7 +52,7 @@ namespace Frog.Core.Ui
             return handle;
         }
 
-        public bool TryRemoveItem(uint handle, out UiEntity window)
+        public bool TryRemoveItem(uint handle, out UiEntity window, Transform parent)
         {
             for (var i = 0; i < _entities.Count; i++)
             {
@@ -62,7 +62,7 @@ namespace Frog.Core.Ui
 
                 _entities.RemoveAt(i);
                 window = w;
-                window.transform.SetParent(null);
+                window.transform.SetParent(parent, false);
                 return true;
             }
 
@@ -73,9 +73,9 @@ namespace Frog.Core.Ui
 
     public static class UiStackAccessorExtensions
     {
-        public static UiEntity RemoveItemAssertive(in this UiStackAccessor stackAccessor, uint handle)
+        public static UiEntity RemoveItemAssertive(in this UiStackAccessor stackAccessor, uint handle, Transform parent)
         {
-            var itemFound = stackAccessor.TryRemoveItem(handle, out var item);
+            var itemFound = stackAccessor.TryRemoveItem(handle, out var item, parent);
             Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
 
             return item;

@@ -45,13 +45,13 @@ namespace Frog.Meta.MainMenu
                 case MainMenuUi.Command.Play:
                     var splashHandle = scope.Ui.ShowWindow(scope.LoadingUi);
                     var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                    scope.Ui.HideWindow(splashHandle);
+                    scope.Ui.HideWindow(splashHandle, null);
 
-                    scope.Ui.HideFullscreenWindow(menuHandle);
+                    scope.Ui.HideFullscreenWindow(menuHandle, null);
                     return Transition.Push(levelStateHandler);
 
                 case MainMenuUi.Command.Exit:
-                    scope.Ui.HideFullscreenWindow(menuHandle);
+                    scope.Ui.HideFullscreenWindow(menuHandle, null);
                     return Transition.Pop();
 
                 default:
