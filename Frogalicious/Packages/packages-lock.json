@@ -81,13 +81,13 @@
       }
     },
     "frog.collections": {
-      "version": "file:Collections",
+      "version": "file:frog.collections",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "frog.state-tracker": {
-      "version": "file:frog.state-tarcker",
+      "version": "file:frog.state-tracker",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
