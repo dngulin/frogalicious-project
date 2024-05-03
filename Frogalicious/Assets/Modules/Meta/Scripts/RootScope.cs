@@ -22,7 +22,7 @@ namespace Frog.Meta
 
         public static Transform CreateGameObjectStash()
         {
-            var go = new GameObject("Stash");
+            var go = new GameObject(nameof(GameObjectStash));
             go.SetActive(false);
             return go.transform;
         }
