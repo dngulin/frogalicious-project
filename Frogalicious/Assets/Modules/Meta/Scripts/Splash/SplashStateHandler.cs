@@ -35,10 +35,14 @@ namespace Frog.Meta.Splash
             using (scope.Ui.FullscreenWindow(_ui.transform))
             {
                 await _poll.ExecuteAsync(ct);
-                var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
-                var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>());
 
-                return Transition.Replace(stateHandler);
+                using (scope.Ui.LoadingWindow())
+                {
+                    var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
+                    var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>());
+
+                    return Transition.Replace(stateHandler);
+                }
             }
         }
     }
