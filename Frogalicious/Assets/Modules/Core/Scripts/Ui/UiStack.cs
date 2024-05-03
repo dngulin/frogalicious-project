@@ -43,9 +43,9 @@ namespace Frog.Core.Ui
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = (AnimatedUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
-                await window.Hide(ct);
-                return window;
+                var entity = (AnimatedUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
+                await entity.Hide(ct);
+                return entity;
             }
         }
 
@@ -64,9 +64,9 @@ namespace Frog.Core.Ui
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var window = stackAccessor.RemoveItemAssertive((uint)id, parent);
-                window.SetVisible(false);
-                return window;
+                var entity = stackAccessor.RemoveItemAssertive((uint)id, parent);
+                entity.SetVisible(false);
+                return entity;
             }
         }
     }
