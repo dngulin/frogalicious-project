@@ -6,17 +6,11 @@ namespace Frog.Core.Ui
 {
     public static class UiSystemExtensions
     {
-        public static FullScreenUiHolder FullscreenUi<T>(this UiSystem ui, T contents) where T : MonoBehaviour
+        public static UiEntityHolder InstantUi(this UiSystem ui, UiEntity entity)
         {
-            var parent = contents.transform.parent;
-            var id = ui.ShowFullscreen(contents.transform);
-            return new FullScreenUiHolder(ui, id, parent);
-        }
-
-        public static LoadingUiHolder LoadingUi(this UiSystem ui)
-        {
-            ui.ShowLoading();
-            return new LoadingUiHolder(ui);
+            var parent = entity.transform.parent;
+            var id = ui.ShowInstant(entity);
+            return new UiEntityHolder(ui, id, parent);
         }
 
         public static async Awaitable<AnimatedUiEntityHolder> AnimatedUi(this UiSystem ui, AnimatedUiEntity entity, CancellationToken ct)
@@ -25,36 +19,38 @@ namespace Frog.Core.Ui
             var id = await ui.Show(entity, ct);
             return new AnimatedUiEntityHolder(ui, id, parent, ct);
         }
+
+        public static LoadingUiHolder LoadingUi(this UiSystem ui)
+        {
+            ui.ShowLoading();
+            return new LoadingUiHolder(ui);
+        }
+
+        public static FullScreenUiHolder FullscreenUi<T>(this UiSystem ui, T contents) where T : MonoBehaviour
+        {
+            var parent = contents.transform.parent;
+            var id = ui.ShowFullscreen(contents.transform);
+            return new FullScreenUiHolder(ui, id, parent);
+        }
     }
 
-    public readonly struct FullScreenUiHolder : IDisposable
+    public readonly struct UiEntityHolder : IDisposable
     {
         private readonly UiSystem _ui;
-        private readonly FullScreenUiEntityId _id;
-        private readonly Transform _contentsParent;
+        private readonly UiEntityId _id;
+        private readonly Transform _parent;
 
-        public FullScreenUiHolder(UiSystem ui, FullScreenUiEntityId id, Transform contentsParent)
+        public UiEntityHolder(UiSystem ui, UiEntityId id, Transform parent)
         {
             _ui = ui;
             _id = id;
-            _contentsParent = contentsParent;
+            _parent = parent;
         }
 
         public void Dispose()
         {
             if (_ui.IsUnderlyingGameObjectAlive)
-                _ui.HideFullscreen(_id, _contentsParent);
-        }
-    }
-
-    public readonly struct LoadingUiHolder : IDisposable
-    {
-        private readonly UiSystem _ui;
-        public LoadingUiHolder(UiSystem ui) => _ui = ui;
-        public void Dispose()
-        {
-            if (_ui.IsUnderlyingGameObjectAlive)
-                _ui.HideLoading();
+                _ui.HideInstant(_id, _parent);
         }
     }
 
@@ -77,6 +73,37 @@ namespace Frog.Core.Ui
         {
             if (_ui.IsUnderlyingGameObjectAlive)
                 await _ui.Hide(_id, _parent, _ct);
+        }
+    }
+
+    public readonly struct LoadingUiHolder : IDisposable
+    {
+        private readonly UiSystem _ui;
+        public LoadingUiHolder(UiSystem ui) => _ui = ui;
+        public void Dispose()
+        {
+            if (_ui.IsUnderlyingGameObjectAlive)
+                _ui.HideLoading();
+        }
+    }
+
+    public readonly struct FullScreenUiHolder : IDisposable
+    {
+        private readonly UiSystem _ui;
+        private readonly FullScreenUiEntityId _id;
+        private readonly Transform _contentsParent;
+
+        public FullScreenUiHolder(UiSystem ui, FullScreenUiEntityId id, Transform contentsParent)
+        {
+            _ui = ui;
+            _id = id;
+            _contentsParent = contentsParent;
+        }
+
+        public void Dispose()
+        {
+            if (_ui.IsUnderlyingGameObjectAlive)
+                _ui.HideFullscreen(_id, _contentsParent);
         }
     }
 }
