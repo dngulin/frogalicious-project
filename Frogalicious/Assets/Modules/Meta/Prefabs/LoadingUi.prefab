@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65375e7e4354034bd76ee2af5d66f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _contentsRoot: {fileID: 2004937426327845822}
+  _canvasGroup: {fileID: 2004937426327845822}
   _alphaCurve:
     serializedVersion: 2
     m_Curve:

@@ -60,7 +60,7 @@ namespace Frog.Meta.Level
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            using (scope.Ui.FullscreenWindow(_ui.transform))
+            using (scope.Ui.FullscreenContainer(_ui.transform))
             {
                 await _gameplay.ExecuteAsync(ct);
                 return Transition.Pop();

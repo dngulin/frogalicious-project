@@ -26,9 +26,9 @@ namespace Frog.Core.Ui
 
         public void Dispose() => _root.DestroyGameObject();
 
-        public async Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
         {
-            Debug.Assert(entity.State == AnimatedUiEntityState.Disappeared);
+            Debug.Assert(entity.State == DynUiEntityState.Disappeared);
 
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
@@ -39,12 +39,12 @@ namespace Frog.Core.Ui
             }
         }
 
-        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
+        public async Awaitable<DynUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var entity = (AnimatedUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
-                Debug.Assert(entity.State == AnimatedUiEntityState.Appeared);
+                var entity = (DynUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
+                Debug.Assert(entity.State == DynUiEntityState.Appeared);
                 await entity.Hide(ct);
                 return entity;
             }

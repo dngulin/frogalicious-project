@@ -1,6 +1,6 @@
 namespace Frog.Core.Ui
 {
-    public static class AnimatedUiEntityHashes
+    public static class UiAnimatorHashes
     {
         public static class State
         {

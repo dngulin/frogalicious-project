@@ -13,7 +13,7 @@ namespace Frog.Core.Editor
             var target = new GenTarget
             {
                 Namespace = "Frog.Core.Ui",
-                Type = "AnimatedUiEntityHashes",
+                Type = "UiAnimatorHashes",
                 OutDir = "Assets/Modules/Core/Scripts/Ui",
                 TestNamespace = "Frog.Core.Tests",
                 TestOutDir = "Assets/Modules/Core/Scripts/Tests",
@@ -23,10 +23,10 @@ namespace Frog.Core.Editor
             {
                 States = new[]
                 {
-                    nameof(AnimatedUiEntityState.Appearing),
-                    nameof(AnimatedUiEntityState.Appeared),
-                    nameof(AnimatedUiEntityState.Disappeared),
-                    nameof(AnimatedUiEntityState.Disappearing),
+                    nameof(DynUiEntityState.Appearing),
+                    nameof(DynUiEntityState.Appeared),
+                    nameof(DynUiEntityState.Disappeared),
+                    nameof(DynUiEntityState.Disappearing),
                 },
                 Parameters = new[] { "IsVisible" },
                 Layers = new[] { "Main" },

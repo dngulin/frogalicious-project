@@ -2,31 +2,23 @@ using UnityEngine;
 
 namespace Frog.Core.Ui
 {
+    /// <summary>
+    /// Base UI Entity type that provides API to control visibility and interactability.
+    /// Should be used as a base class for UI items without appearing and disappearing animations.
+    /// </summary>
     public abstract class UiEntity : MonoBehaviour
     {
         public abstract void SetVisible(bool visible);
-        public abstract CanvasGroup ContentsRoot { get; }
+        public abstract void SetInteractable(bool interactable);
     }
 
-    public static class UiEntityExtensions
+    /// <summary>
+    /// Extension of UiEntity that also provides IContainer interface.
+    /// Should be used for simple containers without appearing and disappearing animations.
+    /// </summary>
+    public abstract class UiContainer : UiEntity, IUiContainer
     {
-        public static void AttachContents(this UiEntity entity, Transform contents)
-        {
-            Debug.Assert(entity.ContentsRoot.transform.childCount == 0);
-            contents.SetParent(entity.ContentsRoot.transform, false);
-        }
-
-        public static Transform DetachContents(this UiEntity entity, Transform contentsParent)
-        {
-            Debug.Assert(entity.ContentsRoot.transform.childCount == 1);
-            var contents = entity.ContentsRoot.transform.GetChild(0);
-            contents.SetParent(contentsParent, false);
-            return contents;
-        }
-
-        public static void SetInteractable(this UiEntity entity, bool interactive)
-        {
-            entity.ContentsRoot.interactable = interactive;
-        }
+        public abstract void AttachContent(Transform content);
+        public abstract Transform DetachContent(Transform contentParent);
     }
 }
