@@ -6,7 +6,7 @@ using static Frog.Core.Ui.UiAnimatorHashes;
 
 namespace Frog.Core.Ui
 {
-    public class AnimatedUiEntity : DynUiEntity
+    public class AnimatorAnimatedUiEntity : DynUiEntity
     {
         [SerializeField]
         private Animator _animator;

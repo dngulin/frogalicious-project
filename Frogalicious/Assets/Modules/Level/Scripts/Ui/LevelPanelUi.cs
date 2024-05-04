@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Frog.Level.Ui
 {
-    public class LevelPanelUi : AnimatedUiEntity
+    public class LevelPanelUi : AnimatorAnimatedUiEntity
     {
         public enum Command
         {
