@@ -15,6 +15,8 @@ namespace Frog.Core
             return _waitForStateEnter.ExecuteAsync(ct);
         }
 
+        public void TryCancelWaiting() => _waitForStateEnter.TryCancel();
+
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (_waitForStateEnter.IsRunning && stateInfo.shortNameHash == _targetEnteringState)
