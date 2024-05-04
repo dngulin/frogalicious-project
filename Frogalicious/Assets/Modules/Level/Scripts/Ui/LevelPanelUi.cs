@@ -1,10 +1,11 @@
 using Frog.Core;
+using Frog.Core.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Frog.Level.Ui
 {
-    public class LevelPanelUi : MonoBehaviour
+    public class LevelPanelUi : AnimatedUiEntity
     {
         public enum Command
         {

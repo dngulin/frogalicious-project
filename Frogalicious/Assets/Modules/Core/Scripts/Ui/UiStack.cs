@@ -26,26 +26,32 @@ namespace Frog.Core.Ui
 
         public void Dispose() => _root.DestroyGameObject();
 
-        public async Awaitable<AnimatedUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
+        public async Awaitable<DynUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
         {
-            Debug.Assert(entity.State == DynUiEntityState.Disappeared);
-
+            Debug.Assert(entity.State == DynUiEntityState.Disappeared, entity.State);
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
                 var entityId = _nextUiEntityId++;
                 stackAccessor.AddItem(entity, entityId);
+
                 await entity.Show(ct);
-                return (AnimatedUiEntityId)entityId;
+
+                return (DynUiEntityId)entityId;
             }
         }
 
-        public async Awaitable<DynUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
+        public async Awaitable<DynUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var entity = (DynUiEntity)stackAccessor.RemoveItemAssertive((uint)id, parent);
-                Debug.Assert(entity.State == DynUiEntityState.Appeared);
+                var entity = (DynUiEntity)stackAccessor.FindItemAssertive((uint)id);
+                Debug.Assert(entity.State == DynUiEntityState.Appeared, entity.State);
+
                 await entity.Hide(ct);
+
+                var removedEntity = stackAccessor.RemoveItemAssertive((uint)id, parent);
+                Debug.Assert(ReferenceEquals(entity, removedEntity));
+
                 return entity;
             }
         }
@@ -76,7 +82,7 @@ namespace Frog.Core.Ui
     {
     }
 
-    public enum AnimatedUiEntityId : uint
+    public enum DynUiEntityId : uint
     {
     }
 }

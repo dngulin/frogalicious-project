@@ -6,7 +6,7 @@ using static Frog.Core.Ui.UiAnimatorHashes;
 
 namespace Frog.Core.Ui
 {
-    public sealed class AnimatedUiEntity : DynUiEntity
+    public class AnimatedUiEntity : DynUiEntity
     {
         [SerializeField]
         private Animator _animator;
@@ -63,6 +63,15 @@ namespace Frog.Core.Ui
             }
         }
 
-        private int CurrentStateHash => _animator.GetCurrentAnimatorStateInfo(LayerIndices.Main).shortNameHash;
+        private int CurrentStateHash
+        {
+            get
+            {
+                if (!_animator.isActiveAndEnabled)
+                    return StateHashes.Disappeared;
+
+                return _animator.GetCurrentAnimatorStateInfo(LayerIndices.Main).shortNameHash;
+            }
+        }
     }
 }

@@ -68,6 +68,22 @@ namespace Frog.Core.Ui
             result = default;
             return false;
         }
+
+        public bool TryFindItem(uint entityId, out UiEntity result)
+        {
+            for (var i = 0; i < _items.Count; i++)
+            {
+                var (id, entity) = _items[i];
+                if (id != entityId)
+                    continue;
+
+                result = entity;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
     }
 
     public static class UiStackAccessorExtensions
@@ -75,6 +91,14 @@ namespace Frog.Core.Ui
         public static UiEntity RemoveItemAssertive(in this UiStackAccessor accessor, uint handle, Transform parent)
         {
             var itemFound = accessor.TryRemoveItem(handle, out var item, parent);
+            Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
+
+            return item;
+        }
+
+        public static UiEntity FindItemAssertive(in this UiStackAccessor accessor, uint handle)
+        {
+            var itemFound = accessor.TryFindItem(handle, out var item);
             Debug.Assert(itemFound, $"No {nameof(item)} found with the handle {handle}");
 
             return item;

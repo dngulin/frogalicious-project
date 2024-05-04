@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace Frog.Core.Ui
@@ -22,6 +23,16 @@ namespace Frog.Core.Ui
         {
             _windows.Dispose();
             _loadingUi.DestroyGameObject();
+        }
+
+        public async Awaitable<DynWindowId> ShowWindow(DynUiEntity entity, CancellationToken ct)
+        {
+            return (DynWindowId) await _windows.Show(entity, ct);
+        }
+
+        public Awaitable<DynUiEntity> HideWindow(DynWindowId id, Transform parent, CancellationToken ct)
+        {
+            return _windows.Hide((DynUiEntityId)id, parent, ct);
         }
 
         public WindowId ShowWindow(UiEntity entity) => (WindowId)_windows.ShowImmediate(entity);
@@ -67,6 +78,10 @@ namespace Frog.Core.Ui
     }
 
     public enum FullScreenContainerId : uint
+    {
+    }
+
+    public enum DynWindowId : uint
     {
     }
 }
