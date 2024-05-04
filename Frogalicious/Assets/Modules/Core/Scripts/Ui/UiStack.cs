@@ -34,6 +34,7 @@ namespace Frog.Core.Ui
                 var entityId = _nextUiEntityId++;
                 stackAccessor.AddItem(entity, entityId);
 
+                entity.SetInteractable(false);
                 await entity.Show(ct);
 
                 return (DynUiEntityId)entityId;
