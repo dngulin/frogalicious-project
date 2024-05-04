@@ -1,6 +1,7 @@
 using System.Threading;
 using Frog.Collections;
 using Frog.Core;
+using Frog.Core.Ui;
 using Frog.Level;
 using Frog.Level.Data;
 using Frog.Level.Simulation;
@@ -59,11 +60,11 @@ namespace Frog.Meta.Level
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            var id = await scope.Ui.ShowWindow(_ui, ct);
-            await _gameplay.ExecuteAsync(ct);
-            await scope.Ui.HideWindow(id, scope.GameObjectStash, ct);
-
-            return Transition.Pop();
+            await using (await scope.Ui.DynWindow(_ui, ct))
+            {
+                await _gameplay.ExecuteAsync(ct);
+                return Transition.Pop();
+            }
         }
     }
 }

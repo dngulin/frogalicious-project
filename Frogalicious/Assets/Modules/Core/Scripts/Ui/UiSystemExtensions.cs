@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace Frog.Core.Ui
@@ -16,6 +17,13 @@ namespace Frog.Core.Ui
         {
             ui.ShowLoading();
             return new LoadingWindowHolder(ui);
+        }
+
+        public static async Awaitable<DynWindowHolder> DynWindow(this UiSystem ui, DynUiEntity entity, CancellationToken ct)
+        {
+            var parent = entity.transform.parent;
+            var id = await ui.ShowWindow(entity, ct);
+            return new DynWindowHolder(ui, id, parent, ct);
         }
     }
 
@@ -40,5 +48,26 @@ namespace Frog.Core.Ui
         private readonly UiSystem _ui;
         public LoadingWindowHolder(UiSystem ui) => _ui = ui;
         public void Dispose() => _ui.HideLoading();
+    }
+
+    public readonly struct DynWindowHolder
+    {
+        private readonly UiSystem _ui;
+        private readonly DynWindowId _id;
+        private readonly Transform _parent;
+        private readonly CancellationToken _ct;
+
+        public DynWindowHolder(UiSystem ui, DynWindowId id, Transform parent, CancellationToken ct)
+        {
+            _ui = ui;
+            _id = id;
+            _parent = parent;
+            _ct = ct;
+        }
+
+        public async Awaitable DisposeAsync()
+        {
+            await _ui.HideWindow(_id, _parent, _ct);
+        }
     }
 }
