@@ -110,7 +110,7 @@ namespace Frog.Core
         }
     }
 
-    public static class AwaitableProcessExtensions
+    public static class AwaitableOperationExtensions
     {
         public static void EndAssertive<T>(this AwaitableOperation<T> proc, T result)
         {
