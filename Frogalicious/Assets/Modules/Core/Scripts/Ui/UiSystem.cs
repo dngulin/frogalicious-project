@@ -27,12 +27,12 @@ namespace Frog.Core.Ui
 
         public bool IsUnderlyingGameObjectAlive => _uiStack.IsUnderlyingGameObjectAlive;
 
-        public Awaitable<DynUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
+        public Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
             return _uiStack.Show(entity, ct);
         }
 
-        public Awaitable<AnimatedUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
+        public Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
         {
             return _uiStack.Hide(id, parent, ct);
         }

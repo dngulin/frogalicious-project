@@ -19,11 +19,11 @@ namespace Frog.Core.Ui
             return new LoadingUiHolder(ui);
         }
 
-        public static async Awaitable<DynUiEntityHolder> AnimatedUi(this UiSystem ui, AnimatedUiEntity entity, CancellationToken ct)
+        public static async Awaitable<AnimatedUiEntityHolder> AnimatedUi(this UiSystem ui, AnimatedUiEntity entity, CancellationToken ct)
         {
             var parent = entity.transform.parent;
             var id = await ui.Show(entity, ct);
-            return new DynUiEntityHolder(ui, id, parent, ct);
+            return new AnimatedUiEntityHolder(ui, id, parent, ct);
         }
     }
 
@@ -58,14 +58,14 @@ namespace Frog.Core.Ui
         }
     }
 
-    public readonly struct DynUiEntityHolder
+    public readonly struct AnimatedUiEntityHolder
     {
         private readonly UiSystem _ui;
-        private readonly DynUiEntityId _id;
+        private readonly AnimatedUiEntityId _id;
         private readonly Transform _parent;
         private readonly CancellationToken _ct;
 
-        public DynUiEntityHolder(UiSystem ui, DynUiEntityId id, Transform parent, CancellationToken ct)
+        public AnimatedUiEntityHolder(UiSystem ui, AnimatedUiEntityId id, Transform parent, CancellationToken ct)
         {
             _ui = ui;
             _id = id;

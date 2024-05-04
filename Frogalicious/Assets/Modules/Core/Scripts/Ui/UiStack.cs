@@ -28,7 +28,7 @@ namespace Frog.Core.Ui
 
         public readonly bool IsUnderlyingGameObjectAlive => _root != null;
 
-        public async Awaitable<DynUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
             Debug.Assert(entity.State == DynUiEntityState.Disappeared, entity.State);
             using (var stackAccessor = new UiStackAccessor(_root, _items))
@@ -39,11 +39,11 @@ namespace Frog.Core.Ui
                 entity.SetInteractable(false);
                 await entity.Show(ct);
 
-                return (DynUiEntityId)entityId;
+                return (AnimatedUiEntityId)entityId;
             }
         }
 
-        public async Awaitable<AnimatedUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntity> Hide(AnimatedUiEntityId id, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
@@ -85,7 +85,7 @@ namespace Frog.Core.Ui
     {
     }
 
-    public enum DynUiEntityId : uint
+    public enum AnimatedUiEntityId : uint
     {
     }
 }
