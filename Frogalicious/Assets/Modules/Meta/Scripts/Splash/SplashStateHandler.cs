@@ -32,7 +32,7 @@ namespace Frog.Meta.Splash
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            using (scope.Ui.FullscreenUi(_ui))
+            using (scope.Ui.InstantUi(_ui))
             {
                 await _poll.ExecuteAsync(ct);
 
