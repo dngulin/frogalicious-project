@@ -48,16 +48,16 @@ namespace Frog.Core.Ui
             await _animBehaviour.WaitForStateEnterAsync(StateHashes.Disappeared, ct);
         }
 
-        public override DynUiEntityState State
+        public override AnimatedUiEntityState State
         {
             get
             {
                 return CurrentStateHash switch
                 {
-                    StateHashes.Appearing => DynUiEntityState.Appearing,
-                    StateHashes.Appeared => DynUiEntityState.Appeared,
-                    StateHashes.Disappearing => DynUiEntityState.Disappearing,
-                    StateHashes.Disappeared => DynUiEntityState.Disappeared,
+                    StateHashes.Appearing => AnimatedUiEntityState.Appearing,
+                    StateHashes.Appeared => AnimatedUiEntityState.Appeared,
+                    StateHashes.Disappearing => AnimatedUiEntityState.Disappearing,
+                    StateHashes.Disappeared => AnimatedUiEntityState.Disappeared,
                     _ => throw new IndexOutOfRangeException(),
                 };
             }

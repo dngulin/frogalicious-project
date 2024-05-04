@@ -10,10 +10,10 @@ namespace Frog.Core.Ui
     {
         public abstract Awaitable Show(CancellationToken ct);
         public abstract Awaitable Hide(CancellationToken ct);
-        public abstract DynUiEntityState State { get; }
+        public abstract AnimatedUiEntityState State { get; }
     }
 
-    public enum DynUiEntityState
+    public enum AnimatedUiEntityState
     {
         Appearing,
         Appeared,

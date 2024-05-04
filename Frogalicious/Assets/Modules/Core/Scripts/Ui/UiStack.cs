@@ -30,7 +30,7 @@ namespace Frog.Core.Ui
 
         public async Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
-            Debug.Assert(entity.State == DynUiEntityState.Disappeared, entity.State);
+            Debug.Assert(entity.State == AnimatedUiEntityState.Disappeared, entity.State);
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
                 var entityId = _nextUiEntityId++;
@@ -48,7 +48,7 @@ namespace Frog.Core.Ui
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
                 var entity = (AnimatedUiEntity)stackAccessor.FindItemAssertive((uint)id);
-                Debug.Assert(entity.State == DynUiEntityState.Appeared, entity.State);
+                Debug.Assert(entity.State == AnimatedUiEntityState.Appeared, entity.State);
 
                 await entity.Hide(ct);
 

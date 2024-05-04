@@ -23,10 +23,10 @@ namespace Frog.Core.Editor
             {
                 States = new[]
                 {
-                    nameof(DynUiEntityState.Appearing),
-                    nameof(DynUiEntityState.Appeared),
-                    nameof(DynUiEntityState.Disappeared),
-                    nameof(DynUiEntityState.Disappearing),
+                    nameof(AnimatedUiEntityState.Appearing),
+                    nameof(AnimatedUiEntityState.Appeared),
+                    nameof(AnimatedUiEntityState.Disappeared),
+                    nameof(AnimatedUiEntityState.Disappearing),
                 },
                 Parameters = new[] { "IsVisible" },
                 Layers = new[] { "Main" },
