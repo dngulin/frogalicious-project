@@ -11,14 +11,4 @@ namespace Frog.Core.Ui
         public abstract void SetVisible(bool visible);
         public abstract void SetInteractable(bool interactable);
     }
-
-    /// <summary>
-    /// Extension of UiEntity that also provides IContainer interface.
-    /// Should be used for simple containers without appearing and disappearing animations.
-    /// </summary>
-    public abstract class UiContainer : UiEntity, IUiContainer
-    {
-        public abstract void AttachContent(Transform content);
-        public abstract Transform DetachContent(Transform contentParent);
-    }
 }

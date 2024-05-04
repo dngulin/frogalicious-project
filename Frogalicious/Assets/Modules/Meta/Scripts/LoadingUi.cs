@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Frog.Meta
 {
-    public class LoadingUi : UiEntity
+    public sealed class LoadingUi : UiEntity
     {
         [SerializeField]
         private CanvasGroup _canvasGroup;

@@ -42,14 +42,14 @@ namespace Frog.Core.Ui
 
         public FullScreenContainerId ShowFullscreenContainerWith(Transform contents)
         {
-            var container = UiContainerSimple.Create();
+            var container = StaticUiEntity.Create();
             container.AttachContent(contents);
             return (FullScreenContainerId)_windows.ShowImmediate(container);
         }
 
         public Transform HideFullscreenContainer(FullScreenContainerId id, Transform contentsParent)
         {
-            var window = (UiContainerSimple)_windows.HideImmediate((UiEntityId)id, null);
+            var window = (StaticUiEntity)_windows.HideImmediate((UiEntityId)id, null);
             var contents = window.DetachContent(contentsParent);
             window.DestroyGameObject();
             return contents;

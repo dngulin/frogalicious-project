@@ -20,14 +20,4 @@ namespace Frog.Core.Ui
         Disappearing,
         Disappeared,
     }
-
-    /// <summary>
-    /// Extension of DynUiEntity that also provides IContainer interface.
-    /// Should be used for simple containers with appearing and disappearing animations.
-    /// </summary>
-    public abstract class DynUiContainer : DynUiEntity, IUiContainer
-    {
-        public abstract void AttachContent(Transform content);
-        public abstract Transform DetachContent(Transform contentParent);
-    }
 }

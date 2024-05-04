@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Frog.Core.Ui
 {
-    public sealed class UiContainerSimple : UiContainer
+    public sealed class StaticUiEntity : UiEntity
     {
         [SerializeField]
         private CanvasGroup _canvasGroup;
@@ -10,13 +10,13 @@ namespace Frog.Core.Ui
         public override void SetVisible(bool visible) => _canvasGroup.alpha = visible ? 1 : 0;
         public override void SetInteractable(bool interactable) => _canvasGroup.interactable = interactable;
 
-        public override void AttachContent(Transform content)
+        public void AttachContent(Transform content)
         {
             Debug.Assert(transform.childCount == 0);
             content.SetParent(transform, false);
         }
 
-        public override Transform DetachContent(Transform contentParent)
+        public Transform DetachContent(Transform contentParent)
         {
             Debug.Assert(transform.childCount == 1);
 
@@ -26,12 +26,12 @@ namespace Frog.Core.Ui
             return content;
         }
 
-        public static UiContainerSimple Create(bool visible = false, Transform parent = null)
+        public static StaticUiEntity Create(bool visible = false, Transform parent = null)
         {
-            var go = new GameObject(nameof(UiContainerSimple), typeof(RectTransform));
+            var go = new GameObject(nameof(StaticUiEntity), typeof(RectTransform));
             go.GetComponent<RectTransform>().SetParentAndExpand(parent);
 
-            var entity = go.AddComponent<UiContainerSimple>();
+            var entity = go.AddComponent<StaticUiEntity>();
             entity._canvasGroup = go.AddComponent<CanvasGroup>();
 
             entity.SetVisible(visible);
