@@ -57,7 +57,7 @@ namespace Frog.Core.Ui
             }
         }
 
-        public UiEntityId ShowImmediate(UiEntity entity)
+        public UiEntityId ShowInstant(UiEntity entity)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
@@ -68,7 +68,7 @@ namespace Frog.Core.Ui
             }
         }
 
-        public UiEntity HideImmediate(UiEntityId id, Transform parent)
+        public UiEntity HideInstant(UiEntityId id, Transform parent)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {

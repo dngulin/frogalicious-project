@@ -38,13 +38,13 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            using (scope.Ui.FullscreenContainer(_menu.transform))
+            using (scope.Ui.FullscreenUi(_menu))
             {
                 var command = await _uiPoll.ExecuteAsync(ct);
                 switch (command)
                 {
                     case MainMenuUi.Command.Play:
-                        using (scope.Ui.LoadingSplash())
+                        using (scope.Ui.LoadingUi())
                         {
                             var levelStateHandler = await CreateLevelStateHandler(scope, ct);
                             return Transition.Push(levelStateHandler);

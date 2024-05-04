@@ -6,7 +6,7 @@ namespace Frog.Core.Ui
 {
     public class UiSystem : IDisposable
     {
-        private UiStack _windows;
+        private UiStack _uiStack;
 
         private readonly Transform _loadingUiParent;
         private readonly UiEntity _loadingUi;
@@ -14,42 +14,42 @@ namespace Frog.Core.Ui
 
         public UiSystem(Canvas canvas, UiEntity loadingUi)
         {
-            _windows = new UiStack(nameof(_windows), canvas.transform);
+            _uiStack = new UiStack(nameof(_uiStack), canvas.transform);
             _loadingUiParent = loadingUi.transform.parent;
             _loadingUi = loadingUi;
         }
 
         public void Dispose()
         {
-            _windows.Dispose();
+            _uiStack.Dispose();
             _loadingUi.DestroyGameObject();
         }
 
-        public async Awaitable<DynWindowId> ShowWindow(DynUiEntity entity, CancellationToken ct)
+        public Awaitable<DynUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
         {
-            return (DynWindowId) await _windows.Show(entity, ct);
+            return _uiStack.Show(entity, ct);
         }
 
-        public Awaitable<DynUiEntity> HideWindow(DynWindowId id, Transform parent, CancellationToken ct)
+        public Awaitable<DynUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
         {
-            return _windows.Hide((DynUiEntityId)id, parent, ct);
+            return _uiStack.Hide(id, parent, ct);
         }
 
-        public WindowId ShowWindow(UiEntity entity) => (WindowId)_windows.ShowImmediate(entity);
+        public UiEntityId ShowInstant(UiEntity entity) => _uiStack.ShowInstant(entity);
 
-        public UiEntity HideWindow(WindowId id, Transform parent) => _windows.HideImmediate((UiEntityId)id, parent);
+        public UiEntity HideInstant(UiEntityId id, Transform parent) => _uiStack.HideInstant(id, parent);
 
 
-        public FullScreenContainerId ShowFullscreenContainerWith(Transform contents)
+        public FullScreenUiEntityId ShowFullscreen(Transform contents)
         {
             var container = StaticUiEntity.Create();
             container.AttachContent(contents);
-            return (FullScreenContainerId)_windows.ShowImmediate(container);
+            return (FullScreenUiEntityId)_uiStack.ShowInstant(container);
         }
 
-        public Transform HideFullscreenContainer(FullScreenContainerId id, Transform contentsParent)
+        public Transform HideFullscreen(FullScreenUiEntityId id, Transform contentsParent)
         {
-            var window = (StaticUiEntity)_windows.HideImmediate((UiEntityId)id, null);
+            var window = (StaticUiEntity)_uiStack.HideInstant((UiEntityId)id, null);
             var contents = window.DetachContent(contentsParent);
             window.DestroyGameObject();
             return contents;
@@ -60,7 +60,7 @@ namespace Frog.Core.Ui
             if (_loadingWindowId.HasValue)
                 throw new InvalidOperationException();
 
-            _loadingWindowId = _windows.ShowImmediate(_loadingUi);
+            _loadingWindowId = _uiStack.ShowInstant(_loadingUi);
         }
 
         public void HideLoading()
@@ -68,20 +68,12 @@ namespace Frog.Core.Ui
             if (!_loadingWindowId.HasValue)
                 throw new InvalidOperationException();
 
-            _windows.HideImmediate(_loadingWindowId.Value, _loadingUiParent);
+            _uiStack.HideInstant(_loadingWindowId.Value, _loadingUiParent);
             _loadingWindowId = null;
         }
     }
 
-    public enum WindowId : uint
-    {
-    }
-
-    public enum FullScreenContainerId : uint
-    {
-    }
-
-    public enum DynWindowId : uint
+    public enum FullScreenUiEntityId : uint
     {
     }
 }

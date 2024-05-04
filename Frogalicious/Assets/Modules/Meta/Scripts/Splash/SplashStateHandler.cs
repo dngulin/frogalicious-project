@@ -32,11 +32,11 @@ namespace Frog.Meta.Splash
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            using (scope.Ui.FullscreenContainer(_ui.transform))
+            using (scope.Ui.FullscreenUi(_ui))
             {
                 await _poll.ExecuteAsync(ct);
 
-                using (scope.Ui.LoadingSplash())
+                using (scope.Ui.LoadingUi())
                 {
                     var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
                     var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>());

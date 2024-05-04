@@ -16,7 +16,7 @@ namespace Frog.Meta.Level
     public class LevelStateHandler : AsyncStateHandler<RootScope>
     {
         private readonly LevelView _view;
-        private readonly LevelPanelUi _ui;
+        private readonly LevelPanelUi _panel;
 
         private SimState _state;
 
@@ -25,7 +25,7 @@ namespace Frog.Meta.Level
         public LevelStateHandler(in RootScope scope, LevelData data, LevelViewConfig viewConfig, LevelPanelUi uiPrefab)
         {
             _view = new LevelView(viewConfig, data, scope.Camera);
-            _ui = Object.Instantiate(uiPrefab, scope.GameObjectStash);
+            _panel = Object.Instantiate(uiPrefab, scope.GameObjectStash);
 
             LevelSimulation.SetupInitialState(ref _state, data);
             _view.CreateInitialObjects(in _state.Level);
@@ -34,12 +34,12 @@ namespace Frog.Meta.Level
         public override void Dispose(in RootScope scope)
         {
             _view.Dispose();
-            _ui.DestroyGameObject();
+            _panel.DestroyGameObject();
         }
 
         public override void Tick(in RootScope scope, float dt)
         {
-            if (_ui.Poll().TryGetValue(out _))
+            if (_panel.Poll().TryGetValue(out _))
             {
                 _gameplay.EndAssertive();
                 return;
@@ -60,7 +60,7 @@ namespace Frog.Meta.Level
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            await using (await scope.Ui.DynWindow(_ui, ct))
+            await using (await scope.Ui.AnimatedUi(_panel, ct))
             {
                 await _gameplay.ExecuteAsync(ct);
                 return Transition.Pop();

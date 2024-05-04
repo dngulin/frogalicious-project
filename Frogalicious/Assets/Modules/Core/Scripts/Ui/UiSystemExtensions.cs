@@ -6,23 +6,23 @@ namespace Frog.Core.Ui
 {
     public static class UiSystemExtensions
     {
-        public static FullScreenContainerHolder FullscreenContainer(this UiSystem ui, Transform contents)
+        public static FullScreenContainerHolder FullscreenUi<T>(this UiSystem ui, T contents) where T : MonoBehaviour
         {
-            var parent = contents.parent;
-            var id = ui.ShowFullscreenContainerWith(contents);
+            var parent = contents.transform.parent;
+            var id = ui.ShowFullscreen(contents.transform);
             return new FullScreenContainerHolder(ui, id, parent);
         }
 
-        public static LoadingWindowHolder LoadingSplash(this UiSystem ui)
+        public static LoadingWindowHolder LoadingUi(this UiSystem ui)
         {
             ui.ShowLoading();
             return new LoadingWindowHolder(ui);
         }
 
-        public static async Awaitable<DynWindowHolder> DynWindow(this UiSystem ui, DynUiEntity entity, CancellationToken ct)
+        public static async Awaitable<DynWindowHolder> AnimatedUi(this UiSystem ui, DynUiEntity entity, CancellationToken ct)
         {
             var parent = entity.transform.parent;
-            var id = await ui.ShowWindow(entity, ct);
+            var id = await ui.Show(entity, ct);
             return new DynWindowHolder(ui, id, parent, ct);
         }
     }
@@ -30,17 +30,17 @@ namespace Frog.Core.Ui
     public readonly struct FullScreenContainerHolder : IDisposable
     {
         private readonly UiSystem _ui;
-        private readonly FullScreenContainerId _id;
+        private readonly FullScreenUiEntityId _id;
         private readonly Transform _contentsParent;
 
-        public FullScreenContainerHolder(UiSystem ui, FullScreenContainerId id, Transform contentsParent)
+        public FullScreenContainerHolder(UiSystem ui, FullScreenUiEntityId id, Transform contentsParent)
         {
             _ui = ui;
             _id = id;
             _contentsParent = contentsParent;
         }
 
-        public void Dispose() => _ui.HideFullscreenContainer(_id, _contentsParent);
+        public void Dispose() => _ui.HideFullscreen(_id, _contentsParent);
     }
 
     public readonly struct LoadingWindowHolder : IDisposable
@@ -53,11 +53,11 @@ namespace Frog.Core.Ui
     public readonly struct DynWindowHolder
     {
         private readonly UiSystem _ui;
-        private readonly DynWindowId _id;
+        private readonly DynUiEntityId _id;
         private readonly Transform _parent;
         private readonly CancellationToken _ct;
 
-        public DynWindowHolder(UiSystem ui, DynWindowId id, Transform parent, CancellationToken ct)
+        public DynWindowHolder(UiSystem ui, DynUiEntityId id, Transform parent, CancellationToken ct)
         {
             _ui = ui;
             _id = id;
@@ -67,7 +67,7 @@ namespace Frog.Core.Ui
 
         public async Awaitable DisposeAsync()
         {
-            await _ui.HideWindow(_id, _parent, _ct);
+            await _ui.Hide(_id, _parent, _ct);
         }
     }
 }
