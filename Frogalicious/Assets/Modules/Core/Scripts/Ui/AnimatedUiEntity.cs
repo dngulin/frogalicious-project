@@ -6,7 +6,7 @@ namespace Frog.Core.Ui
     /// <summary>
     /// Base class for UI entities that have appearing and disappearing animations.
     /// </summary>
-    public abstract class DynUiEntity : UiEntity
+    public abstract class AnimatedUiEntity : UiEntity
     {
         public abstract Awaitable Show(CancellationToken ct);
         public abstract Awaitable Hide(CancellationToken ct);

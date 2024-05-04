@@ -28,7 +28,7 @@ namespace Frog.Core.Ui
 
         public readonly bool IsUnderlyingGameObjectAlive => _root != null;
 
-        public async Awaitable<DynUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
+        public async Awaitable<DynUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
             Debug.Assert(entity.State == DynUiEntityState.Disappeared, entity.State);
             using (var stackAccessor = new UiStackAccessor(_root, _items))
@@ -43,11 +43,11 @@ namespace Frog.Core.Ui
             }
         }
 
-        public async Awaitable<DynUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
+        public async Awaitable<AnimatedUiEntity> Hide(DynUiEntityId id, Transform parent, CancellationToken ct)
         {
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
-                var entity = (DynUiEntity)stackAccessor.FindItemAssertive((uint)id);
+                var entity = (AnimatedUiEntity)stackAccessor.FindItemAssertive((uint)id);
                 Debug.Assert(entity.State == DynUiEntityState.Appeared, entity.State);
 
                 await entity.Hide(ct);

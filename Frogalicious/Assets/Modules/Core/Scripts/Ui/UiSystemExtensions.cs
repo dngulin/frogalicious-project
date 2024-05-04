@@ -19,7 +19,7 @@ namespace Frog.Core.Ui
             return new LoadingUiHolder(ui);
         }
 
-        public static async Awaitable<DynUiEntityHolder> AnimatedUi(this UiSystem ui, DynUiEntity entity, CancellationToken ct)
+        public static async Awaitable<DynUiEntityHolder> AnimatedUi(this UiSystem ui, AnimatedUiEntity entity, CancellationToken ct)
         {
             var parent = entity.transform.parent;
             var id = await ui.Show(entity, ct);
