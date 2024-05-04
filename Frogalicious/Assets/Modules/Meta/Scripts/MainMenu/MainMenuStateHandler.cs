@@ -38,7 +38,7 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
-            using (scope.Ui.FullscreenUi(_menu))
+            using (scope.Ui.InstantUi(_menu))
             {
                 var command = await _uiPoll.ExecuteAsync(ct);
                 switch (command)
