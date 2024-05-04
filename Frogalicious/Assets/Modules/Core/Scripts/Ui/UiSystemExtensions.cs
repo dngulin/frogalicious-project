@@ -40,14 +40,22 @@ namespace Frog.Core.Ui
             _contentsParent = contentsParent;
         }
 
-        public void Dispose() => _ui.HideFullscreen(_id, _contentsParent);
+        public void Dispose()
+        {
+            if (_ui.IsUnderlyingGameObjectAlive)
+                _ui.HideFullscreen(_id, _contentsParent);
+        }
     }
 
     public readonly struct LoadingWindowHolder : IDisposable
     {
         private readonly UiSystem _ui;
         public LoadingWindowHolder(UiSystem ui) => _ui = ui;
-        public void Dispose() => _ui.HideLoading();
+        public void Dispose()
+        {
+            if (_ui.IsUnderlyingGameObjectAlive)
+                _ui.HideLoading();
+        }
     }
 
     public readonly struct DynWindowHolder
@@ -67,7 +75,8 @@ namespace Frog.Core.Ui
 
         public async Awaitable DisposeAsync()
         {
-            await _ui.Hide(_id, _parent, _ct);
+            if (_ui.IsUnderlyingGameObjectAlive)
+                await _ui.Hide(_id, _parent, _ct);
         }
     }
 }

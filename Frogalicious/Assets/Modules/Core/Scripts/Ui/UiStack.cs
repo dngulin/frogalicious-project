@@ -26,6 +26,8 @@ namespace Frog.Core.Ui
 
         public void Dispose() => _root.DestroyGameObject();
 
+        public readonly bool IsUnderlyingGameObjectAlive => _root != null;
+
         public async Awaitable<DynUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
         {
             Debug.Assert(entity.State == DynUiEntityState.Disappeared, entity.State);

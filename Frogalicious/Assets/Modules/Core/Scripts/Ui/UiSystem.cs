@@ -25,6 +25,8 @@ namespace Frog.Core.Ui
             _loadingUi.DestroyGameObject();
         }
 
+        public bool IsUnderlyingGameObjectAlive => _uiStack.IsUnderlyingGameObjectAlive;
+
         public Awaitable<DynUiEntityId> Show(DynUiEntity entity, CancellationToken ct)
         {
             return _uiStack.Show(entity, ct);
