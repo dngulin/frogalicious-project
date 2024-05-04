@@ -47,7 +47,7 @@ namespace Frog.Core.Editor
                 WriteWithIndent(writer, 4, $"public static class {target.Type}");
                 WriteWithIndent(writer, 4, "{");
                 {
-                    WriteWithIndent(writer, 8, "public static class State");
+                    WriteWithIndent(writer, 8, "public static class StateHashes");
                     WriteWithIndent(writer, 8, "{");
                     foreach (var s in contents.States)
                     {
@@ -57,7 +57,7 @@ namespace Frog.Core.Editor
 
                     writer.WriteLine();
 
-                    WriteWithIndent(writer, 8, "public static class Parameter");
+                    WriteWithIndent(writer, 8, "public static class ParamHashes");
                     WriteWithIndent(writer, 8, "{");
                     foreach (var p in contents.Parameters)
                     {
@@ -67,7 +67,7 @@ namespace Frog.Core.Editor
 
                     writer.WriteLine();
 
-                    WriteWithIndent(writer, 8, "public static class Layer");
+                    WriteWithIndent(writer, 8, "public static class LayerIndices");
                     WriteWithIndent(writer, 8, "{");
                     for (var i = 0; i < contents.Layers.Length; i++)
                     {
@@ -105,13 +105,13 @@ namespace Frog.Core.Editor
 
                         foreach (var s in contents.States)
                         {
-                            var line = $"Assert.That({t}.State.{s} == Animator.StringToHash(\"{s}\"));";
+                            var line = $"Assert.That({t}.StateHashes.{s} == Animator.StringToHash(\"{s}\"));";
                             WriteWithIndent(writer, 12, line);
                         }
 
                         foreach (var p in contents.Parameters)
                         {
-                            var line = $"Assert.That({t}.Parameter.{p} == Animator.StringToHash(\"{p}\"));";
+                            var line = $"Assert.That({t}.ParamHashes.{p} == Animator.StringToHash(\"{p}\"));";
                             WriteWithIndent(writer, 12, line);
                         }
                     }

@@ -10,11 +10,11 @@ namespace Frog.Core.Tests
         [Test]
         public void CompareHashes()
         {
-            Assert.That(UiAnimatorHashes.State.Appearing == Animator.StringToHash("Appearing"));
-            Assert.That(UiAnimatorHashes.State.Appeared == Animator.StringToHash("Appeared"));
-            Assert.That(UiAnimatorHashes.State.Disappeared == Animator.StringToHash("Disappeared"));
-            Assert.That(UiAnimatorHashes.State.Disappearing == Animator.StringToHash("Disappearing"));
-            Assert.That(UiAnimatorHashes.Parameter.IsVisible == Animator.StringToHash("IsVisible"));
+            Assert.That(UiAnimatorHashes.StateHashes.Appearing == Animator.StringToHash("Appearing"));
+            Assert.That(UiAnimatorHashes.StateHashes.Appeared == Animator.StringToHash("Appeared"));
+            Assert.That(UiAnimatorHashes.StateHashes.Disappeared == Animator.StringToHash("Disappeared"));
+            Assert.That(UiAnimatorHashes.StateHashes.Disappearing == Animator.StringToHash("Disappearing"));
+            Assert.That(UiAnimatorHashes.ParamHashes.IsVisible == Animator.StringToHash("IsVisible"));
         }
     }
 }
