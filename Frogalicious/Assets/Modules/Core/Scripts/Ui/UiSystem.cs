@@ -41,22 +41,6 @@ namespace Frog.Core.Ui
 
         public UiEntity HideInstant(UiEntityId id, Transform parent) => _uiStack.HideInstant(id, parent);
 
-
-        public FullScreenUiEntityId ShowFullscreen(Transform contents)
-        {
-            var container = StaticUiEntity.Create();
-            container.AttachContent(contents);
-            return (FullScreenUiEntityId)_uiStack.ShowInstant(container);
-        }
-
-        public Transform HideFullscreen(FullScreenUiEntityId id, Transform contentsParent)
-        {
-            var window = (StaticUiEntity)_uiStack.HideInstant((UiEntityId)id, null);
-            var contents = window.DetachContent(contentsParent);
-            window.DestroyGameObject();
-            return contents;
-        }
-
         public void ShowLoading()
         {
             if (_loadingWindowId.HasValue)
@@ -73,9 +57,5 @@ namespace Frog.Core.Ui
             _uiStack.HideInstant(_loadingWindowId.Value, _loadingUiParent);
             _loadingWindowId = null;
         }
-    }
-
-    public enum FullScreenUiEntityId : uint
-    {
     }
 }

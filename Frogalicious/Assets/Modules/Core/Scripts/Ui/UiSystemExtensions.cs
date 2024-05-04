@@ -25,13 +25,6 @@ namespace Frog.Core.Ui
             ui.ShowLoading();
             return new LoadingUiHolder(ui);
         }
-
-        public static FullScreenUiHolder FullscreenUi<T>(this UiSystem ui, T contents) where T : MonoBehaviour
-        {
-            var parent = contents.transform.parent;
-            var id = ui.ShowFullscreen(contents.transform);
-            return new FullScreenUiHolder(ui, id, parent);
-        }
     }
 
     public readonly struct UiEntityHolder : IDisposable
@@ -84,26 +77,6 @@ namespace Frog.Core.Ui
         {
             if (_ui.IsUnderlyingGameObjectAlive)
                 _ui.HideLoading();
-        }
-    }
-
-    public readonly struct FullScreenUiHolder : IDisposable
-    {
-        private readonly UiSystem _ui;
-        private readonly FullScreenUiEntityId _id;
-        private readonly Transform _contentsParent;
-
-        public FullScreenUiHolder(UiSystem ui, FullScreenUiEntityId id, Transform contentsParent)
-        {
-            _ui = ui;
-            _id = id;
-            _contentsParent = contentsParent;
-        }
-
-        public void Dispose()
-        {
-            if (_ui.IsUnderlyingGameObjectAlive)
-                _ui.HideFullscreen(_id, _contentsParent);
         }
     }
 }
