@@ -38,7 +38,7 @@ namespace Frog.Meta.MainMenu
             _uiPrefab.ReleaseSafe();
         }
 
-        public GameChapterConfig ChapterConfig => _chapterCfgOp.Result;
-        public MainMenuUi MenuPrefab => _uiPrefab.Result.GetComponent<MainMenuUi>();
+        public readonly GameChapterConfig ChapterConfig => _chapterCfgOp.Result;
+        public readonly MainMenuUi MenuPrefab => _uiPrefab.Result.GetComponent<MainMenuUi>();
     }
 }

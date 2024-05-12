@@ -23,7 +23,7 @@ namespace Frog.Meta.Level
 
         private readonly AwaitableOperation _gameplay = new AwaitableOperation();
 
-        public LevelStateHandler(RootScope scope, LevelResources res)
+        public LevelStateHandler(in RootScope scope, in LevelResources res)
         {
             _res = res;
             _view = new LevelView(res.ViewConfig, res.Data, scope.Camera);

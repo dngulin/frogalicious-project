@@ -50,8 +50,8 @@ namespace Frog.Meta.Level
             _panelPrefabOp.ReleaseSafe();
         }
 
-        public LevelData Data => _dataOp.Result;
-        public LevelViewConfig ViewConfig => _viewCfgOp.Result;
-        public LevelPanelUi PanelPrefab => _panelPrefabOp.Result.GetComponent<LevelPanelUi>();
+        public readonly LevelData Data => _dataOp.Result;
+        public readonly LevelViewConfig ViewConfig => _viewCfgOp.Result;
+        public readonly LevelPanelUi PanelPrefab => _panelPrefabOp.Result.GetComponent<LevelPanelUi>();
     }
 }
