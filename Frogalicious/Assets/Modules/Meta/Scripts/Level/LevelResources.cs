@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Frog.Level.Data;
 using Frog.Level.Ui;
@@ -8,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Frog.Meta.Level
 {
-    public struct LevelResources
+    public struct LevelResources : IDisposable
     {
         public static async Awaitable<LevelResources> Load(AssetReferenceT<LevelData> dataRef, CancellationToken ct)
         {
@@ -42,13 +43,11 @@ namespace Frog.Meta.Level
         private AsyncOperationHandle<LevelViewConfig> _viewCfgOp;
         private AsyncOperationHandle<GameObject> _levelPanelUiOp;
 
-        public void Release()
+        public void Dispose()
         {
-            Addressables.Release(_dataOp);
-            Addressables.Release(_viewCfgOp);
-            Addressables.Release(_levelPanelUiOp);
-
-            this = default;
+            _dataOp.ReleaseSafe();
+            _viewCfgOp.ReleaseSafe();
+            _levelPanelUiOp.ReleaseSafe();
         }
 
         public LevelData Data => _dataOp.Result;

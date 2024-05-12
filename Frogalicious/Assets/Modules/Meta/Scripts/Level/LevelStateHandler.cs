@@ -37,7 +37,7 @@ namespace Frog.Meta.Level
         {
             _view.Dispose();
             _panel.DestroyGameObject();
-            _res.Release();
+            _res.Dispose();
         }
 
         public override void Tick(in RootScope scope, float dt)
