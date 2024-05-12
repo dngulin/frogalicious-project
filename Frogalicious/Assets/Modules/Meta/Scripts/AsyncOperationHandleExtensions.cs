@@ -13,5 +13,10 @@ namespace Frog.Meta
                 handle = default;
             }
         }
+
+        public static bool IsValidAndDone<T>(this AsyncOperationHandle<T> handle)
+        {
+            return handle.IsValid() && handle.IsDone;
+        }
     }
 }

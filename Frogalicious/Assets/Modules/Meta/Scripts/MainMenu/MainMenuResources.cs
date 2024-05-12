@@ -10,35 +10,38 @@ namespace Frog.Meta.MainMenu
         public static async Awaitable<MainMenuResources> Load(CancellationToken ct)
         {
             var chapterCfg = Addressables.LoadAssetAsync<GameChapterConfig>("TutorialChapter.asset");
-            var uiPrefab = Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab");
+            var menuPrefab = Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab");
 
             await chapterCfg.Task;
             ct.ThrowIfCancellationRequested();
 
-            await uiPrefab.Task;
+            await menuPrefab.Task;
             ct.ThrowIfCancellationRequested();
 
-            return new MainMenuResources(chapterCfg, uiPrefab);
+            return new MainMenuResources(chapterCfg, menuPrefab);
         }
 
         private MainMenuResources(
             AsyncOperationHandle<GameChapterConfig> chapterCfgOp,
-            AsyncOperationHandle<GameObject> uiPrefab)
+            AsyncOperationHandle<GameObject> menuPrefab)
         {
+            Debug.Assert(chapterCfgOp.IsValidAndDone());
+            Debug.Assert(menuPrefab.IsValidAndDone());
+
             _chapterCfgOp = chapterCfgOp;
-            _uiPrefab = uiPrefab;
+            _menuPrefab = menuPrefab;
         }
 
         private AsyncOperationHandle<GameChapterConfig> _chapterCfgOp;
-        private AsyncOperationHandle<GameObject> _uiPrefab;
+        private AsyncOperationHandle<GameObject> _menuPrefab;
 
         public void Dispose()
         {
             _chapterCfgOp.ReleaseSafe();
-            _uiPrefab.ReleaseSafe();
+            _menuPrefab.ReleaseSafe();
         }
 
         public readonly GameChapterConfig ChapterConfig => _chapterCfgOp.Result;
-        public readonly MainMenuUi MenuPrefab => _uiPrefab.Result.GetComponent<MainMenuUi>();
+        public readonly MainMenuUi MenuPrefab => _menuPrefab.Result.GetComponent<MainMenuUi>();
     }
 }

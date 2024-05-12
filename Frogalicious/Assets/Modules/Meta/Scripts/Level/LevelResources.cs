@@ -34,6 +34,10 @@ namespace Frog.Meta.Level
             AsyncOperationHandle<LevelViewConfig> viewCfgOp,
             AsyncOperationHandle<GameObject> panelPrefabOp)
         {
+            Debug.Assert(dataOp.IsValidAndDone());
+            Debug.Assert(viewCfgOp.IsValidAndDone());
+            Debug.Assert(panelPrefabOp.IsValidAndDone());
+
             _dataOp = dataOp;
             _viewCfgOp = viewCfgOp;
             _panelPrefabOp = panelPrefabOp;
