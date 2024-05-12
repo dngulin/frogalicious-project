@@ -1,14 +1,14 @@
 using Frog.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Frog.Meta.MainMenu.View
 {
-    [RequireComponent(typeof(Collider2D))]
-    public class LevelObjectView : MonoBehaviour
+    public class LevelObjectView : MonoBehaviour, IPointerDownHandler
     {
         private Flag _clickedFlag;
 
-        private void OnMouseDown() => _clickedFlag.SetAssertive();
+        public void OnPointerDown(PointerEventData _) => _clickedFlag.SetAssertive();
 
         public bool PollClick() => _clickedFlag.Reset();
     }

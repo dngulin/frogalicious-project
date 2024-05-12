@@ -1,8 +1,6 @@
-using System;
 using System.Threading;
 using Frog.Core;
 using Frog.Core.Ui;
-using Frog.Level.Data;
 using Frog.Level.Ui;
 using Frog.Level.View;
 using Frog.Meta.Level;
@@ -14,25 +12,33 @@ namespace Frog.Meta.MainMenu
 {
     public class MainMenuStateHandler : AsyncStateHandler<RootScope>
     {
-        private readonly MainMenuUi _menu;
-        private readonly AwaitableOperation<MainMenuUi.Command> _uiPoll = new AwaitableOperation<MainMenuUi.Command>();
+        private GameChapterConfig _chapterConfig;
 
-        public MainMenuStateHandler(in RootScope scope, MainMenuUi mainMenuPrefab)
+        private readonly MainMenuUi _menu;
+        private readonly MainMenuView _view;
+
+        private readonly AwaitableOperation<int> _waitLevelClick = new AwaitableOperation<int>();
+
+        public MainMenuStateHandler(in RootScope scope, MainMenuUi mainMenuPrefab, GameChapterConfig chapterConfig)
         {
-            _menu = UnityEngine.Object.Instantiate(mainMenuPrefab, scope.GameObjectStash);
+            _chapterConfig = chapterConfig;
+
+            _menu = Object.Instantiate(mainMenuPrefab, scope.GameObjectStash);
+            _view = new MainMenuView(chapterConfig.MapPrefab);
+            scope.Camera.backgroundColor = chapterConfig.BgColor;
         }
 
         public override void Dispose(in RootScope scope)
         {
-            _uiPoll.Dispose();
+            _waitLevelClick.Dispose();
             _menu.DestroyGameObject();
         }
 
         public override void Tick(in RootScope scope, float dt)
         {
-            if (_menu.Poll().TryGetValue(out var command))
+            if (_view.PollLevelClick().TryGetValue(out var command))
             {
-                _uiPoll.EndAssertive(command);
+                _waitLevelClick.EndAssertive(command);
             }
         }
 
@@ -40,28 +46,18 @@ namespace Frog.Meta.MainMenu
         {
             using (scope.Ui.InstantUi(_menu))
             {
-                var command = await _uiPoll.ExecuteAsync(ct);
-                switch (command)
+                var levelIndex = await _waitLevelClick.ExecuteAsync(ct);
+                using (scope.Ui.LoadingUi())
                 {
-                    case MainMenuUi.Command.Play:
-                        using (scope.Ui.LoadingUi())
-                        {
-                            var levelStateHandler = await CreateLevelStateHandler(scope, ct);
-                            return Transition.Push(levelStateHandler);
-                        }
-
-                    case MainMenuUi.Command.Exit:
-                        return Transition.Pop();
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    var levelStateHandler = await CreateLevelStateHandler(scope, levelIndex, ct);
+                    return Transition.Push(levelStateHandler);
                 }
             }
         }
 
-        private static async Awaitable<LevelStateHandler> CreateLevelStateHandler(RootScope scope, CancellationToken ct)
+        private async Awaitable<LevelStateHandler> CreateLevelStateHandler(RootScope scope, int levelIndex, CancellationToken ct)
         {
-            var data = await Addressables.LoadAssetAsync<LevelData>("Assets/Levels/Castle1.asset").Task;
+            var data = await _chapterConfig.LevelList[levelIndex].LoadAssetAsync().Task;
             ct.ThrowIfCancellationRequested();
 
             var viewConfig = await Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset").Task;

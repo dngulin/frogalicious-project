@@ -39,7 +39,8 @@ namespace Frog.Meta.Splash
                 using (scope.Ui.LoadingUi())
                 {
                     var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
-                    var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>());
+                    var chapterConfig = await Addressables.LoadAssetAsync<GameChapterConfig>("TutorialChapter.asset").Task;
+                    var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>(), chapterConfig);
 
                     return Transition.Replace(stateHandler);
                 }

@@ -8,9 +8,9 @@ namespace Frog.Meta.MainMenu
     {
         private MapView _map;
 
-        public MainMenuView(MapView map)
+        public MainMenuView(MapView mapPrefab)
         {
-            _map = map;
+            _map = UnityEngine.Object.Instantiate(mapPrefab);
         }
 
         public void Dispose() => _map.DestroyGameObject();
