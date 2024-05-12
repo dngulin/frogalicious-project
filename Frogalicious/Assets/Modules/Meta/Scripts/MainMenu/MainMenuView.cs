@@ -27,5 +27,7 @@ namespace Frog.Meta.MainMenu
             _cameraFitter.SetPosition(Vector2.zero);
             _cameraFitter.UpdateSize();
         }
+
+        public void SetVisible(bool visible) => _map.gameObject.SetActive(visible);
     }
 }

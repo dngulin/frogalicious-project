@@ -47,6 +47,7 @@ namespace Frog.Meta.MainMenu
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
             _view.SetupCamera();
+            _view.SetVisible(true);
 
             using (scope.Ui.InstantUi(_menu))
             {
@@ -54,6 +55,7 @@ namespace Frog.Meta.MainMenu
                 using (scope.Ui.LoadingUi())
                 {
                     var levelStateHandler = await CreateLevelStateHandler(scope, levelIndex, ct);
+                    _view.SetVisible(false);
                     return Transition.Push(levelStateHandler);
                 }
             }
