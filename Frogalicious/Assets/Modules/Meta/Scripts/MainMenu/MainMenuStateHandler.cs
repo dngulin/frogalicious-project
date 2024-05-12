@@ -1,12 +1,9 @@
 using System.Threading;
 using Frog.Core;
 using Frog.Core.Ui;
-using Frog.Level.Ui;
-using Frog.Level.View;
 using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Frog.Meta.MainMenu
 {
@@ -54,26 +51,13 @@ namespace Frog.Meta.MainMenu
                 var levelIndex = await _waitLevelClick.ExecuteAsync(ct);
                 using (scope.Ui.LoadingUi())
                 {
-                    var levelStateHandler = await CreateLevelStateHandler(scope, levelIndex, ct);
+                    var levelRef = _chapterConfig.LevelList[levelIndex];
+                    var resources = await LevelResources.Load(levelRef, ct);
+
                     _view.SetVisible(false);
-                    return Transition.Push(levelStateHandler);
+                    return Transition.Push(new LevelStateHandler(scope, resources));
                 }
             }
-        }
-
-        private async Awaitable<LevelStateHandler> CreateLevelStateHandler(RootScope scope, int levelIndex, CancellationToken ct)
-        {
-            var data = await _chapterConfig.LevelList[levelIndex].LoadAssetAsync().Task;
-            _chapterConfig.LevelList[levelIndex].ReleaseAsset();
-            ct.ThrowIfCancellationRequested();
-
-            var viewConfig = await Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset").Task;
-            ct.ThrowIfCancellationRequested();
-
-            var panelPrefab = await Addressables.LoadAssetAsync<GameObject>("Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab").Task;
-            ct.ThrowIfCancellationRequested();
-
-            return new LevelStateHandler(scope, data, viewConfig, panelPrefab.GetComponent<LevelPanelUi>());
         }
     }
 }

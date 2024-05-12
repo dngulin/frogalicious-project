@@ -3,7 +3,6 @@ using Frog.Collections;
 using Frog.Core;
 using Frog.Core.Ui;
 using Frog.Level;
-using Frog.Level.Data;
 using Frog.Level.Simulation;
 using Frog.Level.Ui;
 using Frog.Level.View;
@@ -15,6 +14,8 @@ namespace Frog.Meta.Level
 {
     public class LevelStateHandler : AsyncStateHandler<RootScope>
     {
+        private LevelResources _res;
+
         private readonly LevelView _view;
         private readonly LevelPanelUi _panel;
 
@@ -22,12 +23,13 @@ namespace Frog.Meta.Level
 
         private readonly AwaitableOperation _gameplay = new AwaitableOperation();
 
-        public LevelStateHandler(in RootScope scope, LevelData data, LevelViewConfig viewConfig, LevelPanelUi uiPrefab)
+        public LevelStateHandler(RootScope scope, LevelResources res)
         {
-            _view = new LevelView(viewConfig, data, scope.Camera);
-            _panel = Object.Instantiate(uiPrefab, scope.GameObjectStash);
+            _res = res;
+            _view = new LevelView(res.ViewConfig, res.Data, scope.Camera);
+            _panel = Object.Instantiate(res.PanelPrefab, scope.GameObjectStash);
 
-            LevelSimulation.SetupInitialState(ref _state, data);
+            LevelSimulation.SetupInitialState(ref _state, res.Data);
             _view.CreateInitialObjects(in _state.Level);
         }
 
@@ -35,6 +37,7 @@ namespace Frog.Meta.Level
         {
             _view.Dispose();
             _panel.DestroyGameObject();
+            _res.Release();
         }
 
         public override void Tick(in RootScope scope, float dt)
