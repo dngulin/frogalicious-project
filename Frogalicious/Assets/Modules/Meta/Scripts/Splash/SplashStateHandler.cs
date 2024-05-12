@@ -4,7 +4,6 @@ using Frog.Core.Ui;
 using Frog.Meta.MainMenu;
 using Frog.StateTracker;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Frog.Meta.Splash
 {
@@ -38,11 +37,8 @@ namespace Frog.Meta.Splash
 
                 using (scope.Ui.LoadingUi())
                 {
-                    var menuGoPrefab = await Addressables.LoadAssetAsync<GameObject>("MainMenuUi.prefab").Task;
-                    var chapterConfig = await Addressables.LoadAssetAsync<GameChapterConfig>("TutorialChapter.asset").Task;
-                    var stateHandler = new MainMenuStateHandler(scope, menuGoPrefab.GetComponent<MainMenuUi>(), chapterConfig);
-
-                    return Transition.Replace(stateHandler);
+                    var resources = await MainMenuResources.Load(ct);
+                    return Transition.Replace(new MainMenuStateHandler(scope, resources));
                 }
             }
         }
