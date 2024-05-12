@@ -15,7 +15,7 @@ namespace Frog.Meta.Level
         {
             var data = dataRef.LoadAssetAsync();
             var viewCfg = Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset");
-            var ui = Addressables.LoadAssetAsync<GameObject>("Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab");
+            var panelPrefab = Addressables.LoadAssetAsync<GameObject>("Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab");
 
             await data.Task;
             ct.ThrowIfCancellationRequested();
@@ -23,35 +23,35 @@ namespace Frog.Meta.Level
             await viewCfg.Task;
             ct.ThrowIfCancellationRequested();
 
-            await ui.Task;
+            await panelPrefab.Task;
             ct.ThrowIfCancellationRequested();
 
-            return new LevelResources(data, viewCfg, ui);
+            return new LevelResources(data, viewCfg, panelPrefab);
         }
 
         private LevelResources(
             AsyncOperationHandle<LevelData> dataOp,
             AsyncOperationHandle<LevelViewConfig> viewCfgOp,
-            AsyncOperationHandle<GameObject> levelPanelUiOp)
+            AsyncOperationHandle<GameObject> panelPrefabOp)
         {
             _dataOp = dataOp;
             _viewCfgOp = viewCfgOp;
-            _levelPanelUiOp = levelPanelUiOp;
+            _panelPrefabOp = panelPrefabOp;
         }
 
         private AsyncOperationHandle<LevelData> _dataOp;
         private AsyncOperationHandle<LevelViewConfig> _viewCfgOp;
-        private AsyncOperationHandle<GameObject> _levelPanelUiOp;
+        private AsyncOperationHandle<GameObject> _panelPrefabOp;
 
         public void Dispose()
         {
             _dataOp.ReleaseSafe();
             _viewCfgOp.ReleaseSafe();
-            _levelPanelUiOp.ReleaseSafe();
+            _panelPrefabOp.ReleaseSafe();
         }
 
         public LevelData Data => _dataOp.Result;
         public LevelViewConfig ViewConfig => _viewCfgOp.Result;
-        public LevelPanelUi PanelPrefab => _levelPanelUiOp.Result.GetComponent<LevelPanelUi>();
+        public LevelPanelUi PanelPrefab => _panelPrefabOp.Result.GetComponent<LevelPanelUi>();
     }
 }
