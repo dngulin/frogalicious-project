@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Test
   m_EditorClassIdentifier: 
   m_GroupName: Test
-  m_Data:
-    m_SerializedData: []
   m_GUID: 70a06253ae932819bbd1a92259f1adff
   m_SerializeEntries:
   - m_GUID: ba204de3cf158e887b31ad7b2edb586b
@@ -34,6 +32,31 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db1d7e69d71b5a2a08b89cb0d58c887c
     m_Address: Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36bab0d053e4df041bd477eb7475d48a
+    m_Address: Assets/Levels/TutorialOne.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 430dbf991dfb15b4fb5350a743e9788c
+    m_Address: Assets/Levels/TutorialTwo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd5f2e2c6cd5d014097d2499493a168c
+    m_Address: Assets/Levels/TutorialThree.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e3d0029c86995146a43e0b9502eb05b
+    m_Address: Assets/Levels/TutorialFour.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68f15c09d24b1374f9390bdf6229e112
+    m_Address: Assets/Levels/TutorialFive.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

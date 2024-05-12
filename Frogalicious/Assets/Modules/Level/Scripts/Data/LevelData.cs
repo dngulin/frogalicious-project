@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Frog.Level.Data
 {
-    [CreateAssetMenu(menuName = "Level Data", fileName = nameof(LevelData))]
+    [CreateAssetMenu(menuName = "Frog/Level/Data", fileName = nameof(LevelData))]
     public class LevelData : ScriptableObject
     {
         public ushort Width;

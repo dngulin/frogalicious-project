@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Frog.LevelEditor.Config
 {
-    [CreateAssetMenu(menuName = "LevelEditor/IconsConfig", fileName = nameof(LevelEditorIcons))]
+    [CreateAssetMenu(menuName = "Frog/LevelEditor/IconsConfig", fileName = nameof(LevelEditorIcons))]
     public class LevelEditorIcons : ScriptableObject
     {
         public TileSprite[] Tiles;
