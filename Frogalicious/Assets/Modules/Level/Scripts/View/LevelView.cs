@@ -16,20 +16,19 @@ namespace Frog.Level.View
         private readonly Dictionary<ushort, EntityView> _objects = new Dictionary<ushort, EntityView>();
 
         private readonly LevelViewConfig _viewConfig;
-        private readonly Camera _camera;
+
+        private OrthographicCameraFitter _cameraFitter;
 
         public LevelView(LevelViewConfig viewConfig, LevelData data, Camera camera)
         {
             var rootGo = new GameObject("LevelRoot");
             _root = rootGo.transform;
 
-            var center = new Vector2(data.Width - 1, data.Height - 1) * 0.5f;
-            camera.transform.position = new Vector3(center.x, center.y, -10);
             camera.backgroundColor = viewConfig.BackgroundColor;
 
             _viewConfig = viewConfig;
-            _camera = camera;
-            UpdateOrthographicSize();
+            _cameraFitter = new OrthographicCameraFitter(camera, new Vector2(11, 7));
+            _cameraFitter.SetPosition(new Vector2(data.Width - 1, data.Height - 1) * 0.5f);
         }
 
         public void CreateInitialObjects(in LevelState state)
@@ -72,7 +71,7 @@ namespace Frog.Level.View
 
         public void Tick(float dt)
         {
-            UpdateOrthographicSize();
+            _cameraFitter.UpdateSizeIfAspectChanged();
 
             if (!IsPlayingTimeline)
                 return;
@@ -91,26 +90,5 @@ namespace Frog.Level.View
         }
 
         public bool IsPlayingTimeline => _timeline.Count() > 0;
-
-        private const float MaxHeight = 7f;
-        private const float MaxWidth = 11f;
-        private float _lastAspect;
-
-        private void UpdateOrthographicSize()
-        {
-            if (Mathf.Approximately(_lastAspect, _camera.aspect))
-                return;
-
-            _lastAspect = _camera.aspect;
-
-            if (_lastAspect > 1)
-            {
-                _camera.orthographicSize = MaxHeight / 2;
-            }
-            else
-            {
-                _camera.orthographicSize = MaxWidth / (2 * _camera.aspect);
-            }
-        }
     }
 }

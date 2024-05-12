@@ -24,7 +24,7 @@ namespace Frog.Meta.MainMenu
             _chapterConfig = chapterConfig;
 
             _menu = Object.Instantiate(mainMenuPrefab, scope.GameObjectStash);
-            _view = new MainMenuView(chapterConfig.MapPrefab);
+            _view = new MainMenuView(scope.Camera, chapterConfig.MapPrefab);
             scope.Camera.backgroundColor = chapterConfig.BgColor;
         }
 
@@ -36,6 +36,8 @@ namespace Frog.Meta.MainMenu
 
         public override void Tick(in RootScope scope, float dt)
         {
+            _view.UpdateCamera();
+
             if (_view.PollLevelClick().TryGetValue(out var command))
             {
                 _waitLevelClick.EndAssertive(command);
@@ -44,6 +46,8 @@ namespace Frog.Meta.MainMenu
 
         public override async Awaitable<Transition> ExecuteAsync(RootScope scope, CancellationToken ct)
         {
+            _view.SetupCamera();
+
             using (scope.Ui.InstantUi(_menu))
             {
                 var levelIndex = await _waitLevelClick.ExecuteAsync(ct);
@@ -58,6 +62,7 @@ namespace Frog.Meta.MainMenu
         private async Awaitable<LevelStateHandler> CreateLevelStateHandler(RootScope scope, int levelIndex, CancellationToken ct)
         {
             var data = await _chapterConfig.LevelList[levelIndex].LoadAssetAsync().Task;
+            _chapterConfig.LevelList[levelIndex].ReleaseAsset();
             ct.ThrowIfCancellationRequested();
 
             var viewConfig = await Addressables.LoadAssetAsync<LevelViewConfig>("Assets/Modules/Level/Config/LevelViewConfig.asset").Task;
