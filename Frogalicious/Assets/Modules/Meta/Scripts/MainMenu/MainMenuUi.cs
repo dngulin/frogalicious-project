@@ -9,7 +9,7 @@ namespace Frog.Meta.MainMenu
     {
         public enum Command
         {
-            Play,
+            Continue,
             Exit,
         }
 
@@ -21,7 +21,7 @@ namespace Frog.Meta.MainMenu
 
         private void Start()
         {
-            _playButton.onClick.AddListener(() => _commandCell.PushOrReplaceWithAssertion(Command.Play));
+            _playButton.onClick.AddListener(() => _commandCell.PushOrReplaceWithAssertion(Command.Continue));
             _exitButton.onClick.AddListener(() => _commandCell.PushOrReplaceWithAssertion(Command.Exit));
         }
 

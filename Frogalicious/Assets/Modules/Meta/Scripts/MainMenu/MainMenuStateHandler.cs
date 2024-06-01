@@ -1,9 +1,12 @@
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Frog.Core;
 using Frog.Core.Ui;
 using Frog.Meta.Level;
 using Frog.StateTracker;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Frog.Meta.MainMenu
 {
@@ -14,7 +17,7 @@ namespace Frog.Meta.MainMenu
         private readonly MainMenuUi _menu;
         private readonly MainMenuView _view;
 
-        private readonly AwaitableOperation<int> _waitLevelClick = new AwaitableOperation<int>();
+        private readonly AwaitableOperation<MainMenuCommand> _waitCommand = new AwaitableOperation<MainMenuCommand>();
 
         public MainMenuStateHandler(in RootScope scope, in MainMenuResources res)
         {
@@ -26,7 +29,7 @@ namespace Frog.Meta.MainMenu
 
         public override void Dispose(in RootScope scope)
         {
-            _waitLevelClick.Dispose();
+            _waitCommand.Dispose();
             _menu.DestroyGameObject();
             _res.Dispose();
         }
@@ -35,9 +38,16 @@ namespace Frog.Meta.MainMenu
         {
             _view.UpdateCamera();
 
-            if (_view.PollLevelClick().TryGetValue(out var command))
+            var optUiCommand = _menu.Poll();
+            var optLevel = _view.PollLevelClick();
+
+            if (optUiCommand.TryGetValue(out var uiCommand))
             {
-                _waitLevelClick.EndAssertive(command);
+                _waitCommand.EndAssertive(MainMenuCommand.FromUiCommand(uiCommand));
+            }
+            else if (optLevel.TryGetValue(out var levelIndex))
+            {
+                _waitCommand.EndAssertive(MainMenuCommand.PlayLevel(levelIndex));
             }
         }
 
@@ -48,15 +58,26 @@ namespace Frog.Meta.MainMenu
 
             using (scope.Ui.InstantUi(_menu))
             {
-                var levelIndex = await _waitLevelClick.ExecuteAsync(ct);
-                using (scope.Ui.LoadingUi())
+                var command = await _waitCommand.ExecuteAsync(ct);
+                return command.Id switch
                 {
-                    var levelDataRef = _res.ChapterConfig.LevelList[levelIndex];
-                    var resources = await LevelResources.Load(levelDataRef, ct);
+                    MainMenuCommandId.PlayLevel => await PlayLevel(scope, command.LevelIndex, ct),
+                    MainMenuCommandId.Continue => await PlayLevel(scope, 0, ct),
+                    MainMenuCommandId.ExitGame => Transition.Pop(),
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
+            }
+        }
 
-                    _view.SetVisible(false);
-                    return Transition.Push(new LevelStateHandler(scope, resources));
-                }
+        private async Task<Transition> PlayLevel(RootScope scope, int levelIndex, CancellationToken ct)
+        {
+            using (scope.Ui.LoadingUi())
+            {
+                var levelDataRef = _res.ChapterConfig.LevelList[levelIndex];
+                var resources = await LevelResources.Load(levelDataRef, ct);
+
+                _view.SetVisible(false);
+                return Transition.Push(new LevelStateHandler(scope, resources));
             }
         }
     }
