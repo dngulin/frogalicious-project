@@ -346,3 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9e1704616c84650986a68a79bc7e51c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _locked: {r: 0.66638184, g: 0.66638184, b: 0.66638184, a: 1}
+  _unlocked: {r: 0, g: 0.71575177, b: 0.21618232, a: 1}
+  _completed: {r: 1, g: 0.78009325, b: 0.35385418, a: 1}
+  _background: {fileID: 3714971802104971715}

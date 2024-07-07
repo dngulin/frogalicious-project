@@ -56,6 +56,8 @@ namespace Frog.Meta.MainMenu
             _view.SetupCamera();
             _view.SetVisible(true);
 
+            _view.SetCurrentLevel(2);
+
             using (scope.Ui.InstantUi(_menu))
             {
                 var command = await _waitCommand.ExecuteAsync(ct);

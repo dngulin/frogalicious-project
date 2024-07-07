@@ -29,5 +29,7 @@ namespace Frog.Meta.MainMenu
         }
 
         public void SetVisible(bool visible) => _map.gameObject.SetActive(visible);
+
+        public void SetCurrentLevel(int idx) => _map.SetCurrentLevel(idx);
     }
 }

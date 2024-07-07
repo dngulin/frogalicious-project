@@ -17,5 +17,21 @@ namespace Frog.Meta.MainMenu.View
 
             return null;
         }
+
+        public void SetCurrentLevel( int currIdx )
+        {
+            for (var idx = 0; idx < _levels.Length; idx++)
+            {
+                _levels[idx].SetState(GetLevelState(idx, currIdx));
+            }
+        }
+
+        private static LevelObjectState GetLevelState(int idx, int currIdx)
+        {
+            if (idx == currIdx)
+                return LevelObjectState.Unlocked;
+
+            return idx > currIdx ? LevelObjectState.Locked : LevelObjectState.Completed;
+        }
     }
 }
