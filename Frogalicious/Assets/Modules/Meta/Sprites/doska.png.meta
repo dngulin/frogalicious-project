@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5f7b65cf725f75441aaaa4a860eee4b0
+guid: 4d48059ff1c1ea04a966b85edc44308a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7932798033344189819
-    second: grass_0
+      213: 1279321139610787934
+    second: doska_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: grass_0
+      name: doska_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b75d56418c5f61e60800000000000000
-      internalID: 7932798033344189819
+      spriteID: e5026206ccf01c110800000000000000
+      internalID: 1279321139610787934
       vertices: []
       indices: 
       edges: []
@@ -133,7 +133,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      grass_0: 7932798033344189819
+      doska_0: 1279321139610787934
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
