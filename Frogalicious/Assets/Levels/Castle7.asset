@@ -16,7 +16,7 @@ MonoBehaviour:
   Height: 6
   Cells:
   - Object:
-      Type: 0
+      Type: 5
       Variant: 0
     Tile:
       Type: 1

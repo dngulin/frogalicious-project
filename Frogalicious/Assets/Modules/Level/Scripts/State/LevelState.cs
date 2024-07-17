@@ -9,6 +9,7 @@ namespace Frog.Level.State
     {
         public CellsState Cells;
         public CharacterState Character;
+        public bool IsCompleted;
     }
 
     [NoCopy]

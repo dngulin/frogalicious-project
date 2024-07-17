@@ -20,6 +20,7 @@ namespace Frog.Level.View
         public ObstacleObjectView Obstacle;
         public StaticEntityView Box;
         public StaticEntityView Coin;
+        public StaticEntityView Exit;
     }
 
     [Serializable]

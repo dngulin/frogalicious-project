@@ -196,7 +196,7 @@ MonoBehaviour:
       Type: 2
       Variant: 1
   - Object:
-      Type: 0
+      Type: 5
       Variant: 0
     Tile:
       Type: 1

@@ -18,10 +18,11 @@ namespace Frog.Level.View
                 BoardObjectType.Obstacle => SpawnObstacle(config, state, point, parent),
                 BoardObjectType.Box => Spawn(config.Box, point, parent),
                 BoardObjectType.Coin => Spawn(config.Coin, point, parent),
+                BoardObjectType.Exit => Spawn(config.Exit, point, parent),
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }
-        
+
         private static T Spawn<T>(T prefab, in BoardPoint p, Transform parent) where T : Object
         {
             return Object.Instantiate(prefab, p.ToVector2(), Quaternion.identity, parent);

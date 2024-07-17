@@ -187,7 +187,7 @@ namespace Frog.Level.Simulation
             if (byObjType != BoardObjectType.Character)
                 return false;
 
-            return obj.Type == BoardObjectType.Coin;
+            return obj.Type == BoardObjectType.Coin || obj.Type == BoardObjectType.Exit;
         }
 
         private static void CollectObject(ref SimState state, ref ObjectState obj, BoardObjectType byObjType)
@@ -197,8 +197,12 @@ namespace Frog.Level.Simulation
                 case BoardObjectType.Coin:
                     state.TimeLine.AddDisappear(obj.Id);
                     obj = default;
-                    if (byObjType == BoardObjectType.Character)
-                        state.Level.Character.Coins++;
+                    state.Level.Character.Coins++;
+                    break;
+                case BoardObjectType.Exit:
+                    state.TimeLine.AddDisappear(obj.Id);
+                    obj = default;
+                    state.Level.IsCompleted = true;
                     break;
                 default:
                     throw new InvalidOperationException();

@@ -29,3 +29,4 @@ MonoBehaviour:
   Obstacle: {fileID: -4530098953611894849, guid: e390f17400939e27890984ae8ec7d064, type: 3}
   Box: {fileID: -1337075441224353445, guid: 7255d55fb480a941a8be3870c5a269e8, type: 3}
   Coin: {fileID: 1238313054251440815, guid: 9ab54a32e3eafbaa99c5d66e669c08ea, type: 3}
+  Exit: {fileID: 1238313054251440815, guid: 328fed8183fccda52982131d19835db2, type: 3}

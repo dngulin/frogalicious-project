@@ -250,7 +250,7 @@ MonoBehaviour:
       Type: 3
       Variant: 3
   - Object:
-      Type: 0
+      Type: 5
       Variant: 0
     Tile:
       Type: 1
