@@ -21,7 +21,7 @@ namespace Frog.Meta.Level
 
         private SimState _state;
 
-        private readonly AwaitableOperation _gameplay = new AwaitableOperation();
+        private readonly AwaitableOperation<bool> _gameplay = new AwaitableOperation<bool>();
 
         public LevelStateHandler(in RootScope scope, in LevelResources res)
         {
@@ -42,15 +42,24 @@ namespace Frog.Meta.Level
 
         public override void Tick(in RootScope scope, float dt)
         {
+            if (!_gameplay.IsRunning)
+                return;
+
             if (_panel.Poll().TryGetValue(out _))
             {
-                _gameplay.EndAssertive();
+                _gameplay.EndAssertive(LevelSimulation.TryGetResult(_state.Level, out var res) && res);
                 return;
             }
 
             _view.Tick(dt);
             if (_view.IsPlayingTimeline)
                 return;
+
+            if (LevelSimulation.TryGetResult(_state.Level, out var result))
+            {
+                _gameplay.EndAssertive(result);
+                return;
+            }
 
             LevelSimulation.Simulate(ref _state, InputStateProvider.Poll());
 
@@ -65,7 +74,7 @@ namespace Frog.Meta.Level
         {
             await using (await scope.Ui.AnimatedUi(_panel, ct))
             {
-                await _gameplay.ExecuteAsync(ct);
+                var result = await _gameplay.ExecuteAsync(ct);
                 return Transition.Pop();
             }
         }

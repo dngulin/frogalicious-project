@@ -68,6 +68,24 @@ namespace Frog.Level.Simulation
             }
         }
 
+        public static bool TryGetResult( in LevelState state, out bool result )
+        {
+            if (!state.Character.IsAlive)
+            {
+                result = false;
+                return true;
+            }
+
+            if (state.IsCompleted)
+            {
+                result = true;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
         public static void Simulate(ref SimState state, in InputState input)
         {
             Debug.Assert(state.TimeLine.Events.Count() == 0);
