@@ -19,6 +19,9 @@ namespace Frog.Meta.MainMenu
 
         private readonly AwaitableOperation<MainMenuCommand> _waitCommand = new AwaitableOperation<MainMenuCommand>();
 
+        private int _currLevelIdx;
+        private Flag _waitLevelResultFlag;
+
         public MainMenuStateHandler(in RootScope scope, in MainMenuResources res)
         {
             _res = res;
@@ -56,7 +59,12 @@ namespace Frog.Meta.MainMenu
             _view.SetupCamera();
             _view.SetVisible(true);
 
-            _view.SetCurrentLevel(2);
+            if (_waitLevelResultFlag.Reset() && scope.Mailbox.LevelCompletedFlag.Reset())
+            {
+                _currLevelIdx = (_currLevelIdx + 1) % _res.ChapterConfig.LevelList.Length;
+            }
+
+            _view.SetCurrentLevel(_currLevelIdx);
 
             using (scope.Ui.InstantUi(_menu))
             {
@@ -77,6 +85,11 @@ namespace Frog.Meta.MainMenu
             {
                 var levelDataRef = _res.ChapterConfig.LevelList[levelIndex];
                 var resources = await LevelResources.Load(levelDataRef, ct);
+
+                if (levelIndex == _currLevelIdx)
+                {
+                    _waitLevelResultFlag.Set();
+                }
 
                 _view.SetVisible(false);
                 return Transition.Push(new LevelStateHandler(scope, resources));
