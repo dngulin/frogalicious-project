@@ -20,7 +20,7 @@ namespace Frog.Meta.MainMenu
         private readonly AwaitableOperation<MainMenuCommand> _waitCommand = new AwaitableOperation<MainMenuCommand>();
 
         private int _currLevelIdx;
-        private Flag _checkLevelResultFlag;
+        private Flag _waitLevelResultFlag;
 
         public MainMenuStateHandler(in RootScope scope, in MainMenuResources res)
         {
@@ -59,7 +59,7 @@ namespace Frog.Meta.MainMenu
             _view.SetupCamera();
             _view.SetVisible(true);
 
-            if (_checkLevelResultFlag.TryReset() && scope.Mailbox.LevelCompletedFlag.TryReset())
+            if (CheckLevelCompletionFlags(scope.Mailbox))
             {
                 _currLevelIdx = (_currLevelIdx + 1) % _res.ChapterConfig.LevelList.Length;
             }
@@ -79,6 +79,14 @@ namespace Frog.Meta.MainMenu
             }
         }
 
+        private bool CheckLevelCompletionFlags(Mailbox mailbox)
+        {
+            var levelCompleted = mailbox.LevelCompletedFlag.TryReset();
+            var waitLevelResult = _waitLevelResultFlag.TryReset();
+
+            return levelCompleted && waitLevelResult;
+        }
+
         private async Task<Transition> PlayLevel(RootScope scope, int levelIndex, CancellationToken ct)
         {
             using (scope.Ui.LoadingUi())
@@ -87,7 +95,7 @@ namespace Frog.Meta.MainMenu
                 var resources = await LevelResources.Load(levelDataRef, ct);
 
                 _view.SetVisible(false);
-                _checkLevelResultFlag.SetIf(levelIndex == _currLevelIdx);
+                _waitLevelResultFlag.SetIf(levelIndex == _currLevelIdx);
 
                 return Transition.Push(new LevelStateHandler(scope, resources));
             }
