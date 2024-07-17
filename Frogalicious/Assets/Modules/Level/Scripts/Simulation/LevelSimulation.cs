@@ -145,7 +145,7 @@ namespace Frog.Level.Simulation
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing)
-                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type);
+                CollectObject(ref state, ref newCell.Object);
 
             Debug.Assert(newCell.Object.Type == BoardObjectType.Nothing);
             newCell.Object = oldCell.Object;
@@ -208,7 +208,7 @@ namespace Frog.Level.Simulation
             return obj.Type == BoardObjectType.Coin || obj.Type == BoardObjectType.Exit;
         }
 
-        private static void CollectObject(ref SimState state, ref ObjectState obj, BoardObjectType byObjType)
+        private static void CollectObject(ref SimState state, ref ObjectState obj)
         {
             switch (obj.Type)
             {
@@ -337,7 +337,7 @@ namespace Frog.Level.Simulation
                 return false;
 
             if (newCell.Object.Type != BoardObjectType.Nothing)
-                CollectObject(ref state, ref newCell.Object, oldCell.Object.Type);
+                CollectObject(ref state, ref newCell.Object);
 
             Debug.Assert(newCell.Object.Type == BoardObjectType.Nothing);
             newCell.Object = oldCell.Object;
