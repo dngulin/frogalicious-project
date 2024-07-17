@@ -27,7 +27,7 @@ namespace Frog.Meta.MainMenu.View
             }
         }
 
-        public bool PollClick() => _clickedFlag.Reset();
+        public bool PollClick() => _clickedFlag.TryReset();
 
         public void SetState( LevelObjectState state )
         {

@@ -6,11 +6,11 @@ namespace Frog.Core
     {
         private bool _isSet;
 
-        public bool IsSet => _isSet;
+        public readonly bool IsSet => _isSet;
 
         public void Set() => _isSet = true;
 
-        public bool Reset()
+        public bool TryReset()
         {
             if (!_isSet)
                 return false;
@@ -26,6 +26,12 @@ namespace Frog.Core
         {
             Debug.Assert(!flag.IsSet, "Flag is already set!");
             flag.Set();
+        }
+
+        public static void SetIf(ref this Flag flag, bool condition)
+        {
+            if (condition)
+                flag.SetAssertive();
         }
     }
 }

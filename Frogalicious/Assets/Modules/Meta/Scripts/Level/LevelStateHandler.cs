@@ -74,11 +74,8 @@ namespace Frog.Meta.Level
         {
             await using (await scope.Ui.AnimatedUi(_panel, ct))
             {
-                var result = await _gameplay.ExecuteAsync(ct);
-                if (result)
-                {
-                    scope.Mailbox.LevelCompletedFlag.Set();
-                }
+                var levelCompleted = await _gameplay.ExecuteAsync(ct);
+                scope.Mailbox.LevelCompletedFlag.SetIf(levelCompleted);
 
                 return Transition.Pop();
             }
