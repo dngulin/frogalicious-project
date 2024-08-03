@@ -18,6 +18,7 @@ namespace Frog.Core.Ui
 
         private void Awake()
         {
+            _animator.keepAnimatorStateOnDisable = true;
             _animBehaviour = _animator.GetBehaviour<AwaitableAnimatorBehaviour>();
         }
 
