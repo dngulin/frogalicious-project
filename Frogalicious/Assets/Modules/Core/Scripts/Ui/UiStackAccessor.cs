@@ -47,7 +47,7 @@ namespace Frog.Core.Ui
         public void AddItem(UiEntity entity, uint entityId)
         {
             _items.Add((entityId, entity));
-            entity.GetComponent<RectTransform>().SetParentAndExpand(_root);
+            entity.transform.SetParent(_root, false);
         }
 
         public bool TryRemoveItem(uint entityId, out UiEntity result, Transform parent)
