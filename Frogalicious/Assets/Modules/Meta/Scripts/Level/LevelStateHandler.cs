@@ -18,16 +18,24 @@ namespace Frog.Meta.Level
 
         private readonly LevelView _view;
         private readonly LevelPanelUi _panel;
+        private readonly LevelExitDialog _exitDlg;
 
         private SimState _state;
 
-        private readonly AwaitableOperation<bool> _gameplay = new AwaitableOperation<bool>();
+        private readonly AwaitableOperation<GameplayEvent> _waitForGameplayEvent = new AwaitableOperation<GameplayEvent>();
+
+        private enum GameplayEvent
+        {
+            ExitClicked,
+            LevelCompleted,
+        }
 
         public LevelStateHandler(in RootScope scope, in LevelResources res)
         {
             _res = res;
             _view = new LevelView(res.ViewConfig, res.Data, scope.Camera);
             _panel = Object.Instantiate(res.PanelPrefab, scope.GameObjectStash);
+            _exitDlg = Object.Instantiate(res.ExitDialogPrefab, scope.GameObjectStash);
 
             LevelSimulation.SetupInitialState(ref _state, res.Data);
             _view.CreateInitialObjects(in _state.Level);
@@ -37,17 +45,18 @@ namespace Frog.Meta.Level
         {
             _view.Dispose();
             _panel.DestroyGameObject();
+            _exitDlg.DestroyGameObject();
             _res.Dispose();
         }
 
         public override void Tick(in RootScope scope, float dt)
         {
-            if (!_gameplay.IsRunning)
+            if (!_waitForGameplayEvent.IsRunning)
                 return;
 
             if (_panel.Poll().TryGetValue(out _))
             {
-                _gameplay.EndAssertive(LevelSimulation.TryGetResult(_state.Level, out var res) && res);
+                _waitForGameplayEvent.EndAssertive(GameplayEvent.ExitClicked);
                 return;
             }
 
@@ -55,9 +64,9 @@ namespace Frog.Meta.Level
             if (_view.IsPlayingTimeline)
                 return;
 
-            if (LevelSimulation.TryGetResult(_state.Level, out var result))
+            if (LevelSimulation.TryGetResult(_state.Level, out _))
             {
-                _gameplay.EndAssertive(result);
+                _waitForGameplayEvent.EndAssertive(GameplayEvent.LevelCompleted);
                 return;
             }
 
@@ -74,11 +83,35 @@ namespace Frog.Meta.Level
         {
             await using (await scope.Ui.AnimatedUi(_panel, ct))
             {
-                var levelCompleted = await _gameplay.ExecuteAsync(ct);
-                scope.Mailbox.LevelCompletedFlag.SetIf(levelCompleted);
+                while (true)
+                {
+                    var evt = await _waitForGameplayEvent.ExecuteAsync(ct);
+                    switch (evt)
+                    {
+                        case GameplayEvent.ExitClicked:
+                            if (await ConfirmExitAsync(scope, ct))
+                                return GetExitTransition(scope);
+                            break;
 
-                return Transition.Pop();
+                        case GameplayEvent.LevelCompleted:
+                            return GetExitTransition(scope);
+                    }
+                }
             }
+        }
+
+        private async Awaitable<bool> ConfirmExitAsync(RootScope scope, CancellationToken ct)
+        {
+            await using (await scope.Ui.AnimatedUi(_exitDlg, ct))
+            {
+                return await _exitDlg.WaitConfirmationAsync(ct);
+            }
+        }
+
+        private Transition GetExitTransition(RootScope scope)
+        {
+            scope.Mailbox.LevelCompletedFlag.SetIf(LevelSimulation.TryGetResult(_state.Level, out var res) && res);
+            return Transition.Pop();
         }
     }
 }
