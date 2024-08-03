@@ -269,6 +269,8 @@ GameObject:
   - component: {fileID: 465348378070079718}
   - component: {fileID: 4132482783832060560}
   - component: {fileID: 8116329364947056298}
+  - component: {fileID: 3899371747567829950}
+  - component: {fileID: -7580256233262057543}
   m_Layer: 5
   m_Name: LevelExitDialog
   m_TagString: Untagged
@@ -358,6 +360,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!225 &3899371747567829950
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369257236248128662}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &-7580256233262057543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369257236248128662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0665469ced04e42b0b905c1102e785e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 8116329364947056298}
+  _canvasGroup: {fileID: 3899371747567829950}
+  _yesButton: {fileID: 5897605092818187977}
+  _noButton: {fileID: 8199304838066033843}
 --- !u!1 &6670210177823925177
 GameObject:
   m_ObjectHideFlags: 0
