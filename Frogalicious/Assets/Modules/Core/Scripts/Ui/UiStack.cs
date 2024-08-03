@@ -6,7 +6,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Frog.Core.Ui
 {
-    public struct UiStack : IDisposable
+    public class UiStack : IDisposable
     {
         private readonly Transform _root;
         private readonly List<(uint, UiEntity)> _items;
@@ -26,7 +26,7 @@ namespace Frog.Core.Ui
 
         public void Dispose() => _root.DestroyGameObject();
 
-        public readonly bool IsUnderlyingGameObjectAlive => _root != null;
+        public bool IsUnderlyingGameObjectAlive => _root != null;
 
         public async Awaitable<AnimatedUiEntityId> Show(AnimatedUiEntity entity, CancellationToken ct)
         {
