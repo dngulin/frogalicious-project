@@ -121,14 +121,14 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "frog.collections": {
-      "version": "file:frog.collections",
+    "frog.activity-tracker": {
+      "version": "file:frog.activity-tracker",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
-    "frog.state-tracker": {
-      "version": "file:frog.state-tracker",
+    "frog.collections": {
+      "version": "file:frog.collections",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

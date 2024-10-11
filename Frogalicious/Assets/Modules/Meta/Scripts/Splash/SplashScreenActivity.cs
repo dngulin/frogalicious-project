@@ -2,17 +2,17 @@ using System.Threading;
 using Frog.Core;
 using Frog.Core.Ui;
 using Frog.Meta.MainMenu;
-using Frog.StateTracker;
+using Frog.ActivityTracker;
 using UnityEngine;
 
 namespace Frog.Meta.Splash
 {
-    public class SplashStateHandler : AsyncStateHandler<RootScope>
+    public class SplashScreenActivity : AsyncActivity<RootScope>
     {
-        private readonly SplashUi _ui;
+        private readonly SplashScreenUi _ui;
         private readonly AwaitableOperation _poll = new AwaitableOperation();
 
-        public SplashStateHandler(in RootScope scope, SplashUi uiPrefab)
+        public SplashScreenActivity(in RootScope scope, SplashScreenUi uiPrefab)
         {
             _ui = Object.Instantiate(uiPrefab, scope.GameObjectStash);
         }
@@ -38,7 +38,7 @@ namespace Frog.Meta.Splash
                 using (scope.Ui.LoadingUi())
                 {
                     var resources = await MainMenuResources.Load(ct);
-                    return Transition.Replace(new MainMenuStateHandler(scope, resources));
+                    return Transition.Replace(new MainMenuActivity(scope, resources));
                 }
             }
         }

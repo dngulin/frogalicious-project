@@ -1,4 +1,4 @@
-namespace Frog.StateTracker
+namespace Frog.ActivityTracker
 {
     public enum TransitionType
     {

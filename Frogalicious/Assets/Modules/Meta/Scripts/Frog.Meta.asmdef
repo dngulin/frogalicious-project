@@ -8,6 +8,7 @@
         "Frog.StateTracker",
         "Frog.Core",
         "Frog.Level",
-        "Frog.Collections"
+        "Frog.Collections",
+        "Frog.ActivityTracker"
     ]
 }

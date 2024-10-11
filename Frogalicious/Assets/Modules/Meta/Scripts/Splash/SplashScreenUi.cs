@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Frog.Meta.Splash
 {
-    public class SplashUi : UiEntity, IPointerClickHandler
+    public class SplashScreenUi : UiEntity, IPointerClickHandler
     {
         private bool _clicked;
 

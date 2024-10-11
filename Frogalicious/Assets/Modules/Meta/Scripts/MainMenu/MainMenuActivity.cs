@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Frog.Core;
 using Frog.Core.Ui;
 using Frog.Meta.Level;
-using Frog.StateTracker;
+using Frog.ActivityTracker;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Frog.Meta.MainMenu
 {
-    public class MainMenuStateHandler : AsyncStateHandler<RootScope>
+    public class MainMenuActivity : AsyncActivity<RootScope>
     {
         private MainMenuResources _res;
 
@@ -22,7 +22,7 @@ namespace Frog.Meta.MainMenu
         private int _currLevelIdx;
         private Flag _waitLevelResultFlag;
 
-        public MainMenuStateHandler(in RootScope scope, in MainMenuResources res)
+        public MainMenuActivity(in RootScope scope, in MainMenuResources res)
         {
             _res = res;
             _menu = Object.Instantiate(res.MenuPrefab, scope.GameObjectStash);
@@ -97,7 +97,7 @@ namespace Frog.Meta.MainMenu
                 _view.SetVisible(false);
                 _waitLevelResultFlag.SetIf(levelIndex == _currLevelIdx);
 
-                return Transition.Push(new LevelStateHandler(scope, resources));
+                return Transition.Push(new LevelActivity(scope, resources));
             }
         }
     }

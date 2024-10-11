@@ -1,7 +1,7 @@
 using System;
 using Frog.Core.Ui;
 using Frog.Meta.Splash;
-using Frog.StateTracker;
+using Frog.ActivityTracker;
 using UnityEngine;
 
 namespace Frog.Meta
@@ -11,10 +11,10 @@ namespace Frog.Meta
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Camera _camera;
 
-        [SerializeField] private SplashUi _splashUiPrefab;
+        [SerializeField] private SplashScreenUi _splashUiPrefab;
         [SerializeField] private LoadingUi _loadingPrefab;
 
-        private AsyncStateTracker<RootScope> _stateTracker;
+        private AsyncActivityTracker<RootScope> _activityTracker;
         private RootScope _scope;
 
         private void Awake()
@@ -30,12 +30,12 @@ namespace Frog.Meta
             scope.GameObjectStash.gameObject.SetActive(false);
 
             _scope = scope;
-            _stateTracker = new AsyncStateTracker<RootScope>();
+            _activityTracker = new AsyncActivityTracker<RootScope>();
         }
 
         private void OnDestroy()
         {
-            _stateTracker.Dispose(_scope);
+            _activityTracker.Dispose(_scope);
             _scope.Dispose();
         }
 
@@ -43,8 +43,8 @@ namespace Frog.Meta
         {
             try
             {
-                var initialHandler = new SplashStateHandler(_scope, _splashUiPrefab);
-                await _stateTracker.ExecuteAsync(_scope, initialHandler, destroyCancellationToken);
+                var initialHandler = new SplashScreenActivity(_scope, _splashUiPrefab);
+                await _activityTracker.ExecuteAsync(_scope, initialHandler, destroyCancellationToken);
             }
             catch (OperationCanceledException)
             {
@@ -55,7 +55,7 @@ namespace Frog.Meta
 
         private void Update()
         {
-            _stateTracker.Tick(_scope, Time.unscaledDeltaTime);
+            _activityTracker.Tick(_scope, Time.unscaledDeltaTime);
         }
 
         private static void ExitGame()

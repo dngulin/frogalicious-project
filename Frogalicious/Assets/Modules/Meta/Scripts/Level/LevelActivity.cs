@@ -6,13 +6,13 @@ using Frog.Level;
 using Frog.Level.Simulation;
 using Frog.Level.Ui;
 using Frog.Level.View;
-using Frog.StateTracker;
+using Frog.ActivityTracker;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Frog.Meta.Level
 {
-    public class LevelStateHandler : AsyncStateHandler<RootScope>
+    public class LevelActivity : AsyncActivity<RootScope>
     {
         private LevelResources _res;
 
@@ -30,7 +30,7 @@ namespace Frog.Meta.Level
             LevelCompleted,
         }
 
-        public LevelStateHandler(in RootScope scope, in LevelResources res)
+        public LevelActivity(in RootScope scope, in LevelResources res)
         {
             _res = res;
             _view = new LevelView(res.ViewConfig, res.Data, scope.Camera);
