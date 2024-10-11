@@ -51,8 +51,8 @@ namespace Frog.ActivityTracker
 
         private void StartNewActivity(Activity<TScope> activity, TScope scope)
         {
-            Debug.Assert(activity != null, "Try to start null state handler");
-            Debug.Assert(!_activities.Contains(activity), "Try to add the same state handler twice");
+            Debug.Assert(activity != null, "Try to start null activity");
+            Debug.Assert(!_activities.Contains(activity), "Try to add the same activity twice");
 
             _activities.Push(activity);
             activity.Start(scope);
