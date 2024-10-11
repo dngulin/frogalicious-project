@@ -24,7 +24,6 @@ namespace Frog.Meta
                 scope.Camera = _camera;
                 scope.GameObjectStash = RootScope.CreateGameObjectStash();
                 scope.Ui = new UiSystem(_canvas, Instantiate(_loadingPrefab, scope.GameObjectStash));
-                scope.Mailbox = new Mailbox();
             }
 
             scope.GameObjectStash.gameObject.SetActive(false);

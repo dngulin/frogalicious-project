@@ -10,7 +10,6 @@ namespace Frog.Meta
         public Camera Camera;
         public UiSystem Ui;
         public Transform GameObjectStash;
-        public Mailbox Mailbox;
 
 
         public void Dispose()

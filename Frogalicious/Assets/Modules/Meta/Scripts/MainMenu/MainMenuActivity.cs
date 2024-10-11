@@ -19,6 +19,7 @@ namespace Frog.Meta.MainMenu
 
         private readonly AwaitableOperation<MainMenuCommand> _waitCommand = new AwaitableOperation<MainMenuCommand>();
 
+        private readonly LevelResult _levelResult = new LevelResult();
         private int _currLevelIdx;
         private Flag _waitLevelResultFlag;
 
@@ -59,7 +60,7 @@ namespace Frog.Meta.MainMenu
             _view.SetupCamera();
             _view.SetVisible(true);
 
-            if (CheckLevelCompletionFlags(scope.Mailbox))
+            if (CheckLevelCompletionFlags(_levelResult))
             {
                 _currLevelIdx = (_currLevelIdx + 1) % _res.ChapterConfig.LevelList.Length;
             }
@@ -79,9 +80,9 @@ namespace Frog.Meta.MainMenu
             }
         }
 
-        private bool CheckLevelCompletionFlags(Mailbox mailbox)
+        private bool CheckLevelCompletionFlags(LevelResult levelResult)
         {
-            var levelCompleted = mailbox.LevelCompletedFlag.TryReset();
+            var levelCompleted = levelResult.CompletionFlag.TryReset();
             var waitLevelResult = _waitLevelResultFlag.TryReset();
 
             return levelCompleted && waitLevelResult;
@@ -97,7 +98,7 @@ namespace Frog.Meta.MainMenu
                 _view.SetVisible(false);
                 _waitLevelResultFlag.SetIf(levelIndex == _currLevelIdx);
 
-                return Transition.Push(new LevelActivity(scope, resources));
+                return Transition.Push(new LevelActivity(scope, resources, _levelResult));
             }
         }
     }

@@ -15,6 +15,7 @@ namespace Frog.Meta.Level
     public class LevelActivity : AsyncActivity<RootScope>
     {
         private LevelResources _res;
+        private readonly LevelResult _levelResult;
 
         private readonly LevelView _view;
         private readonly LevelPanelUi _panel;
@@ -30,9 +31,11 @@ namespace Frog.Meta.Level
             LevelCompleted,
         }
 
-        public LevelActivity(in RootScope scope, in LevelResources res)
+        public LevelActivity(in RootScope scope, in LevelResources res, LevelResult levelResult)
         {
             _res = res;
+            _levelResult = levelResult;
+
             _view = new LevelView(res.ViewConfig, res.Data, scope.Camera);
             _panel = Object.Instantiate(res.PanelPrefab, scope.GameObjectStash);
             _exitDlg = Object.Instantiate(res.ExitDialogPrefab, scope.GameObjectStash);
@@ -90,11 +93,11 @@ namespace Frog.Meta.Level
                     {
                         case GameplayEvent.ExitClicked:
                             if (await ConfirmExitAsync(scope, ct))
-                                return GetExitTransition(scope);
+                                return GetExitTransition();
                             break;
 
                         case GameplayEvent.LevelCompleted:
-                            return GetExitTransition(scope);
+                            return GetExitTransition();
                     }
                 }
             }
@@ -108,9 +111,9 @@ namespace Frog.Meta.Level
             }
         }
 
-        private Transition GetExitTransition(RootScope scope)
+        private Transition GetExitTransition()
         {
-            scope.Mailbox.LevelCompletedFlag.SetIf(LevelSimulation.TryGetResult(_state.Level, out var res) && res);
+            _levelResult.CompletionFlag.SetIf(LevelSimulation.TryGetResult(_state.Level, out var res) && res);
             return Transition.Pop();
         }
     }
