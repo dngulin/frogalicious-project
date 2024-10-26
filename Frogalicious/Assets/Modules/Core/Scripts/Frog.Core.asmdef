@@ -1,5 +1,17 @@
 {
     "name": "Frog.Core",
     "rootNamespace": "Frog.Core",
-    "autoReferenced": false
+    "references": [
+        "Frog.Collections",
+        "Frog.ProtoPuff"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

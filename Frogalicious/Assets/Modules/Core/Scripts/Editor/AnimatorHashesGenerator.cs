@@ -34,6 +34,8 @@ namespace Frog.Core.Editor
 
             GenerateImpl(target, contents);
             GenerateTest(target, contents);
+
+            AssetDatabase.Refresh();
         }
 
         private static void GenerateImpl(in GenTarget target, in GenContents contents)

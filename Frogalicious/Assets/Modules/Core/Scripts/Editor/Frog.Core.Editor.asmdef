@@ -1,6 +1,17 @@
 {
-  "name": "Frog.Core.Editor",
+    "name": "Frog.Core.Editor",
     "rootNamespace": "Frog.Core.Editor",
+    "references": [
+        "Frog.Core",
+        "Frog.ProtoPuff.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": false,
-    "references":[ "GUID:e84be365558946e9b66c17d522b06c79" ]
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
