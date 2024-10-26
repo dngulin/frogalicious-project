@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.2d.common": {
-      "version": "9.0.6",
+      "version": "9.0.7",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -129,6 +129,12 @@
     },
     "frog.collections": {
       "version": "file:frog.collections",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "frog.proto-puff": {
+      "version": "file:frog.proto-puff",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

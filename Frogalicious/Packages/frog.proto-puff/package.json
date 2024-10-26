@@ -1,0 +1,6 @@
+{
+  "name": "frog.proto-puff",
+  "version": "0.0.1",
+  "displayName": "[Frog] Proto Puff",
+  "description": "Protobuf-like (de)serialisation library & code generator. It heavily uses the RefList<T> data structure."
+}
