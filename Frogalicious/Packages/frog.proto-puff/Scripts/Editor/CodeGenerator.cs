@@ -100,6 +100,11 @@ namespace Frog.ProtoPuff.Editor
                 EmitMethodPrependToBuf(wExt, structDef, ctx);
 
                 wExt.WriteLine();
+                EmitMethodSerialiseToStream(wExt, structDef);
+                wExt.WriteLine();
+                EmitMethodPrependToStream(wExt, structDef, ctx);
+
+                wExt.WriteLine();
                 EmitExtMethodDeserialiseFromBuf(wExt, structDef);
                 wExt.WriteLine();
                 EmitExtMethodUpdateValueFromBuf(wExt, structDef, ctx);
