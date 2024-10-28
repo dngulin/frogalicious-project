@@ -67,14 +67,23 @@ namespace Frog.Core.Save
             }
         }
 
-        public void Save()
+        public bool WriteToDisk()
         {
-            _save.SerialiseTo(_bw);
-            _bw.Flush();
-            _fs.Flush();
+            try
+            {
+                _save.SerialiseTo(_bw);
+                _bw.Flush();
+                _fs.Flush();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to save game state! {e.GetType()}: {e.Message}\n{e.StackTrace}");
+                return false;
+            }
         }
 
-        private static void WriteDefaultInternalState(ref SaveInternal save, Migration[] migrations)
+        private static void SetupDefaultSave(ref SaveInternal save, Migration[] migrations)
         {
             save.Clear();
 

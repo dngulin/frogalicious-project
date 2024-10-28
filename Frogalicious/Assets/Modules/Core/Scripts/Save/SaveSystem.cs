@@ -28,15 +28,13 @@ namespace Frog.Core.Save
 
         public void SetDirty() => _isDirty = true;
 
-        public void Save()
+        public void WriteToDiskIfDirty()
         {
             if (!_isDirty)
                 return;
 
             _save.SerialiseTo(ref _saveWrapper.Buffer);
-            _saveWrapper.Save();
-
-            _isDirty = false;
+            _isDirty = !_saveWrapper.WriteToDisk();
         }
     }
 }
