@@ -5,6 +5,11 @@ namespace Frog.ProtoPuff.Editor.Lexer
         public TokenType Type;
         public Location Location;
         public string OptValue;
+
+        public override string ToString()
+        {
+            return OptValue == null ? $"{Location} {Type}" : $"{Location} {Type}: {OptValue}";
+        }
     }
 
     public enum TokenType
