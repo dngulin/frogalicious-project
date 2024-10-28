@@ -58,7 +58,6 @@ namespace Frog.ProtoPuff.Editor
         {
             if (enumDef.IsFlags) wNameSpace.WriteLine("[Flags]");
 
-            ctx.ValidateNewTypeName(enumDef.Name);
             ctx.RegisterEnum(enumDef.Name, enumDef.UnderlyingType);
 
             using var wEnum = wNameSpace.Braces($"public enum {enumDef.Name} : {enumDef.UnderlyingType.CSharpName()}");
@@ -75,7 +74,6 @@ namespace Frog.ProtoPuff.Editor
             var noCopy = ctx.IsNoCopyStruct(structDef);
             if (noCopy) wNameSpace.WriteLine("[NoCopy]");
 
-            ctx.ValidateNewTypeName(structDef.Name);
             ctx.RegisterStruct(structDef.Name, noCopy);
 
             using (var wStruct = wNameSpace.Braces($"public struct {t}"))

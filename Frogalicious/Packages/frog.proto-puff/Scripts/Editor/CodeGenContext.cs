@@ -13,15 +13,6 @@ namespace Frog.ProtoPuff.Editor
         private readonly Dictionary<string, Primitive> _enumBaseTypes = new Dictionary<string, Primitive>();
         private readonly HashSet<string> _noCopyTypes = new HashSet<string>();
 
-        public void ValidateNewTypeName(string name)
-        {
-            if (PrimitivesMap.TryGet(name, out _))
-                throw new Exception($"Primitive type `{name}` can't be re-declared");
-
-            if (_knownTypes.Contains(name))
-                throw new Exception($"Type `{name}` is declared more then once");
-        }
-
         public string GetCSharpTypeName(string name)
         {
             if (PrimitivesMap.TryGet(name, out var primitive))

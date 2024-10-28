@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 
-
 namespace Frog.ProtoPuff.Editor
 {
     internal static class PrimitivesMap
