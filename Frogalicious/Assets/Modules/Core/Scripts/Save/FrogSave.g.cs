@@ -81,38 +81,6 @@ namespace Frog.Core.Save
 
         }
 
-        public static void SerialiseTo(this in FrogSave self, BinaryWriter bw)
-        {
-            var len = self.GetSerialisedSize();
-            var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;
-            bw.BaseStream.SetLength(prefixedLen);
-            bw.BaseStream.Position = prefixedLen;
-
-            bw.Prepend(self);
-            bw.PrependLenPrefix(len, out var lps);
-            bw.Prepend(ValueQualifier.Struct(lps).Pack());
-
-            Debug.Assert(bw.BaseStream.Position == 0, $"{bw.BaseStream.Position} != 0");
-        }
-
-        public static void Prepend(this BinaryWriter bw, in FrogSave data)
-        {
-            if (data.ChapterIdx != default)
-            {
-                bw.Prepend(data.ChapterIdx);
-                bw.Prepend(ValueQualifier.PackedI32);
-                bw.Prepend((byte)0);
-            }
-
-            if (data.LevelIdx != default)
-            {
-                bw.Prepend(data.LevelIdx);
-                bw.Prepend(ValueQualifier.PackedI32);
-                bw.Prepend((byte)1);
-            }
-
-        }
-
         public static void DeserialiseFrom(this ref FrogSave self, in RefList<byte> buf)
         {
             var pos = 0;
@@ -149,47 +117,6 @@ namespace Frog.Core.Save
                     {
                         var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
                         buf.SkipValue(fvq, ref pos);
-                        break;
-                    }
-                }
-            }
-        }
-
-        public static void DeserialiseFrom(this ref FrogSave self, BinaryReader br)
-        {
-            var vq = ValueQualifier.Unpack(br.ReadByte());
-            ProtoPuffUtil.EnsureStruct(vq);
-
-            self.Clear();
-            var endPos = br.BaseStream.Position + br.ReadLenPrefix(vq.LenPrefixSize);
-            self.UpdateValueFrom(br, endPos);
-        }
-
-        public static void UpdateValueFrom(this ref FrogSave self, BinaryReader br, long endPos)
-        {
-            while (br.BaseStream.Position < endPos)
-            {
-                var fieldId = br.ReadByte();
-                switch (fieldId)
-                {
-                    case 0:
-                    {
-                        var fvq = ValueQualifier.Unpack(br.ReadByte());
-                        ProtoPuffUtil.EnsureI32(fvq);
-                        self.ChapterIdx = br.ReadInt32();
-                        break;
-                    }
-                    case 1:
-                    {
-                        var fvq = ValueQualifier.Unpack(br.ReadByte());
-                        ProtoPuffUtil.EnsureI32(fvq);
-                        self.LevelIdx = br.ReadInt32();
-                        break;
-                    }
-                    default:
-                    {
-                        var fvq = ValueQualifier.Unpack(br.ReadByte());
-                        br.SkipValue(fvq);
                         break;
                     }
                 }

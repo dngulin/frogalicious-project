@@ -9,7 +9,7 @@ namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        public static void Generate(string inputPath, string outputPath, string ns)
+        public static void Generate(string inputPath, string outputPath, in CodeGenOptions options)
         {
             var ctx = new CodeGenContext();
 
@@ -32,7 +32,7 @@ namespace Frog.ProtoPuff.Editor
 
                 rootWriter.WriteLine();
 
-                using (var nsWriter = rootWriter.Braces($"namespace {ns}"))
+                using (var nsWriter = rootWriter.Braces($"namespace {options.Namespace}"))
                 {
                     foreach (ref readonly var enumDef in schema.Enums.RefReadonlyIter())
                     {
@@ -42,7 +42,7 @@ namespace Frog.ProtoPuff.Editor
 
                     foreach (ref readonly var structDef in schema.Structs.RefReadonlyIter())
                     {
-                        EmitStruct(nsWriter, structDef, ctx);
+                        EmitStruct(nsWriter, structDef, ctx, options);
                         nsWriter.WriteLine();
                     }
                 }
@@ -67,7 +67,8 @@ namespace Frog.ProtoPuff.Editor
             }
         }
 
-        private static void EmitStruct(in BracesScope wNameSpace, in PuffStruct structDef, CodeGenContext ctx)
+        private static void EmitStruct(
+            in BracesScope wNameSpace, in PuffStruct structDef, CodeGenContext ctx, in CodeGenOptions opts)
         {
             var t = structDef.Name;
 
@@ -94,28 +95,43 @@ namespace Frog.ProtoPuff.Editor
             {
                 EmitMethodClear(wExt, structDef, ctx);
 
-                wExt.WriteLine();
-                EmitMethodGetSerialisedSize(wExt, structDef, ctx);
+                if (opts.SerialisationApi != ApiTargets.None)
+                {
+                    wExt.WriteLine();
+                    EmitMethodGetSerialisedSize(wExt, structDef, ctx);
+                }
 
-                wExt.WriteLine();
-                EmitMethodSerialiseToBuf(wExt, structDef);
-                wExt.WriteLine();
-                EmitMethodPrependToBuf(wExt, structDef, ctx);
+                if ((opts.SerialisationApi & ApiTargets.RefList) != ApiTargets.None)
+                {
+                    wExt.WriteLine();
+                    EmitMethodSerialiseToBuf(wExt, structDef);
+                    wExt.WriteLine();
+                    EmitMethodPrependToBuf(wExt, structDef, ctx);
+                }
 
-                wExt.WriteLine();
-                EmitMethodSerialiseToStream(wExt, structDef);
-                wExt.WriteLine();
-                EmitMethodPrependToStream(wExt, structDef, ctx);
+                if ((opts.SerialisationApi & ApiTargets.Stream) != ApiTargets.None)
+                {
+                    wExt.WriteLine();
+                    EmitMethodSerialiseToStream(wExt, structDef);
+                    wExt.WriteLine();
+                    EmitMethodPrependToStream(wExt, structDef, ctx);
+                }
 
-                wExt.WriteLine();
-                EmitExtMethodDeserialiseFromBuf(wExt, structDef);
-                wExt.WriteLine();
-                EmitExtMethodUpdateValueFromBuf(wExt, structDef, ctx);
+                if ((opts.DeserialisationApi & ApiTargets.RefList) != ApiTargets.None)
+                {
+                    wExt.WriteLine();
+                    EmitExtMethodDeserialiseFromBuf(wExt, structDef);
+                    wExt.WriteLine();
+                    EmitExtMethodUpdateValueFromBuf(wExt, structDef, ctx);
+                }
 
-                wExt.WriteLine();
-                EmitExtMethodDeserialiseFromStream(wExt, structDef);
-                wExt.WriteLine();
-                EmitExtMethodUpdateValueFromStream(wExt, structDef, ctx);
+                if ((opts.DeserialisationApi & ApiTargets.Stream) != ApiTargets.None)
+                {
+                    wExt.WriteLine();
+                    EmitExtMethodDeserialiseFromStream(wExt, structDef);
+                    wExt.WriteLine();
+                    EmitExtMethodUpdateValueFromStream(wExt, structDef, ctx);
+                }
             }
         }
 

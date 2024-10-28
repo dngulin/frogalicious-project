@@ -8,10 +8,17 @@ namespace Frog.Core.Editor
         [MenuItem("Tools/Code Generation/Save System - Internal", priority = 20)]
         public static void GenerateSaveInternal()
         {
+            var opts = new CodeGenOptions
+            {
+                Namespace = "Frog.Core.Save",
+                DeserialisationApi = ApiTargets.Stream,
+                SerialisationApi = ApiTargets.Stream,
+            };
+
             CodeGenerator.Generate(
                 "Assets/Modules/Core/Scripts/Save/SaveInternal.puff",
                 "Assets/Modules/Core/Scripts/Save/SaveInternal.g.cs",
-                "Frog.Core.Save"
+                opts
             );
             AssetDatabase.Refresh();
         }
@@ -19,10 +26,17 @@ namespace Frog.Core.Editor
         [MenuItem("Tools/Code Generation/Save System - Game", priority = 21)]
         public static void GenerateSaveGame()
         {
+            var opts = new CodeGenOptions
+            {
+                Namespace = "Frog.Core.Save",
+                DeserialisationApi = ApiTargets.RefList,
+                SerialisationApi = ApiTargets.RefList,
+            };
+
             CodeGenerator.Generate(
                 "Assets/Modules/Core/Scripts/Save/FrogSave.puff",
                 "Assets/Modules/Core/Scripts/Save/FrogSave.g.cs",
-                "Frog.Core.Save"
+                opts
             );
             AssetDatabase.Refresh();
         }

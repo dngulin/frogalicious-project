@@ -56,43 +56,6 @@ namespace Frog.Core.Save
             return result;
         }
 
-        public static void SerialiseTo(this in MigrationInfo self, ref RefList<byte> buf)
-        {
-            var len = self.GetSerialisedSize();
-            buf.SetSize(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);
-
-            var pos = buf.Count();
-            buf.Prepend(self, ref pos);
-            buf.PrependLenPrefix(len, ref pos, out var lps);
-            buf.Prepend(ValueQualifier.Struct(lps).Pack(), ref pos);
-
-            Debug.Assert(pos == 0, $"{pos} != 0");
-        }
-
-        public static void Prepend(this ref RefList<byte> buf, in MigrationInfo data, ref int pos)
-        {
-            if (data.Name.Count() > 0)
-            {
-                var posAfterField = pos;
-                for (int i = data.Name.Count() - 1; i >= 0 ; i--)
-                {
-                    buf.Prepend(data.Name.RefReadonlyAt(i), ref pos);
-                }
-                var len = posAfterField - pos;
-                buf.PrependLenPrefix(len, ref pos, out var lps);
-                buf.Prepend(ValueQualifier.RepeatedU8(lps).Pack(), ref pos);
-                buf.Prepend((byte)0, ref pos);
-            }
-
-            if (data.TimeStamp != default)
-            {
-                buf.Prepend(data.TimeStamp, ref pos);
-                buf.Prepend(ValueQualifier.PackedI64, ref pos);
-                buf.Prepend((byte)1, ref pos);
-            }
-
-        }
-
         public static void SerialiseTo(this in MigrationInfo self, BinaryWriter bw)
         {
             var len = self.GetSerialisedSize();
@@ -129,52 +92,6 @@ namespace Frog.Core.Save
                 bw.Prepend((byte)1);
             }
 
-        }
-
-        public static void DeserialiseFrom(this ref MigrationInfo self, in RefList<byte> buf)
-        {
-            var pos = 0;
-            var vq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-            ProtoPuffUtil.EnsureStruct(vq);
-
-            self.Clear();
-            var endPos = pos + buf.ReadLenPrefix(vq.LenPrefixSize, ref pos);
-            self.UpdateValueFrom(buf, ref pos, endPos);
-        }
-
-        public static void UpdateValueFrom(this ref MigrationInfo self, in RefList<byte> buf, ref int pos, int endPos)
-        {
-            while (pos < endPos)
-            {
-                var fieldId = buf.ReadByte(ref pos);
-                switch (fieldId)
-                {
-                    case 0:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        ProtoPuffUtil.EnsureRepeatedU8(fvq);
-                        var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);
-                        while (pos < fieldEndPos)
-                        {
-                            self.Name.RefAdd() = buf.ReadByte(ref pos);
-                        }
-                        break;
-                    }
-                    case 1:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        ProtoPuffUtil.EnsureI64(fvq);
-                        self.TimeStamp = buf.ReadInt64(ref pos);
-                        break;
-                    }
-                    default:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        buf.SkipValue(fvq, ref pos);
-                        break;
-                    }
-                }
-            }
         }
 
         public static void DeserialiseFrom(this ref MigrationInfo self, BinaryReader br)
@@ -283,49 +200,6 @@ namespace Frog.Core.Save
             return result;
         }
 
-        public static void SerialiseTo(this in SaveInternal self, ref RefList<byte> buf)
-        {
-            var len = self.GetSerialisedSize();
-            buf.SetSize(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);
-
-            var pos = buf.Count();
-            buf.Prepend(self, ref pos);
-            buf.PrependLenPrefix(len, ref pos, out var lps);
-            buf.Prepend(ValueQualifier.Struct(lps).Pack(), ref pos);
-
-            Debug.Assert(pos == 0, $"{pos} != 0");
-        }
-
-        public static void Prepend(this ref RefList<byte> buf, in SaveInternal data, ref int pos)
-        {
-            if (data.Migrations.Count() > 0)
-            {
-                var posAfterField = pos;
-                for (int i = data.Migrations.Count() - 1; i >= 0 ; i--)
-                {
-                    buf.Prepend(data.Migrations.RefReadonlyAt(i), ref pos);
-                }
-                var len = posAfterField - pos;
-                buf.PrependLenPrefix(len, ref pos, out var lps);
-                buf.Prepend(ValueQualifier.RepeatedStruct(lps).Pack(), ref pos);
-                buf.Prepend((byte)0, ref pos);
-            }
-
-            if (data.Data.Count() > 0)
-            {
-                var posAfterField = pos;
-                for (int i = data.Data.Count() - 1; i >= 0 ; i--)
-                {
-                    buf.Prepend(data.Data.RefReadonlyAt(i), ref pos);
-                }
-                var len = posAfterField - pos;
-                buf.PrependLenPrefix(len, ref pos, out var lps);
-                buf.Prepend(ValueQualifier.RepeatedU8(lps).Pack(), ref pos);
-                buf.Prepend((byte)1, ref pos);
-            }
-
-        }
-
         public static void SerialiseTo(this in SaveInternal self, BinaryWriter bw)
         {
             var len = self.GetSerialisedSize();
@@ -368,59 +242,6 @@ namespace Frog.Core.Save
                 bw.Prepend((byte)1);
             }
 
-        }
-
-        public static void DeserialiseFrom(this ref SaveInternal self, in RefList<byte> buf)
-        {
-            var pos = 0;
-            var vq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-            ProtoPuffUtil.EnsureStruct(vq);
-
-            self.Clear();
-            var endPos = pos + buf.ReadLenPrefix(vq.LenPrefixSize, ref pos);
-            self.UpdateValueFrom(buf, ref pos, endPos);
-        }
-
-        public static void UpdateValueFrom(this ref SaveInternal self, in RefList<byte> buf, ref int pos, int endPos)
-        {
-            while (pos < endPos)
-            {
-                var fieldId = buf.ReadByte(ref pos);
-                switch (fieldId)
-                {
-                    case 0:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        ProtoPuffUtil.EnsureRepeatedStruct(fvq);
-                        var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);
-                        while (pos < fieldEndPos)
-                        {
-                            var ivq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                            ProtoPuffUtil.EnsureStruct(ivq);
-                            var itemEndPos = pos + buf.ReadLenPrefix(ivq.LenPrefixSize, ref pos);
-                            self.Migrations.RefAdd().UpdateValueFrom(buf, ref pos, itemEndPos);
-                        }
-                        break;
-                    }
-                    case 1:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        ProtoPuffUtil.EnsureRepeatedU8(fvq);
-                        var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);
-                        while (pos < fieldEndPos)
-                        {
-                            self.Data.RefAdd() = buf.ReadByte(ref pos);
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        buf.SkipValue(fvq, ref pos);
-                        break;
-                    }
-                }
-            }
         }
 
         public static void DeserialiseFrom(this ref SaveInternal self, BinaryReader br)
