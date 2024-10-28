@@ -125,7 +125,7 @@ namespace Frog.ProtoPuff.Editor
         {
             isEnum = false;
 
-            if (ValidationUtil.TryGetPrimitiveType(field.Type, out p))
+            if (PrimitivesMap.TryGet(field.Type, out p))
             {
                 return field.IsRepeated ? ValueKind.RepeatedPrimitive : ValueKind.Primitive;
             }

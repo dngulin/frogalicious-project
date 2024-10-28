@@ -15,7 +15,7 @@ namespace Frog.ProtoPuff.Editor
 
         public void ValidateNewTypeName(string name)
         {
-            if (ValidationUtil.TryGetPrimitiveType(name, out _))
+            if (PrimitivesMap.TryGet(name, out _))
                 throw new Exception($"Primitive type `{name}` can't be re-declared");
 
             if (_knownTypes.Contains(name))
@@ -24,7 +24,7 @@ namespace Frog.ProtoPuff.Editor
 
         public string GetCSharpTypeName(string name)
         {
-            if (ValidationUtil.TryGetPrimitiveType(name, out var primitive))
+            if (PrimitivesMap.TryGet(name, out var primitive))
                 return primitive.CSharpName();
 
             if (_knownTypes.Contains(name))

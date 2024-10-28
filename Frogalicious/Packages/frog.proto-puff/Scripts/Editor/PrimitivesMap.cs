@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Frog.ProtoPuff.Editor
 {
-    internal static class ValidationUtil
+    internal static class PrimitivesMap
     {
         private static readonly Dictionary<string, Primitive> Primitives = new()
         {
@@ -20,7 +20,7 @@ namespace Frog.ProtoPuff.Editor
             { "bool", Primitive.Bool },
         };
 
-        public static bool TryGetPrimitiveType(string name, out Primitive primitive)
+        public static bool TryGet(string name, out Primitive primitive)
         {
             return Primitives.TryGetValue(name, out primitive);
         }
