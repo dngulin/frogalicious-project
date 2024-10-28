@@ -20,7 +20,6 @@ namespace Frog.Meta.MainMenu
         private readonly AwaitableOperation<MainMenuCommand> _waitCommand = new AwaitableOperation<MainMenuCommand>();
 
         private readonly LevelResult _levelResult = new LevelResult();
-        private int _currLevelIdx;
         private Flag _waitLevelResultFlag;
 
         public MainMenuActivity(in RootScope scope, in MainMenuResources res)
@@ -62,10 +61,11 @@ namespace Frog.Meta.MainMenu
 
             if (CheckLevelCompletionFlags(_levelResult))
             {
-                _currLevelIdx = (_currLevelIdx + 1) % _res.ChapterConfig.LevelList.Length;
+                scope.Save.Data.LevelIdx = (scope.Save.Data.LevelIdx + 1) % _res.ChapterConfig.LevelList.Length;
+                scope.Save.SetDirty();
             }
 
-            _view.SetCurrentLevel(_currLevelIdx);
+            _view.SetCurrentLevel(scope.Save.Data.LevelIdx);
 
             using (scope.Ui.InstantUi(_menu))
             {
@@ -96,7 +96,7 @@ namespace Frog.Meta.MainMenu
                 var resources = await LevelResources.Load(levelDataRef, ct);
 
                 _view.SetVisible(false);
-                _waitLevelResultFlag.SetIf(levelIndex == _currLevelIdx);
+                _waitLevelResultFlag.SetIf(levelIndex == scope.Save.Data.LevelIdx);
 
                 return Transition.Push(new LevelActivity(scope, resources, _levelResult));
             }

@@ -2,6 +2,7 @@ using System;
 using Frog.Core.Ui;
 using Frog.Meta.Splash;
 using Frog.ActivityTracker;
+using Frog.Core.Save;
 using UnityEngine;
 
 namespace Frog.Meta
@@ -24,9 +25,10 @@ namespace Frog.Meta
                 scope.Camera = _camera;
                 scope.GameObjectStash = RootScope.CreateGameObjectStash();
                 scope.Ui = new UiSystem(_canvas, Instantiate(_loadingPrefab, scope.GameObjectStash));
+                scope.Save = new SaveSystem();
             }
 
-            scope.GameObjectStash.gameObject.SetActive(false);
+            scope.Save.WriteToDiskIfDirty();
 
             _scope = scope;
             _activityTracker = new AsyncActivityTracker<RootScope>();
@@ -34,6 +36,8 @@ namespace Frog.Meta
 
         private void OnDestroy()
         {
+            _scope.Save.WriteToDiskIfDirty();
+
             _activityTracker.Dispose(_scope);
             _scope.Dispose();
         }

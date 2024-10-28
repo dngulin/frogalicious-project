@@ -1,5 +1,6 @@
 using System;
 using Frog.Core;
+using Frog.Core.Save;
 using Frog.Core.Ui;
 using UnityEngine;
 
@@ -9,13 +10,15 @@ namespace Frog.Meta
     {
         public Camera Camera;
         public UiSystem Ui;
+        public SaveSystem Save;
         public Transform GameObjectStash;
 
 
         public void Dispose()
         {
-            Ui.Dispose();
             GameObjectStash.DestroyGameObject();
+            Ui.Dispose();
+            Save.Dispose();
         }
 
         public static Transform CreateGameObjectStash()
