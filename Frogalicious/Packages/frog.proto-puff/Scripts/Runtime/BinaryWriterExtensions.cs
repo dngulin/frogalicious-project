@@ -7,79 +7,79 @@ namespace Frog.ProtoPuff
     {
         public static void Prepend(this BinaryWriter self, byte value)
         {
-            var pos = self.BaseStream.Position - 1;
+            self.BaseStream.Position -= 1;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 1;
         }
 
         public static void Prepend(this BinaryWriter self, sbyte value)
         {
-            var pos = self.BaseStream.Position - 1;
+            self.BaseStream.Position -= 1;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 1;
         }
 
         public static void Prepend(this BinaryWriter self, bool value)
         {
-            var pos = self.BaseStream.Position - 1;
+            self.BaseStream.Position -= 1;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 1;
         }
 
         public static void Prepend(this BinaryWriter self, ushort value)
         {
-            var pos = self.BaseStream.Position - 2;
+            self.BaseStream.Position -= 2;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 2;
         }
 
         public static void Prepend(this BinaryWriter self, short value)
         {
-            var pos = self.BaseStream.Position - 2;
+            self.BaseStream.Position -= 2;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 2;
         }
 
         public static void Prepend(this BinaryWriter self, uint value)
         {
-            var pos = self.BaseStream.Position - 4;
+            self.BaseStream.Position -= 4;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 4;
         }
 
         public static void Prepend(this BinaryWriter self, int value)
         {
-            var pos = self.BaseStream.Position - 4;
+            self.BaseStream.Position -= 4;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 4;
         }
 
         public static void Prepend(this BinaryWriter self, float value)
         {
-            var pos = self.BaseStream.Position - 4;
+            self.BaseStream.Position -= 4;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 4;
         }
 
         public static void Prepend(this BinaryWriter self, ulong value)
         {
-            var pos = self.BaseStream.Position - 8;
+            self.BaseStream.Position -= 8;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 8;
         }
 
         public static void Prepend(this BinaryWriter self, long value)
         {
-            var pos = self.BaseStream.Position - 8;
+            self.BaseStream.Position -= 8;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 8;
         }
 
         public static void Prepend(this BinaryWriter self, double value)
         {
-            var pos = self.BaseStream.Position - 8;
+            self.BaseStream.Position -= 8;
             self.Write(value);
-            self.BaseStream.Position = pos;
+            self.BaseStream.Position -= 8;
         }
 
         public static void PrependLenPrefix(this BinaryWriter self, int len, out LenPrefixSize lps)
