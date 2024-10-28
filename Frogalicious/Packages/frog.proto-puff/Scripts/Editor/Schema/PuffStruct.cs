@@ -1,24 +1,22 @@
-using System;
+using Frog.Collections;
 
 namespace Frog.ProtoPuff.Editor.Schema
 {
-    [Serializable]
-    public struct StructDefinition
+    [NoCopy]
+    internal struct PuffStruct
     {
         public string Name;
-        public FieldDefinition[] Fields;
-        public byte[] ReservedIds;
+        public RefList<PuffField> Fields;
     }
 
-    [Serializable]
-    public struct FieldDefinition
+    internal struct PuffField
     {
         public byte Id;
         public string Name;
         public string Type;
         public bool IsRepeated;
 
-        public FieldDefinition(byte id, string name, string type, bool isRepeated)
+        public PuffField(byte id, string name, string type, bool isRepeated)
         {
             Id = id;
             Name = name;
