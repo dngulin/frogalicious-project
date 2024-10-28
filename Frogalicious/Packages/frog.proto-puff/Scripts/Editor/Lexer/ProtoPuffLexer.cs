@@ -12,7 +12,7 @@ namespace Frog.ProtoPuff.Editor.Lexer
         public static RefList<Token> Read(Stream input, int bufferSize = 1024)
         {
             var state = new LexerState();
-            var tokens = new RefList<Token>();
+            var tokens = RefList.WithCapacity<Token>(16);
 
             var buffer = new byte[bufferSize];
             var offset = 0;
