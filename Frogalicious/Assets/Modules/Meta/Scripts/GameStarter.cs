@@ -1,8 +1,6 @@
 using System;
-using Frog.Core.Ui;
 using Frog.Meta.Splash;
 using Frog.ActivityTracker;
-using Frog.Core.Save;
 using UnityEngine;
 
 namespace Frog.Meta
@@ -20,13 +18,7 @@ namespace Frog.Meta
 
         private void Awake()
         {
-            RootScope scope;
-            {
-                scope.Camera = _camera;
-                scope.GameObjectStash = RootScope.CreateGameObjectStash();
-                scope.Ui = new UiSystem(_canvas, Instantiate(_loadingPrefab, scope.GameObjectStash));
-                scope.Save = new SaveSystem();
-            }
+            var scope = new RootScope(_camera, _canvas, _loadingPrefab);
 
             scope.Save.WriteToDiskIfDirty();
 

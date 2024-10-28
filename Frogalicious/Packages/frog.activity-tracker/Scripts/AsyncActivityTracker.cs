@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Frog.ActivityTracker
 {
-    public class AsyncActivityTracker<TScope> where TScope : struct
+    public class AsyncActivityTracker<TScope>
     {
         private readonly Stack<AsyncActivity<TScope>> _activities = new Stack<AsyncActivity<TScope>>();
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Frog.ActivityTracker
 {
-    public abstract class AsyncActivity<TScope> where TScope : struct
+    public abstract class AsyncActivity<TScope>
     {
         public abstract Awaitable<Transition> ExecuteAsync(TScope scope, CancellationToken ct);
 

@@ -6,13 +6,21 @@ using UnityEngine;
 
 namespace Frog.Meta
 {
-    public struct RootScope : IDisposable
+    public sealed class RootScope : IDisposable
     {
-        public Camera Camera;
-        public UiSystem Ui;
-        public SaveSystem Save;
-        public Transform GameObjectStash;
+        public readonly Camera Camera;
+        public readonly UiSystem Ui;
+        public readonly SaveSystem Save;
+        public readonly Transform GameObjectStash;
 
+        public RootScope(Camera camera, Canvas canvas, LoadingUi loadingPrefab)
+        {
+            Camera = camera;
+            GameObjectStash = CreateGameObjectStash();
+
+            Ui = new UiSystem(canvas, UnityEngine.Object.Instantiate(loadingPrefab, GameObjectStash));
+            Save = new SaveSystem();
+        }
 
         public void Dispose()
         {
@@ -21,7 +29,7 @@ namespace Frog.Meta
             Save.Dispose();
         }
 
-        public static Transform CreateGameObjectStash()
+        private static Transform CreateGameObjectStash()
         {
             var go = new GameObject(nameof(GameObjectStash));
             go.SetActive(false);
