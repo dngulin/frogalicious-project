@@ -20,10 +20,11 @@ namespace Frog.ProtoPuff.Editor.Lexer
 
             while ((bytesRead = input.Read(buffer, offset, buffer.Length - offset)) > 0)
             {
-                var span = buffer.AsSpan(0, offset + bytesRead);
+                var len = offset + bytesRead;
+                var span = buffer.AsSpan(0, len);
                 var bytesProcessed = ReadTokens(ref state, ref tokens, span, offset);
 
-                var reminder = bytesRead - bytesProcessed;
+                var reminder = len - bytesProcessed;
                 Array.Copy(buffer, bytesProcessed, buffer, 0, reminder);
                 offset = reminder;
 
