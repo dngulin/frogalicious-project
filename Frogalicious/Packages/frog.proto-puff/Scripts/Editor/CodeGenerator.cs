@@ -1,16 +1,27 @@
 using System.IO;
 using System.Text;
+using Frog.Collections;
+using Frog.ProtoPuff.Editor.Lexer;
+using Frog.ProtoPuff.Editor.Parser;
 using Frog.ProtoPuff.Editor.Schema;
 
 namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        public static void Generate(in SchemaDefinition schema, string outputPath)
+        public static void Generate(string inputPath, string outputPath, string ns)
         {
             var ctx = new CodeGenContext();
-            var memoryStream = new MemoryStream();
 
+            RefList<Token> tokens;
+            using (var fs = File.OpenRead(inputPath))
+            {
+                tokens = ProtoPuffLexer.Read(fs);
+            }
+
+            var schema = ProtoPuffParser.Parse(tokens);
+
+            var memoryStream = new MemoryStream();
             using (var rootWriter = new StreamWriter(memoryStream, Encoding.UTF8, 2048, true))
             {
                 rootWriter.WriteLine("using System;");
@@ -21,15 +32,15 @@ namespace Frog.ProtoPuff.Editor
 
                 rootWriter.WriteLine();
 
-                using (var nsWriter = rootWriter.Braces($"namespace {schema.Namespace}"))
+                using (var nsWriter = rootWriter.Braces($"namespace {ns}"))
                 {
-                    foreach (var enumDef in schema.Enums)
+                    foreach (ref readonly var enumDef in schema.Enums.RefReadonlyIter())
                     {
                         EmitEnum(nsWriter, enumDef, ctx);
                         nsWriter.WriteLine();
                     }
 
-                    foreach (var structDef in schema.Structs)
+                    foreach (ref readonly var structDef in schema.Structs.RefReadonlyIter())
                     {
                         EmitStruct(nsWriter, structDef, ctx);
                         nsWriter.WriteLine();
@@ -43,25 +54,21 @@ namespace Frog.ProtoPuff.Editor
             }
         }
 
-        private static void EmitEnum(in BracesScope wNameSpace, in EnumDefinition enumDef, CodeGenContext ctx)
+        private static void EmitEnum(in BracesScope wNameSpace, in PuffEnum enumDef, CodeGenContext ctx)
         {
-            if (enumDef.Flags) wNameSpace.WriteLine("[Flags]");
-
-            var enumType = ValidationUtil.GetEnumUnderlyingType(enumDef.UnderlyingType);
+            if (enumDef.IsFlags) wNameSpace.WriteLine("[Flags]");
 
             ctx.ValidateNewTypeName(enumDef.Name);
-            ctx.RegisterEnum(enumDef.Name, enumType);
+            ctx.RegisterEnum(enumDef.Name, enumDef.UnderlyingType);
 
-            using var wEnum = wNameSpace.Braces($"public enum {enumDef.Name} : {enumType.CSharpName()}");
-            foreach (var item in enumDef.Items)
+            using var wEnum = wNameSpace.Braces($"public enum {enumDef.Name} : {enumDef.UnderlyingType.CSharpName()}");
+            foreach (ref readonly var item in enumDef.Items.RefReadonlyIter())
             {
-                ValidationUtil.ValidateEnumItemName(item.Name, enumDef);
-                ValidationUtil.ValidateEnumItemValue(item, enumDef, enumType);
                 wEnum.WriteLine($"{item.Name} = {item.Value},");
             }
         }
 
-        private static void EmitStruct(in BracesScope wNameSpace, in StructDefinition structDef, CodeGenContext ctx)
+        private static void EmitStruct(in BracesScope wNameSpace, in PuffStruct structDef, CodeGenContext ctx)
         {
             var t = structDef.Name;
 
@@ -73,12 +80,10 @@ namespace Frog.ProtoPuff.Editor
 
             using (var wStruct = wNameSpace.Braces($"public struct {t}"))
             {
-                foreach (var field in structDef.Fields)
+                foreach (ref readonly var field in structDef.Fields.RefReadonlyIter())
                 {
-                    ValidationUtil.ValidateFieldName(field.Name, structDef);
                     var fn = field.Name;
                     var ft = ctx.GetCSharpTypeName(field.Type);
-
                     wStruct.WriteLine(field.IsRepeated ? $"public RefList<{ft}> {fn};" : $"public {ft} {fn};");
                 }
 
@@ -116,7 +121,7 @@ namespace Frog.ProtoPuff.Editor
             }
         }
 
-        private static ValueKind GetValueKind(in FieldDefinition field, CodeGenContext ctx, out Primitive p, out bool isEnum)
+        private static ValueKind GetValueKind(in PuffField field, CodeGenContext ctx, out Primitive p, out bool isEnum)
         {
             isEnum = false;
 

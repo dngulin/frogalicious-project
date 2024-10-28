@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Frog.Collections;
 using Frog.ProtoPuff.Editor.Schema;
 using UnityEngine;
 
@@ -32,9 +33,9 @@ namespace Frog.ProtoPuff.Editor
             throw new Exception($"Field type `{name}` is unknown");
         }
 
-        public bool IsNoCopyStruct(in StructDefinition structDef)
+        public bool IsNoCopyStruct(in PuffStruct structDef)
         {
-            foreach (var field in structDef.Fields)
+            foreach (ref readonly var field in structDef.Fields.RefReadonlyIter())
             {
                 if (field.IsRepeated || _noCopyTypes.Contains(field.Type))
                     return true;

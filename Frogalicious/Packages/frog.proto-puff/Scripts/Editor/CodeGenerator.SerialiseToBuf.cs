@@ -1,11 +1,12 @@
 using System;
+using Frog.Collections;
 using Frog.ProtoPuff.Editor.Schema;
 
 namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        private static void EmitMethodSerialiseToBuf(in BracesScope wExt, in StructDefinition def)
+        private static void EmitMethodSerialiseToBuf(in BracesScope wExt, in PuffStruct def)
         {
             using var wMethod = wExt.Braces($"public static void SerialiseTo(this in {def.Name} self, ref RefList<byte> buf)");
             wMethod.WriteLine("var len = self.GetSerialisedSize();");
@@ -21,11 +22,11 @@ namespace Frog.ProtoPuff.Editor
             wMethod.WriteLine("Debug.Assert(pos == 0, $\"{pos} != 0\");");
         }
 
-        private static void EmitMethodPrependToBuf(in BracesScope wExt, in StructDefinition def, CodeGenContext ctx)
+        private static void EmitMethodPrependToBuf(in BracesScope wExt, in PuffStruct def, CodeGenContext ctx)
         {
             using var wMethod = wExt.Braces($"public static void Prepend(this ref RefList<byte> buf, in {def.Name} data, ref int pos)");
 
-            foreach (var field in def.Fields)
+            foreach (ref readonly var field in def.Fields.RefReadonlyIter())
             {
                 var f = field.Name;
 

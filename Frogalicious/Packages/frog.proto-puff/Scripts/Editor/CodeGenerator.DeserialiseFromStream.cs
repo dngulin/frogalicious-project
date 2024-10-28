@@ -1,11 +1,12 @@
 using System;
+using Frog.Collections;
 using Frog.ProtoPuff.Editor.Schema;
 
 namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        private static void EmitExtMethodDeserialiseFromStream(in BracesScope wExt, in StructDefinition def)
+        private static void EmitExtMethodDeserialiseFromStream(in BracesScope wExt, in PuffStruct def)
         {
             var t = def.Name;
             using var wMethod = wExt.Braces($"public static void DeserialiseFrom(this ref {t} self, BinaryReader br)");
@@ -18,7 +19,7 @@ namespace Frog.ProtoPuff.Editor
             wMethod.WriteLine("self.UpdateValueFrom(br, endPos);");
         }
 
-        private static void EmitExtMethodUpdateValueFromStream(in BracesScope wExt, in StructDefinition def,
+        private static void EmitExtMethodUpdateValueFromStream(in BracesScope wExt, in PuffStruct def,
             CodeGenContext ctx)
         {
             var t = def.Name;
@@ -31,7 +32,7 @@ namespace Frog.ProtoPuff.Editor
 
             using (var wSwitch = wWhile.Braces("switch (fieldId)"))
             {
-                foreach (var field in def.Fields)
+                foreach (ref readonly var field in def.Fields.RefReadonlyIter())
                 {
                     using var wCase = wSwitch.Braces($"case {field.Id}:");
                     EmitCaseParseFieldFromStream(wCase, field, ctx);
@@ -47,7 +48,7 @@ namespace Frog.ProtoPuff.Editor
             }
         }
 
-        private static void EmitCaseParseFieldFromStream(in BracesScope wCase, in FieldDefinition field,
+        private static void EmitCaseParseFieldFromStream(in BracesScope wCase, in PuffField field,
             CodeGenContext ctx)
         {
             wCase.WriteLine("var fvq = ValueQualifier.Unpack(br.ReadByte());");

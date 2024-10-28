@@ -1,11 +1,12 @@
 using System;
+using Frog.Collections;
 using Frog.ProtoPuff.Editor.Schema;
 
 namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        private static void EmitExtMethodDeserialiseFromBuf(in BracesScope wExt, in StructDefinition def)
+        private static void EmitExtMethodDeserialiseFromBuf(in BracesScope wExt, in PuffStruct def)
         {
             var t = def.Name;
             using var wMethod =
@@ -20,7 +21,7 @@ namespace Frog.ProtoPuff.Editor
             wMethod.WriteLine("self.UpdateValueFrom(buf, ref pos, endPos);");
         }
 
-        private static void EmitExtMethodUpdateValueFromBuf(in BracesScope wExt, in StructDefinition def,
+        private static void EmitExtMethodUpdateValueFromBuf(in BracesScope wExt, in PuffStruct def,
             CodeGenContext ctx)
         {
             var t = def.Name;
@@ -33,7 +34,7 @@ namespace Frog.ProtoPuff.Editor
 
             using (var wSwitch = wWhile.Braces("switch (fieldId)"))
             {
-                foreach (var field in def.Fields)
+                foreach (ref readonly var field in def.Fields.RefReadonlyIter())
                 {
                     using var wCase = wSwitch.Braces($"case {field.Id}:");
                     EmitCaseParseFieldFromBuf(wCase, field, ctx);
@@ -49,7 +50,7 @@ namespace Frog.ProtoPuff.Editor
             }
         }
 
-        private static void EmitCaseParseFieldFromBuf(in BracesScope wCase, in FieldDefinition field,
+        private static void EmitCaseParseFieldFromBuf(in BracesScope wCase, in PuffField field,
             CodeGenContext ctx)
         {
             wCase.WriteLine("var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));");

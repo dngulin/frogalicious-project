@@ -1,16 +1,17 @@
+using Frog.Collections;
 using Frog.ProtoPuff.Editor.Schema;
 
 namespace Frog.ProtoPuff.Editor
 {
     public static partial class CodeGenerator
     {
-        private static void EmitEqualityOperators(in BracesScope wStruct, in StructDefinition def)
+        private static void EmitEqualityOperators(in BracesScope wStruct, in PuffStruct def)
         {
             var t = def.Name;
 
             using (var wMethod = wStruct.Braces($"public static bool operator ==(in {t} l, in {t} r)"))
             {
-                foreach (var field in def.Fields)
+                foreach (ref readonly var field in def.Fields.RefReadonlyIter())
                 {
                     var f = field.Name;
                     if (!field.IsRepeated)
