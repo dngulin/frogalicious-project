@@ -1,8 +1,9 @@
 using System;
+using Frog.Collections;
 
 namespace Frog.Core.Save
 {
-    public class SaveSystem
+    public class SaveSystem : IDisposable
     {
         private readonly SaveFileWrapper _saveWrapper;
         private bool _isDirty;
@@ -12,8 +13,17 @@ namespace Frog.Core.Save
 
         public SaveSystem()
         {
-            _saveWrapper = new SaveFileWrapper("save.bin");
-            _isDirty = _saveWrapper.Load(Array.Empty<Migration>());
+            _saveWrapper = SaveFileWrapper.Load("save.bin", Array.Empty<Migration>(), out _isDirty);
+
+            if (_saveWrapper.Buffer.Count() > 0)
+            {
+                _save.DeserialiseFrom(_saveWrapper.Buffer);
+            }
+        }
+
+        public void Dispose()
+        {
+            _saveWrapper.Dispose();
         }
 
         public void SetDirty() => _isDirty = true;

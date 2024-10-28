@@ -17,12 +17,9 @@ namespace Frog.Core.Save
 
         public ref RefList<byte> Buffer => ref _save.Data;
 
-        public SaveFileWrapper(string fileName)
+        private SaveFileWrapper(string fileName)
         {
             _path = Path.Combine(Application.persistentDataPath, fileName);
-            _save = default;
-            _fs = null;
-            _bw = null;
         }
 
         public void Dispose()
@@ -31,18 +28,23 @@ namespace Frog.Core.Save
             _fs?.Dispose();
         }
 
-        public bool Load(Migration[] migrations)
+        public static SaveFileWrapper Load(string fileName, Migration[] migrations, out bool needsSave)
         {
-            if (_fs != null)
-                throw new InvalidOperationException("Already loaded");
+            var wrapper = new SaveFileWrapper(fileName);
+            wrapper.LoadInternal(migrations, out needsSave);
+            return wrapper;
+        }
 
+        private void LoadInternal(Migration[] migrations, out bool needsSave)
+        {
             if (!File.Exists(_path))
             {
                 _fs = new FileStream(_path, FileMode.CreateNew, FileAccess.ReadWrite);
                 _bw = new BinaryWriter(_fs, Encoding.ASCII, true);
 
-                WriteDefaultInternalState(ref _save, migrations);
-                return true;
+                SetupDefaultSave(ref _save, migrations);
+                needsSave = true;
+                return;
             }
 
             try
@@ -54,13 +56,14 @@ namespace Frog.Core.Save
                 {
                     _save.DeserialiseFrom(br);
                 }
-                return TryExecuteMigrations(ref _save, migrations);
+
+                needsSave = TryExecuteMigrations(ref _save, migrations);
             }
             catch (Exception e)
             {
-                Debug.LogError($"Failed to load state! {e.GetType()}: {e.Message}\n{e.StackTrace}");
-                WriteDefaultInternalState(ref _save, migrations);
-                return true;
+                Debug.LogError($"Failed to load game save! {e.GetType()}: {e.Message}\n{e.StackTrace}");
+                SetupDefaultSave(ref _save, migrations);
+                needsSave = true;
             }
         }
 
