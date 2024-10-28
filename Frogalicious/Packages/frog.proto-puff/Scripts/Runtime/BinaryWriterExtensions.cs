@@ -97,12 +97,14 @@ namespace Frog.ProtoPuff
             {
                 lps = LenPrefixSize._8;
                 self.Prepend((byte)len);
+                return;
             }
 
             if (len <= ushort.MaxValue)
             {
                 lps = LenPrefixSize._16;
                 self.Prepend((ushort)len);
+                return;
             }
 
             lps = LenPrefixSize._32;
