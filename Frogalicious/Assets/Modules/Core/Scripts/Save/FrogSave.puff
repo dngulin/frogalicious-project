@@ -1,0 +1,5 @@
+struct FrogSave
+{
+    00 ChapterIdx : i32;
+    01 LevelIdx : i32;
+}

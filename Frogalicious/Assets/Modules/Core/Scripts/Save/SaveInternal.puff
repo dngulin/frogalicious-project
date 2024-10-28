@@ -1,0 +1,11 @@
+struct MigrationInfo
+{
+    00 Name : repeated u8;
+    01 TimeStamp : i64;
+}
+
+struct SaveInternal
+{
+    00 Migrations : repeated MigrationInfo;
+    01 Data : repeated u8;
+}
