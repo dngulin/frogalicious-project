@@ -251,9 +251,9 @@ namespace Frog.ProtoPuff.Editor.Lexer
                 default:
                 {
                     AddToken(ref tokens, TokenType.Identifier, state.CurrBlockLocation);
-                    state.CurrBlock = default;
+                    state.CurrBlock = LexerBlock.None;
                     state.CurrBlockLocation = default;
-                    return true;
+                    return false;
                 }
             }
         }
