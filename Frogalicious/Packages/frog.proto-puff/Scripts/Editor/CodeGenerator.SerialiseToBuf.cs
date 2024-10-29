@@ -51,7 +51,10 @@ namespace Frog.ProtoPuff.Editor
 
                             using (var wFor = wIf.Braces($"for (int i = data.{f}.Count() - 1; i >= 0 ; i--)"))
                             {
-                                wFor.WriteLine($"buf.Prepend(data.{f}.RefReadonlyAt(i), ref pos);");
+                                wFor.WriteLine(isEnum
+                                    ? $"buf.Prepend(({p.CSharpName()})data.{f}.RefReadonlyAt(i), ref pos);"
+                                    : $"buf.Prepend(data.{f}.RefReadonlyAt(i), ref pos);"
+                                );
                             }
 
                             wIf.WriteLine("var len = posAfterField - pos;");

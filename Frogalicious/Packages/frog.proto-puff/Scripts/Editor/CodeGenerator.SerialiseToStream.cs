@@ -52,7 +52,10 @@ namespace Frog.ProtoPuff.Editor
 
                             using (var wFor = wIf.Braces($"for (int i = data.{f}.Count() - 1; i >= 0 ; i--)"))
                             {
-                                wFor.WriteLine($"bw.Prepend(data.{f}.RefReadonlyAt(i));");
+                                wFor.WriteLine(isEnum
+                                    ? $"bw.Prepend(({p.CSharpName()})data.{f}.RefReadonlyAt(i));"
+                                    : $"bw.Prepend(data.{f}.RefReadonlyAt(i));"
+                                );
                             }
 
                             wIf.WriteLine("var len = checked((int)(posAfterField - bw.BaseStream.Position));");
