@@ -65,18 +65,18 @@ namespace Frog.Core.Save
 
         public static void Prepend(this ref RefList<byte> buf, in FrogSave data, ref int pos)
         {
-            if (data.ChapterIdx != default)
-            {
-                buf.Prepend(data.ChapterIdx, ref pos);
-                buf.Prepend(ValueQualifier.PackedI32, ref pos);
-                buf.Prepend((byte)0, ref pos);
-            }
-
             if (data.LevelIdx != default)
             {
                 buf.Prepend(data.LevelIdx, ref pos);
                 buf.Prepend(ValueQualifier.PackedI32, ref pos);
                 buf.Prepend((byte)1, ref pos);
+            }
+
+            if (data.ChapterIdx != default)
+            {
+                buf.Prepend(data.ChapterIdx, ref pos);
+                buf.Prepend(ValueQualifier.PackedI32, ref pos);
+                buf.Prepend((byte)0, ref pos);
             }
 
         }
@@ -88,7 +88,7 @@ namespace Frog.Core.Save
             ProtoPuffUtil.EnsureStruct(vq);
 
             self.Clear();
-            var endPos = pos + buf.ReadLenPrefix(vq.LenPrefixSize, ref pos);
+            var endPos = buf.ReadLenPrefix(vq.LenPrefixSize, ref pos) + pos;
             self.UpdateValueFrom(buf, ref pos, endPos);
         }
 

@@ -72,6 +72,13 @@ namespace Frog.Core.Save
 
         public static void Prepend(this BinaryWriter bw, in MigrationInfo data)
         {
+            if (data.TimeStamp != default)
+            {
+                bw.Prepend(data.TimeStamp);
+                bw.Prepend(ValueQualifier.PackedI64);
+                bw.Prepend((byte)1);
+            }
+
             if (data.Name.Count() > 0)
             {
                 var posAfterField = bw.BaseStream.Position;
@@ -85,13 +92,6 @@ namespace Frog.Core.Save
                 bw.Prepend((byte)0);
             }
 
-            if (data.TimeStamp != default)
-            {
-                bw.Prepend(data.TimeStamp);
-                bw.Prepend(ValueQualifier.PackedI64);
-                bw.Prepend((byte)1);
-            }
-
         }
 
         public static void DeserialiseFrom(this ref MigrationInfo self, BinaryReader br)
@@ -100,7 +100,7 @@ namespace Frog.Core.Save
             ProtoPuffUtil.EnsureStruct(vq);
 
             self.Clear();
-            var endPos = br.BaseStream.Position + br.ReadLenPrefix(vq.LenPrefixSize);
+            var endPos = br.ReadLenPrefix(vq.LenPrefixSize) + br.BaseStream.Position;
             self.UpdateValueFrom(br, endPos);
         }
 
@@ -115,7 +115,7 @@ namespace Frog.Core.Save
                     {
                         var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureRepeatedU8(fvq);
-                        var fieldEndPos = br.BaseStream.Position + br.ReadLenPrefix(fvq.LenPrefixSize);
+                        var fieldEndPos = br.ReadLenPrefix(fvq.LenPrefixSize) + br.BaseStream.Position;
                         while (br.BaseStream.Position < fieldEndPos)
                         {
                             self.Name.RefAdd() = br.ReadByte();
@@ -186,7 +186,7 @@ namespace Frog.Core.Save
                 for (int i = 0; i < self.Migrations.Count(); i++)
                 {
                     var itemLen = self.Migrations.RefReadonlyAt(i).GetSerialisedSize();
-                    len += 1 + ProtoPuffUtil.GetLenPrefixSize(len) + itemLen;
+                    len += 1 + ProtoPuffUtil.GetLenPrefixSize(itemLen) + itemLen;
                 }
                 result += 2 + ProtoPuffUtil.GetLenPrefixSize(len) + len;
             }
@@ -216,19 +216,6 @@ namespace Frog.Core.Save
 
         public static void Prepend(this BinaryWriter bw, in SaveInternal data)
         {
-            if (data.Migrations.Count() > 0)
-            {
-                var posAfterField = bw.BaseStream.Position;
-                for (int i = data.Migrations.Count() - 1; i >= 0 ; i--)
-                {
-                    bw.Prepend(data.Migrations.RefReadonlyAt(i));
-                }
-                var len = checked((int)(posAfterField - bw.BaseStream.Position));
-                bw.PrependLenPrefix(len, out var lps);
-                bw.Prepend(ValueQualifier.RepeatedStruct(lps).Pack());
-                bw.Prepend((byte)0);
-            }
-
             if (data.Data.Count() > 0)
             {
                 var posAfterField = bw.BaseStream.Position;
@@ -242,6 +229,23 @@ namespace Frog.Core.Save
                 bw.Prepend((byte)1);
             }
 
+            if (data.Migrations.Count() > 0)
+            {
+                var posAfterField = bw.BaseStream.Position;
+                for (int i = data.Migrations.Count() - 1; i >= 0 ; i--)
+                {
+                    var posAfterItem = bw.BaseStream.Position;
+                    bw.Prepend(data.Migrations.RefReadonlyAt(i));
+                    var itemLen = checked((int)(posAfterItem - bw.BaseStream.Position));
+                    bw.PrependLenPrefix(itemLen, out var itemLps);
+                    bw.Prepend(ValueQualifier.Struct(itemLps).Pack());
+                }
+                var len = checked((int)(posAfterField - bw.BaseStream.Position));
+                bw.PrependLenPrefix(len, out var lps);
+                bw.Prepend(ValueQualifier.RepeatedStruct(lps).Pack());
+                bw.Prepend((byte)0);
+            }
+
         }
 
         public static void DeserialiseFrom(this ref SaveInternal self, BinaryReader br)
@@ -250,7 +254,7 @@ namespace Frog.Core.Save
             ProtoPuffUtil.EnsureStruct(vq);
 
             self.Clear();
-            var endPos = br.BaseStream.Position + br.ReadLenPrefix(vq.LenPrefixSize);
+            var endPos = br.ReadLenPrefix(vq.LenPrefixSize) + br.BaseStream.Position;
             self.UpdateValueFrom(br, endPos);
         }
 
@@ -265,12 +269,12 @@ namespace Frog.Core.Save
                     {
                         var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureRepeatedStruct(fvq);
-                        var fieldEndPos = br.BaseStream.Position + br.ReadLenPrefix(fvq.LenPrefixSize);
+                        var fieldEndPos = br.ReadLenPrefix(fvq.LenPrefixSize) + br.BaseStream.Position;
                         while (br.BaseStream.Position < fieldEndPos)
                         {
                             var ivq = ValueQualifier.Unpack(br.ReadByte());
                             ProtoPuffUtil.EnsureStruct(ivq);
-                            var itemEndPos = br.BaseStream.Position + br.ReadLenPrefix(ivq.LenPrefixSize);
+                            var itemEndPos = br.ReadLenPrefix(ivq.LenPrefixSize) + br.BaseStream.Position;
                             self.Migrations.RefAdd().UpdateValueFrom(br, itemEndPos);
                         }
                         break;
@@ -279,7 +283,7 @@ namespace Frog.Core.Save
                     {
                         var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureRepeatedU8(fvq);
-                        var fieldEndPos = br.BaseStream.Position + br.ReadLenPrefix(fvq.LenPrefixSize);
+                        var fieldEndPos = br.ReadLenPrefix(fvq.LenPrefixSize) + br.BaseStream.Position;
                         while (br.BaseStream.Position < fieldEndPos)
                         {
                             self.Data.RefAdd() = br.ReadByte();
