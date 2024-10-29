@@ -26,10 +26,9 @@ namespace Frog.ProtoPuff.Editor
         {
             using var wMethod = wExt.Braces($"public static void Prepend(this ref RefList<byte> buf, in {def.Name} data, ref int pos)");
 
-            foreach (ref readonly var field in def.Fields.RefReadonlyIter())
+            foreach (ref readonly var field in def.Fields.RefReadonlyIterReversed())
             {
                 var f = field.Name;
-
                 switch (GetValueKind(field, ctx, out var p, out var isEnum))
                 {
                     case ValueKind.Primitive:
