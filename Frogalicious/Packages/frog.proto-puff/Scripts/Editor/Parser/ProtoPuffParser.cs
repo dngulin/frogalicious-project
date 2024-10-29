@@ -100,7 +100,7 @@ namespace Frog.ProtoPuff.Editor.Parser
 
             ref var puffEnum = ref schema.Enums.RefAt(schema.Enums.Count() - 1);
 
-            var itemName = ReadEnumItemName(puffEnum.Items, tokens, tokenIdx);
+            var itemName = ReadEnumItemName(puffEnum.Items, tokens, tokenIdx++);
             ref var puffItem = ref puffEnum.Items.RefAdd();
             puffItem.Name = itemName;
 
