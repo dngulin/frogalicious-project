@@ -73,7 +73,7 @@ namespace Frog.Meta.MainMenu
                 return command.Id switch
                 {
                     MainMenuCommandId.PlayLevel => await PlayLevel(scope, command.LevelIndex, ct),
-                    MainMenuCommandId.Continue => await PlayLevel(scope, 0, ct),
+                    MainMenuCommandId.Continue => await PlayLevel(scope, scope.Save.Data.LevelIdx, ct),
                     MainMenuCommandId.ExitGame => Transition.Pop(),
                     _ => throw new ArgumentOutOfRangeException(),
                 };
