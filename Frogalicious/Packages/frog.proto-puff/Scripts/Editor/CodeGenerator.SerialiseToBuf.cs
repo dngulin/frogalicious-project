@@ -82,12 +82,14 @@ namespace Frog.ProtoPuff.Editor
                         using (var wIf = wMethod.Braces($"if (data.{f}.Count() > 0)"))
                         {
                             wIf.WriteLine("var posAfterField = pos;");
-
                             using (var wFor = wIf.Braces($"for (int i = data.{f}.Count() - 1; i >= 0 ; i--)"))
                             {
+                                wFor.WriteLine("var posAfterItem = pos;");
                                 wFor.WriteLine($"buf.Prepend(data.{f}.RefReadonlyAt(i), ref pos);");
+                                wFor.WriteLine("var itemLen = posAfterItem - pos;");
+                                wFor.WriteLine("buf.PrependLenPrefix(itemLen, ref pos, out var itemLps);");
+                                wFor.WriteLine("buf.Prepend(ValueQualifier.Struct(itemLps).Pack(), ref pos);");
                             }
-
                             wIf.WriteLine("var len = posAfterField - pos;");
 
                             wIf.WriteLine("buf.PrependLenPrefix(len, ref pos, out var lps);");

@@ -85,7 +85,11 @@ namespace Frog.ProtoPuff.Editor
                             wIf.WriteLine("var posAfterField = bw.BaseStream.Position;");
                             using (var wFor = wIf.Braces($"for (int i = data.{f}.Count() - 1; i >= 0 ; i--)"))
                             {
+                                wFor.WriteLine("var posAfterItem = bw.BaseStream.Position;");
                                 wFor.WriteLine($"bw.Prepend(data.{f}.RefReadonlyAt(i));");
+                                wFor.WriteLine("var itemLen = checked((int)(posAfterItem - bw.BaseStream.Position));");
+                                wFor.WriteLine("bw.PrependLenPrefix(itemLen, out var itemLps);");
+                                wFor.WriteLine("bw.Prepend(ValueQualifier.Struct(itemLps).Pack());");
                             }
                             wIf.WriteLine("var len = checked((int)(posAfterField - bw.BaseStream.Position));");
 
