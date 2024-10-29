@@ -17,7 +17,7 @@ namespace Frog.ProtoPuff.Editor
             wMethod.WriteLine("ProtoPuffUtil.EnsureStruct(vq);");
             wMethod.WriteLine();
             wMethod.WriteLine("self.Clear();");
-            wMethod.WriteLine("var endPos = pos + buf.ReadLenPrefix(vq.LenPrefixSize, ref pos);");
+            wMethod.WriteLine("var endPos = buf.ReadLenPrefix(vq.LenPrefixSize, ref pos) + pos;");
             wMethod.WriteLine("self.UpdateValueFrom(buf, ref pos, endPos);");
         }
 
@@ -72,7 +72,7 @@ namespace Frog.ProtoPuff.Editor
                 case ValueKind.RepeatedPrimitive:
                 {
                     wCase.WriteLine($"ProtoPuffUtil.EnsureRepeated{p}(fvq);");
-                    wCase.WriteLine("var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);");
+                    wCase.WriteLine("var fieldEndPos = buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos) + pos;");
                     using var wWhile = wCase.Braces("while (pos < fieldEndPos)");
                     wWhile.WriteLine(isEnum
                         ? $"self.{fn}.RefAdd() = ({ft})buf.Read{p.SpecialisedMethodSuffix()}(ref pos);"
@@ -83,18 +83,18 @@ namespace Frog.ProtoPuff.Editor
                 case ValueKind.Struct:
                 {
                     wCase.WriteLine("ProtoPuffUtil.EnsureStruct(fvq);");
-                    wCase.WriteLine("var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);");
+                    wCase.WriteLine("var fieldEndPos = buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos) + pos;");
                     wCase.WriteLine($"self.{fn}.UpdateValueFrom(buf, ref pos, fieldEndPos);");
                     break;
                 }
                 case ValueKind.RepeatedStruct:
                 {
                     wCase.WriteLine("ProtoPuffUtil.EnsureRepeatedStruct(fvq);");
-                    wCase.WriteLine("var fieldEndPos = pos + buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos);");
+                    wCase.WriteLine("var fieldEndPos = buf.ReadLenPrefix(fvq.LenPrefixSize, ref pos) + pos;");
                     using var wWhile = wCase.Braces("while (pos < fieldEndPos)");
                     wWhile.WriteLine("var ivq = ValueQualifier.Unpack(buf.ReadByte(ref pos));");
                     wWhile.WriteLine("ProtoPuffUtil.EnsureStruct(ivq);");
-                    wWhile.WriteLine("var itemEndPos = pos + buf.ReadLenPrefix(ivq.LenPrefixSize, ref pos);");
+                    wWhile.WriteLine("var itemEndPos = buf.ReadLenPrefix(ivq.LenPrefixSize, ref pos) + pos;");
                     wWhile.WriteLine($"self.{fn}.RefAdd().UpdateValueFrom(buf, ref pos, itemEndPos);");
                     break;
                 }
