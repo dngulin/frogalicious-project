@@ -49,7 +49,7 @@ namespace Frog.ProtoPuff.Editor
                             using (var wFor = wIf.Braces($"for (int i = 0; i < self.{f}.Count(); i++)"))
                             {
                                 wFor.WriteLine($"var itemLen = self.{f}.RefReadonlyAt(i).GetSerialisedSize();");
-                                wFor.WriteLine("len += 1 + ProtoPuffUtil.GetLenPrefixSize(len) + itemLen;");
+                                wFor.WriteLine("len += 1 + ProtoPuffUtil.GetLenPrefixSize(itemLen) + itemLen;");
                             }
 
                             wIf.WriteLine("result += 2 + ProtoPuffUtil.GetLenPrefixSize(len) + len;");
