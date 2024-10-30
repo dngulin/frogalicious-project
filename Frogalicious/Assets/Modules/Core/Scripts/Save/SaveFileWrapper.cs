@@ -103,10 +103,9 @@ namespace Frog.Core.Save
 
             var appliedMigrations = new HashSet<string>(save.Migrations.Count());
 
-            for (var i = 0; i < save.Migrations.Count(); i++)
+            foreach (ref readonly var mInfo in save.Migrations.RefReadonlyIter())
             {
-                ref readonly var migrationInfo = ref save.Migrations.RefReadonlyAt(i);
-                appliedMigrations.Add(migrationInfo.Name.ToStringAscii());
+                appliedMigrations.Add(mInfo.Name.ToStringAscii());
             }
 
             foreach (var migration in migrations)

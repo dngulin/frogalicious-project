@@ -53,9 +53,8 @@ namespace Frog.Level.Simulation
     {
         public static bool IsEntityMovedThisStep(this in TimeLine timeline, ushort entityId)
         {
-            for (var i = timeline.Events.Count() - 1; i >= 0; i--)
+            foreach (ref readonly var evt in timeline.Events.RefReadonlyIterReversed())
             {
-                ref readonly var evt = ref timeline.Events.RefReadonlyAt(i);
                 if (evt.Step < timeline.Step)
                     break;
 

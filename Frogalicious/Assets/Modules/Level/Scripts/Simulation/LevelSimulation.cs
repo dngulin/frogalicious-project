@@ -251,11 +251,9 @@ namespace Frog.Level.Simulation
 
         private static void UpdateButtons(ref SimState state)
         {
-            for (var i = 0; i < state.Indices.Buttons.Count(); i++)
+            foreach (var point in state.Indices.Buttons.RefReadonlyIter())
             {
-                var point = state.Indices.Buttons.RefAt(i);
                 ref readonly var tile = ref state.Level.Cells.RefReadonlyAt(point).Tile;
-
                 Debug.Assert(tile.Type == BoardTileType.Button);
                 ref readonly var button = ref tile.State.AsButton;
 
@@ -265,11 +263,9 @@ namespace Frog.Level.Simulation
 
         private static void UpdateSpikes(ref SimState state, bool isActive, BoardColorGroup color)
         {
-            for (var i = 0; i < state.Indices.Spikes.Count(); i++)
+            foreach (var point in state.Indices.Spikes.RefReadonlyIter())
             {
-                var point = state.Indices.Spikes.RefAt(i);
                 ref var tile = ref state.Level.Cells.RefAt(point).Tile;
-
                 Debug.Assert(tile.Type == BoardTileType.Spikes);
                 ref var spikes = ref tile.State.AsSpikes;
 
@@ -297,11 +293,9 @@ namespace Frog.Level.Simulation
         {
             var result = false;
 
-            for (var i = 0; i < state.Indices.Springs.Count(); i++)
+            foreach (var point in state.Indices.Springs.RefReadonlyIter())
             {
-                var point = state.Indices.Springs.RefAt(i);
                 ref var cell = ref state.Level.Cells.RefAt(point);
-
                 Debug.Assert(cell.Tile.Type == BoardTileType.Spring);
 
                 if (cell.Object.Type == BoardObjectType.Nothing)

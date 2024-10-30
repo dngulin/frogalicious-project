@@ -62,9 +62,8 @@ namespace Frog.Level.View
         {
             _timelinePos = 0;
 
-            for (var i = 0; i < timeLineEvents.Count(); i++)
+            foreach (ref readonly var evt in timeLineEvents.RefReadonlyIter())
             {
-                ref readonly var evt = ref timeLineEvents.RefReadonlyAt(i);
                 _timeline.RefAdd() = new TimelineJob(evt, _objects[evt.EntityId]);
             }
         }
