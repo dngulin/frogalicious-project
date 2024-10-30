@@ -10,10 +10,11 @@ namespace Frog.ProtoPuff.Editor
         {
             using var wMethod = wExt.Braces($"public static void SerialiseTo(this in {def.Name} self, ref RefList<byte> buf)");
             wMethod.WriteLine("var len = self.GetSerialisedSize();");
-            wMethod.WriteLine("buf.SetSize(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);");
+            wMethod.WriteLine("buf.Clear();");
+            wMethod.WriteLine("buf.AppendDefault(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);");
+            wMethod.WriteLine("var pos = buf.Count();");
             wMethod.WriteLine();
 
-            wMethod.WriteLine("var pos = buf.Count();");
             wMethod.WriteLine("buf.Prepend(self, ref pos);");
             wMethod.WriteLine("buf.PrependLenPrefix(len, ref pos, out var lps);");
             wMethod.WriteLine("buf.Prepend(ValueQualifier.Struct(lps).Pack(), ref pos);");

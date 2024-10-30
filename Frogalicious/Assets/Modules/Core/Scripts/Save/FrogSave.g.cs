@@ -53,9 +53,10 @@ namespace Frog.Core.Save
         public static void SerialiseTo(this in FrogSave self, ref RefList<byte> buf)
         {
             var len = self.GetSerialisedSize();
-            buf.SetSize(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);
-
+            buf.Clear();
+            buf.AppendDefault(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);
             var pos = buf.Count();
+
             buf.Prepend(self, ref pos);
             buf.PrependLenPrefix(len, ref pos, out var lps);
             buf.Prepend(ValueQualifier.Struct(lps).Pack(), ref pos);
