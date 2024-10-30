@@ -91,7 +91,7 @@ namespace Frog.Core.Save
             foreach (var migration in migrations)
             {
                 ref var migrationInfo = ref save.Migrations.RefAdd();
-                migrationInfo.Name.SetFromAsciiString(migration.Name);
+                migrationInfo.Name.AppendAsciiString(migration.Name);
                 migrationInfo.TimeStamp = timestamp;
             }
         }
@@ -117,7 +117,7 @@ namespace Frog.Core.Save
                 migration.Execute(ref save.Data);
 
                 ref var migrationInfo = ref save.Migrations.RefAdd();
-                migrationInfo.Name.SetFromAsciiString(migration.Name);
+                migrationInfo.Name.AppendAsciiString(migration.Name);
                 migrationInfo.TimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             }
 

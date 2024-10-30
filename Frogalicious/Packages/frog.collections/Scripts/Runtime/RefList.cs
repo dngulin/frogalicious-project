@@ -109,15 +109,14 @@ namespace Frog.Collections
             list.ItemCount = 0;
         }
 
-        public static void SetSize<T>(this ref RefList<T> list, int newSize) where T : struct
+        public static void AppendDefault<T>(this ref RefList<T> list, int count) where T : struct
         {
-            if (list.Capacity() < newSize)
-                Array.Resize(ref list.ItemArray, newSize);
+            var newCount = list.ItemCount + count;
 
-            if (list.ItemCount > 0)
-                Array.Clear(list.ItemArray, 0, newSize);
+            if (list.Capacity() < newCount)
+                Array.Resize(ref list.ItemArray, newCount);
 
-            list.ItemCount = newSize;
+            list.ItemCount = newCount;
         }
 
         public static void Sort<T>(this ref RefList<T> list) where T : struct

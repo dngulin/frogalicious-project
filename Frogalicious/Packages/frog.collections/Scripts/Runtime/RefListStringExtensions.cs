@@ -4,30 +4,29 @@ namespace Frog.Collections
 {
     public static class RefListStringExtensions
     {
-        public static void SetFromUtf8String(this ref RefList<byte> list, string value)
+        public static void AppendUtf8String(this ref RefList<byte> list, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                list.Clear();
                 return;
             }
 
-            var len = Encoding.UTF8.GetByteCount(value);
-            list.SetSize(len);
 
-            list.ItemCount = Encoding.UTF8.GetBytes(value, 0, value.Length, list.ItemArray, 0);
+            var pos = list.Count();
+            list.AppendDefault(Encoding.UTF8.GetByteCount(value));
+            Encoding.UTF8.GetBytes(value, 0, value.Length, list.ItemArray, pos);
         }
 
-        public static void SetFromAsciiString(this ref RefList<byte> list, string value)
+        public static void AppendAsciiString(this ref RefList<byte> list, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                list.Clear();
                 return;
             }
 
-            list.SetSize(value.Length);
-            list.ItemCount = Encoding.ASCII.GetBytes(value, 0, value.Length, list.ItemArray, 0);
+            var pos = list.Count();
+            list.AppendDefault(value.Length);
+            Encoding.ASCII.GetBytes(value, 0, value.Length, list.ItemArray, pos);
         }
 
         public static string ToStringUtf8(this in RefList<byte> list)
