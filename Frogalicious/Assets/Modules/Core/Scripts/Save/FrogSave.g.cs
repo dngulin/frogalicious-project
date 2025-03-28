@@ -50,74 +50,76 @@ namespace Frog.Core.Save
             return result;
         }
 
-        public static void SerialiseTo(this in FrogSave self, ref RefList<byte> buf)
+        public static void SerialiseTo(this in FrogSave self, BinaryWriter bw)
         {
             var len = self.GetSerialisedSize();
-            buf.Clear();
-            buf.AppendDefault(1 + ProtoPuffUtil.GetLenPrefixSize(len) + len);
-            var pos = buf.Count();
+            var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;
+            if (bw.BaseStream.Position + prefixedLen > bw.BaseStream.Length)
+            {
+                bw.BaseStream.SetLength(bw.BaseStream.Position + prefixedLen);
+            }
+            bw.BaseStream.Position += prefixedLen;
 
-            buf.Prepend(self, ref pos);
-            buf.PrependLenPrefix(len, ref pos, out var lps);
-            buf.Prepend(ValueQualifier.Struct(lps).Pack(), ref pos);
+            bw.Prepend(self);
+            bw.PrependLenPrefix(len, out var lps);
+            bw.Prepend(ValueQualifier.Struct(lps).Pack());
 
-            Debug.Assert(pos == 0, $"{pos} != 0");
+            Debug.Assert(bw.BaseStream.Position == 0, $"{bw.BaseStream.Position} != 0");
         }
 
-        public static void Prepend(this ref RefList<byte> buf, in FrogSave data, ref int pos)
+        public static void Prepend(this BinaryWriter bw, in FrogSave data)
         {
             if (data.LevelIdx != default)
             {
-                buf.Prepend(data.LevelIdx, ref pos);
-                buf.Prepend(ValueQualifier.PackedI32, ref pos);
-                buf.Prepend((byte)1, ref pos);
+                bw.Prepend(data.LevelIdx);
+                bw.Prepend(ValueQualifier.PackedI32);
+                bw.Prepend((byte)1);
             }
 
             if (data.ChapterIdx != default)
             {
-                buf.Prepend(data.ChapterIdx, ref pos);
-                buf.Prepend(ValueQualifier.PackedI32, ref pos);
-                buf.Prepend((byte)0, ref pos);
+                bw.Prepend(data.ChapterIdx);
+                bw.Prepend(ValueQualifier.PackedI32);
+                bw.Prepend((byte)0);
             }
 
         }
 
-        public static void DeserialiseFrom(this ref FrogSave self, in RefList<byte> buf)
+        public static void DeserialiseFrom(this ref FrogSave self, BinaryReader br)
         {
-            var pos = 0;
-            var vq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
+            var vq = ValueQualifier.Unpack(br.ReadByte());
             ProtoPuffUtil.EnsureStruct(vq);
 
             self.Clear();
-            var endPos = buf.ReadLenPrefix(vq.LenPrefixSize, ref pos) + pos;
-            self.UpdateValueFrom(buf, ref pos, endPos);
+            var endPos = br.ReadLenPrefix(vq.LenPrefixSize) + br.BaseStream.Position;
+            self.UpdateValueFrom(br, endPos);
         }
 
-        public static void UpdateValueFrom(this ref FrogSave self, in RefList<byte> buf, ref int pos, int endPos)
+        public static void UpdateValueFrom(this ref FrogSave self, BinaryReader br, long endPos)
         {
-            while (pos < endPos)
+            while (br.BaseStream.Position < endPos)
             {
-                var fieldId = buf.ReadByte(ref pos);
+                var fieldId = br.ReadByte();
                 switch (fieldId)
                 {
                     case 0:
                     {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
+                        var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureI32(fvq);
-                        self.ChapterIdx = buf.ReadInt32(ref pos);
+                        self.ChapterIdx = br.ReadInt32();
                         break;
                     }
                     case 1:
                     {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
+                        var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureI32(fvq);
-                        self.LevelIdx = buf.ReadInt32(ref pos);
+                        self.LevelIdx = br.ReadInt32();
                         break;
                     }
                     default:
                     {
-                        var fvq = ValueQualifier.Unpack(buf.ReadByte(ref pos));
-                        buf.SkipValue(fvq, ref pos);
+                        var fvq = ValueQualifier.Unpack(br.ReadByte());
+                        br.SkipValue(fvq);
                         break;
                     }
                 }

@@ -5,25 +5,19 @@ namespace Frog.Core.Save
 {
     public class SaveSystem : IDisposable
     {
-        private readonly SaveFileWrapper _saveWrapper;
+        private readonly SaveFileWrapper _save;
         private bool _isDirty;
 
-        private FrogSave _save;
-        public ref FrogSave Data => ref _save;
+        public ref FrogSave Data => ref _save.Data;
 
         public SaveSystem()
         {
-            _saveWrapper = SaveFileWrapper.Load("save.bin", Array.Empty<Migration>(), out _isDirty);
-
-            if (_saveWrapper.Buffer.Count() > 0)
-            {
-                _save.DeserialiseFrom(_saveWrapper.Buffer);
-            }
+            _save = SaveFileWrapper.Load("save.bin", Array.Empty<Migration>(), out _isDirty);
         }
 
         public void Dispose()
         {
-            _saveWrapper.Dispose();
+            _save.Dispose();
         }
 
         public void SetDirty() => _isDirty = true;
@@ -33,8 +27,7 @@ namespace Frog.Core.Save
             if (!_isDirty)
                 return;
 
-            _save.SerialiseTo(ref _saveWrapper.Buffer);
-            _isDirty = !_saveWrapper.WriteToDisk();
+            _isDirty = !_save.WriteToDisk();
         }
     }
 }

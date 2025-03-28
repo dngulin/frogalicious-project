@@ -5,7 +5,7 @@ namespace Frog.Core.Editor
 {
     public static class SaveSystemProtoPuffGenerator
     {
-        [MenuItem("Tools/Code Generation/Save System - Internal", priority = 20)]
+        [MenuItem("Tools/Code Generation/Save System - Header", priority = 20)]
         public static void GenerateSaveInternal()
         {
             var opts = new CodeGenOptions
@@ -16,21 +16,21 @@ namespace Frog.Core.Editor
             };
 
             CodeGenerator.Generate(
-                "Assets/Modules/Core/Scripts/Save/SaveInternal.puff",
-                "Assets/Modules/Core/Scripts/Save/SaveInternal.g.cs",
+                "Assets/Modules/Core/Scripts/Save/SaveHeader.puff",
+                "Assets/Modules/Core/Scripts/Save/SaveHeader.g.cs",
                 opts
             );
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/Code Generation/Save System - Game", priority = 21)]
+        [MenuItem("Tools/Code Generation/Save System - Data", priority = 21)]
         public static void GenerateSaveGame()
         {
             var opts = new CodeGenOptions
             {
                 Namespace = "Frog.Core.Save",
-                DeserialisationApi = ApiTargets.RefList,
-                SerialisationApi = ApiTargets.RefList,
+                DeserialisationApi = ApiTargets.Stream,
+                SerialisationApi = ApiTargets.Stream,
             };
 
             CodeGenerator.Generate(

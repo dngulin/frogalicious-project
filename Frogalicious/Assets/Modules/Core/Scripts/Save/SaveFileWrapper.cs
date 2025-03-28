@@ -9,17 +9,18 @@ namespace Frog.Core.Save
 {
     internal class SaveFileWrapper : IDisposable
     {
-        private readonly string _path;
-        private SaveInternal _save;
+        private readonly FileStream _fs;
+        private readonly BinaryWriter _bw;
 
-        private FileStream _fs;
-        private BinaryWriter _bw;
+        private SaveHeader _header;
+        private FrogSave _data;
 
-        public ref RefList<byte> Buffer => ref _save.Data;
+        public ref FrogSave Data => ref _data;
 
-        private SaveFileWrapper(string fileName)
+        private SaveFileWrapper(FileStream fs)
         {
-            _path = Path.Combine(Application.persistentDataPath, fileName);
+            _fs = fs;
+            _bw = new BinaryWriter(fs, Encoding.ASCII, true);
         }
 
         public void Dispose()
@@ -30,40 +31,56 @@ namespace Frog.Core.Save
 
         public static SaveFileWrapper Load(string fileName, Migration[] migrations, out bool needsSave)
         {
-            var wrapper = new SaveFileWrapper(fileName);
-            wrapper.LoadInternal(migrations, out needsSave);
-            return wrapper;
+            var path = Path.Combine(Application.persistentDataPath, fileName);
+            if (!File.Exists(path))
+            {
+                var fs = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
+                var wrapper = new SaveFileWrapper(fs);
+
+                SetupDefaultHeader(ref wrapper._header, migrations);
+                needsSave = true;
+                return wrapper;
+            }
+            else
+            {
+                var fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+                var wrapper = new SaveFileWrapper(fs);
+                needsSave = wrapper.LoadFormFile(migrations);
+                return wrapper;
+            }
         }
 
-        private void LoadInternal(Migration[] migrations, out bool needsSave)
+        private bool LoadFormFile(Migration[] migrations)
         {
-            if (!File.Exists(_path))
-            {
-                _fs = new FileStream(_path, FileMode.CreateNew, FileAccess.ReadWrite);
-                _bw = new BinaryWriter(_fs, Encoding.ASCII, true);
-
-                SetupDefaultSave(ref _save, migrations);
-                needsSave = true;
-                return;
-            }
-
             try
             {
-                _fs = new FileStream(_path, FileMode.Open, FileAccess.ReadWrite);
-                _bw = new BinaryWriter(_fs, Encoding.ASCII, true);
-
-                using (var br = new BinaryReader(_fs, Encoding.ASCII, true))
+                using (var fileReader = new BinaryReader(_fs, Encoding.ASCII, true))
                 {
-                    _save.DeserialiseFrom(br);
+                    _header.DeserialiseFrom(fileReader);
+                    if (_header.Migrations.Count() == migrations.Length)
+                    {
+                        _data.DeserialiseFrom(fileReader);
+                        return false;
+                    }
                 }
 
-                needsSave = TryExecuteMigrations(ref _save, migrations);
+                using (var ms = new MemoryStream())
+                {
+                    _fs.CopyTo(ms);
+                    ExecuteMigrations(ref _header, migrations, ms);
+
+                    using (var memoryReader = new BinaryReader(ms, Encoding.ASCII, true))
+                    {
+                        _data.DeserialiseFrom(memoryReader);
+                        return true;
+                    }
+                }
             }
             catch (Exception e)
             {
                 Debug.LogError($"Failed to load game save! {e.GetType()}: {e.Message}\n{e.StackTrace}");
-                SetupDefaultSave(ref _save, migrations);
-                needsSave = true;
+                SetupDefaultHeader(ref _header, migrations);
+                return true;
             }
         }
 
@@ -71,7 +88,8 @@ namespace Frog.Core.Save
         {
             try
             {
-                _save.SerialiseTo(_bw);
+                _header.SerialiseTo(_bw);
+                _data.SerialiseTo(_bw);
                 _bw.Flush();
                 _fs.Flush();
                 return true;
@@ -83,26 +101,22 @@ namespace Frog.Core.Save
             }
         }
 
-        private static void SetupDefaultSave(ref SaveInternal save, Migration[] migrations)
+        private static void SetupDefaultHeader(ref SaveHeader header, Migration[] migrations)
         {
-            save.Clear();
+            header.Clear();
 
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             foreach (var migration in migrations)
             {
-                ref var migrationInfo = ref save.Migrations.RefAdd();
+                ref var migrationInfo = ref header.Migrations.RefAdd();
                 migrationInfo.Name.AppendAsciiString(migration.Name);
                 migrationInfo.TimeStamp = timestamp;
             }
         }
 
-        private static bool TryExecuteMigrations(ref SaveInternal save, Migration[] migrations)
+        private static void ExecuteMigrations(ref SaveHeader save, Migration[] migrations, MemoryStream ms)
         {
-            if (save.Migrations.Count() == migrations.Length)
-                return false;
-
             var appliedMigrations = new HashSet<string>(save.Migrations.Count());
-
             foreach (ref readonly var mInfo in save.Migrations.RefReadonlyIter())
             {
                 appliedMigrations.Add(mInfo.Name.ToStringAscii());
@@ -113,14 +127,12 @@ namespace Frog.Core.Save
                 if (appliedMigrations.Contains(migration.Name))
                     continue;
 
-                migration.Execute(ref save.Data);
+                migration.Execute(ms);
 
                 ref var migrationInfo = ref save.Migrations.RefAdd();
                 migrationInfo.Name.AppendAsciiString(migration.Name);
                 migrationInfo.TimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             }
-
-            return true;
         }
     }
 }

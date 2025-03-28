@@ -4,8 +4,7 @@ struct MigrationInfo
     01 TimeStamp : i64;
 }
 
-struct SaveInternal
+struct SaveHeader
 {
     00 Migrations : repeated MigrationInfo;
-    01 Data : repeated u8;
 }
