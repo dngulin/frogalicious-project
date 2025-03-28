@@ -60,17 +60,21 @@ namespace Frog.Core.Save
         {
             var len = self.GetSerialisedSize();
             var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;
-            if (bw.BaseStream.Position + prefixedLen > bw.BaseStream.Length)
+
+            var prePos = bw.BaseStream.Position;
+            var endPos = prePos + prefixedLen;
+            if (endPos > bw.BaseStream.Length)
             {
-                bw.BaseStream.SetLength(bw.BaseStream.Position + prefixedLen);
+                bw.BaseStream.SetLength(endPos);
             }
-            bw.BaseStream.Position += prefixedLen;
+            bw.BaseStream.Position = endPos;
 
             bw.Prepend(self);
             bw.PrependLenPrefix(len, out var lps);
             bw.Prepend(ValueQualifier.Struct(lps).Pack());
 
-            Debug.Assert(bw.BaseStream.Position == 0, $"{bw.BaseStream.Position} != 0");
+            Debug.Assert(bw.BaseStream.Position == prePos, $"Stream position doesn't match the data length");
+            bw.BaseStream.Position = endPos;
         }
 
         public static void Prepend(this BinaryWriter bw, in MigrationInfo data)
@@ -194,17 +198,21 @@ namespace Frog.Core.Save
         {
             var len = self.GetSerialisedSize();
             var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;
-            if (bw.BaseStream.Position + prefixedLen > bw.BaseStream.Length)
+
+            var prePos = bw.BaseStream.Position;
+            var endPos = prePos + prefixedLen;
+            if (endPos > bw.BaseStream.Length)
             {
-                bw.BaseStream.SetLength(bw.BaseStream.Position + prefixedLen);
+                bw.BaseStream.SetLength(endPos);
             }
-            bw.BaseStream.Position += prefixedLen;
+            bw.BaseStream.Position = endPos;
 
             bw.Prepend(self);
             bw.PrependLenPrefix(len, out var lps);
             bw.Prepend(ValueQualifier.Struct(lps).Pack());
 
-            Debug.Assert(bw.BaseStream.Position == 0, $"{bw.BaseStream.Position} != 0");
+            Debug.Assert(bw.BaseStream.Position == prePos, $"Stream position doesn't match the data length");
+            bw.BaseStream.Position = endPos;
         }
 
         public static void Prepend(this BinaryWriter bw, in SaveHeader data)

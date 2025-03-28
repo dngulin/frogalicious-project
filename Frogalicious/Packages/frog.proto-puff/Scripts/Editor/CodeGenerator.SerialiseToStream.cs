@@ -11,11 +11,14 @@ namespace Frog.ProtoPuff.Editor
             using var wMethod = wExt.Braces($"public static void SerialiseTo(this in {def.Name} self, BinaryWriter bw)");
             wMethod.WriteLine("var len = self.GetSerialisedSize();");
             wMethod.WriteLine("var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;");
-            using (var resizeIf = wMethod.Braces($"if (bw.BaseStream.Position + prefixedLen > bw.BaseStream.Length)"))
+            wMethod.WriteLine();
+            wMethod.WriteLine("var prePos = bw.BaseStream.Position;");
+            wMethod.WriteLine("var endPos = prePos + prefixedLen;");
+            using (var resizeIf = wMethod.Braces("if (endPos > bw.BaseStream.Length)"))
             {
-                resizeIf.WriteLine("bw.BaseStream.SetLength(bw.BaseStream.Position + prefixedLen);");
+                resizeIf.WriteLine("bw.BaseStream.SetLength(endPos);");
             }
-            wMethod.WriteLine("bw.BaseStream.Position += prefixedLen;");
+            wMethod.WriteLine("bw.BaseStream.Position = endPos;");
             wMethod.WriteLine();
 
             wMethod.WriteLine("bw.Prepend(self);");
@@ -23,7 +26,8 @@ namespace Frog.ProtoPuff.Editor
             wMethod.WriteLine("bw.Prepend(ValueQualifier.Struct(lps).Pack());");
             wMethod.WriteLine();
 
-            wMethod.WriteLine("Debug.Assert(bw.BaseStream.Position == 0, $\"{bw.BaseStream.Position} != 0\");");
+            wMethod.WriteLine("Debug.Assert(bw.BaseStream.Position == prePos, $\"Stream position doesn't match the data length\");");
+            wMethod.WriteLine("bw.BaseStream.Position = endPos;");
         }
 
         private static void EmitMethodPrependToStream(in BracesScope wExt, in PuffStruct def, CodeGenContext ctx)
