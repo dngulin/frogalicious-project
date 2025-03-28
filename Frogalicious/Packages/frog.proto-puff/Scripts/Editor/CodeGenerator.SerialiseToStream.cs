@@ -11,8 +11,11 @@ namespace Frog.ProtoPuff.Editor
             using var wMethod = wExt.Braces($"public static void SerialiseTo(this in {def.Name} self, BinaryWriter bw)");
             wMethod.WriteLine("var len = self.GetSerialisedSize();");
             wMethod.WriteLine("var prefixedLen = 1 + ProtoPuffUtil.GetLenPrefixSize(len) + len;");
-            wMethod.WriteLine("bw.BaseStream.SetLength(prefixedLen);");
-            wMethod.WriteLine("bw.BaseStream.Position = prefixedLen;");
+            using (var resizeIf = wMethod.Braces($"if (bw.BaseStream.Position + prefixedLen > bw.BaseStream.Length)"))
+            {
+                resizeIf.WriteLine("bw.BaseStream.SetLength(bw.BaseStream.Position + prefixedLen);");
+            }
+            wMethod.WriteLine("bw.BaseStream.Position += prefixedLen;");
             wMethod.WriteLine();
 
             wMethod.WriteLine("bw.Prepend(self);");
