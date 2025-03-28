@@ -88,10 +88,12 @@ namespace Frog.Core.Save
         {
             try
             {
+                _fs.Position = 0;
                 _header.SerialiseTo(_bw);
                 _data.SerialiseTo(_bw);
                 _bw.Flush();
                 _fs.Flush();
+                _fs.SetLength(_fs.Position);
                 return true;
             }
             catch (Exception e)
