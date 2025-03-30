@@ -9,6 +9,7 @@
         "Frog.Core",
         "Frog.Level",
         "Frog.Collections",
-        "Frog.ActivityTracker"
+        "Frog.ActivityTracker",
+        "Frog.Localization"
     ]
 }

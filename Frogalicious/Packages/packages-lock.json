@@ -137,6 +137,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "frog.localization": {
+      "version": "file:frog.localization",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "frog.proto-puff": {
       "version": "file:frog.proto-puff",
       "depth": 0,

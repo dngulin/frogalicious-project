@@ -1,0 +1,16 @@
+{
+    "name": "Frog.Localization",
+    "rootNamespace": "Frog.Localization",
+    "references": [
+      "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

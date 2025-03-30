@@ -20,7 +20,7 @@ namespace Frog.LevelEditor
         private const string PathSuffix = ".asset";
 
 
-        [MenuItem("Tools/Level Editor", priority = 20)]
+        [MenuItem("Tools/Level Editor", priority = 30)]
         public static void ShowWindow() => GetWindow<LevelEditorWindow>();
 
         [SerializeField] private VisualTreeAsset _windowLayout;

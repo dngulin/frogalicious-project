@@ -5,7 +5,7 @@ namespace Frog.Core.Editor
 {
     public static class SaveSystemProtoPuffGenerator
     {
-        [MenuItem("Tools/Code Generation/Save System - Header", priority = 20)]
+        [MenuItem("Tools/Code Generation/Save System - Header", priority = 11)]
         public static void GenerateSaveInternal()
         {
             CodeGenerator.Generate(
@@ -21,7 +21,7 @@ namespace Frog.Core.Editor
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/Code Generation/Save System - Data", priority = 21)]
+        [MenuItem("Tools/Code Generation/Save System - Data", priority = 12)]
         public static void GenerateSaveGame()
         {
             CodeGenerator.Generate(

@@ -337,6 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9208804105867631261}
   - component: {fileID: 1823345633250619058}
+  - component: {fileID: 5685359264036097678}
   - component: {fileID: 8831555338983289844}
   m_Layer: 0
   m_Name: Text (TMP)
@@ -372,6 +373,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3219699434718207965}
   m_CullTransparentMesh: 1
+--- !u!114 &5685359264036097678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3219699434718207965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781edcc655284452bb2548837fb26099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8831555338983289844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +405,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue
+  m_text: main-menu/continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -594,6 +607,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6050873160860946722}
   - component: {fileID: 1224948581995397914}
+  - component: {fileID: 1421009100035700038}
   - component: {fileID: 5962254176769565473}
   m_Layer: 0
   m_Name: Text (TMP)
@@ -629,6 +643,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6593187563860395996}
   m_CullTransparentMesh: 1
+--- !u!114 &1421009100035700038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6593187563860395996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781edcc655284452bb2548837fb26099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5962254176769565473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +675,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Book
+  m_text: main-menu/book
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -866,6 +892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7015815636340439716}
   - component: {fileID: 6766279729893636786}
+  - component: {fileID: 7760978953086657327}
   - component: {fileID: 3427333242753445088}
   m_Layer: 0
   m_Name: Text (TMP)
@@ -901,6 +928,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7822060967572252408}
   m_CullTransparentMesh: 1
+--- !u!114 &7760978953086657327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822060967572252408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781edcc655284452bb2548837fb26099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3427333242753445088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,7 +960,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: main-menu/exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
