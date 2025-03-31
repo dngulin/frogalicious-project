@@ -13,24 +13,24 @@ namespace Frog.Localization
             ProviderChanged?.Invoke();
         }
 
-        public static string Msg(string key)
+        public static string Msg(string id)
         {
-            return _provider?.GetString(key) ?? key;
+            return _provider?.GetString(id) ?? id;
         }
 
-        public static string Plu(string key, int count)
+        public static string Plu(string id, int count)
         {
-            return _provider?.GetPlural(key, count) ?? key;
+            return _provider?.GetPlural(id, count) ?? id;
         }
 
-        public static string MsgExternal(string key)
+        public static string MsgIndexed(string id)
         {
-            return _provider?.GetString(key) ?? key;
+            return _provider?.GetString(id) ?? id;
         }
 
-        public static string PluExternal(string key, int count)
+        public static string PluIndexed(string id, int count)
         {
-            return _provider?.GetPlural(key, count) ?? key;
+            return _provider?.GetPlural(id, count) ?? id;
         }
     }
 }
