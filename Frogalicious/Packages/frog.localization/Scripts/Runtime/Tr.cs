@@ -22,5 +22,15 @@ namespace Frog.Localization
         {
             return _provider?.GetPlural(key, count) ?? key;
         }
+
+        public static string MsgExternal(string key)
+        {
+            return _provider?.GetString(key) ?? key;
+        }
+
+        public static string PluExternal(string key, int count)
+        {
+            return _provider?.GetPlural(key, count) ?? key;
+        }
     }
 }

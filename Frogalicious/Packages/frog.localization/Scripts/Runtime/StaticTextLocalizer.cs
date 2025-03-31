@@ -25,7 +25,7 @@ namespace Frog.Localization
 
         private void UpdateText()
         {
-            _textMesh.text = Tr.Msg(_id);
+            _textMesh.text = Tr.MsgExternal(_id);
         }
     }
 }
