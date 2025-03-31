@@ -6,8 +6,8 @@
 /[Oo]bj/
 
 # Generated C# project files
-*.sln
-*.csproj
+/*.sln
+/*.csproj
 
 # IDE specific folders
 /.idea/
