@@ -25,7 +25,7 @@ namespace Frog.Localization
 
         private void UpdateText()
         {
-            _textMesh.text = Tr.MsgIndexed(_id);
+            _textMesh.text = Tr.IndexedMsg(_id);
         }
     }
 }
