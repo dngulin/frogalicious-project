@@ -1,6 +1,5 @@
 using Frog.Core;
 using Frog.Core.Ui;
-using Frog.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,8 +23,6 @@ namespace Frog.Meta.MainMenu
         {
             _playButton.onClick.AddListener(() => _commandCell.PushOrReplaceWithAssertion(Command.Continue));
             _exitButton.onClick.AddListener(() => _commandCell.PushOrReplaceWithAssertion(Command.Exit));
-            Tr.Msg("foo/bar/baz n={0}");
-            Tr.Plu("fizz/buzz k={0}", 2);
         }
 
         public Command? Poll() => _commandCell.PopNullable();
