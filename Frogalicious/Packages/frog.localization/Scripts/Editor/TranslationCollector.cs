@@ -25,7 +25,7 @@ namespace Frog.Localization.Editor
             var usagesList = usagesMap.Values.ToList();
             usagesList.Sort((a, b) => string.Compare(a.MsgId, b.MsgId, StringComparison.Ordinal));
 
-            using var writer = new StreamWriter(Application.dataPath + "../../../localization/frog.pot");
+            using var writer = new StreamWriter(Application.dataPath + "/../../localization/frog.pot");
             foreach (var usage in usagesList)
             {
                 if (!translations.TryGetValue(usage.MsgId, out var msgStrs))
@@ -78,7 +78,7 @@ namespace Frog.Localization.Editor
 
         private static Dictionary<string, string[]> LoadTranslations()
         {
-            var json = File.ReadAllText(Application.dataPath + "../../../localization/strdef.json");
+            var json = File.ReadAllText(Application.dataPath + "/../../localization/strdef.json");
             return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
 
