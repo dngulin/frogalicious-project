@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,20 +10,71 @@ namespace Frog.Localization.Editor
 {
     public static class TranslationCollector
     {
-        [MenuItem("Tools/Localization/Collect String Ids From Project", priority = 20)]
+        [MenuItem("Tools/Localization/Generatre Gettext POT File", priority = 20)]
         public static void CollectTranslations()
         {
-            var entries = new Dictionary<string, LocalizationEntry>();
-            PrefabScrapper.Run(entries);
-            CodeScrapper.Run(entries);
+            var usagesMap = CollectTranslationUsages();
+            var translations = LoadTranslations();
 
-            var flatten = entries.Values.ToList();
-            flatten.Sort((a, b) => string.Compare(a.MsgId, b.MsgId, StringComparison.Ordinal) );
-
-            foreach (var entry in flatten)
+            foreach (var (strId, _) in translations)
             {
-                Debug.Log($"{entry.MsgId} - {entry.Sources.First()}");
+                if (!usagesMap.ContainsKey(strId))
+                    Debug.LogWarning($"Translation `{strId}` is defined but is not used");
             }
+
+            var usagesList = usagesMap.Values.ToList();
+            usagesList.Sort((a, b) => string.Compare(a.MsgId, b.MsgId, StringComparison.Ordinal));
+
+            using var writer = new StreamWriter(Application.dataPath + "../../../localization/frog.pot");
+            foreach (var usage in usagesList)
+            {
+                if (!translations.TryGetValue(usage.MsgId, out var strDef))
+                {
+                    Debug.LogError($"Translation `{usage.MsgId}` in not defined");
+                    continue;
+                }
+
+                if (strDef.Length < 1 || strDef.Length > 2)
+                {
+                    Debug.LogError($"Translation `{usage.MsgId}` definition is invalid ({strDef.Length} forms)");
+                    continue;
+                }
+
+                var plural = strDef.Length == 2;
+                if (plural != usage.IsPlural)
+                {
+                    Debug.LogError(plural
+                        ? $"Translation `{usage.MsgId}` is plural, but is used as a singular"
+                        : $"Translation `{usage.MsgId}` is singular, but is used as a plural");
+                    continue;
+                }
+
+                writer.WriteLine("#. Translation id: " + usage.MsgId);
+                foreach (var src in usage.Sources)
+                    writer.WriteLine("#: " + src);
+                writer.WriteLine("#, csharp-format");
+
+                writer.WriteLine("msgid \"" + strDef[0] + "\"");
+                if (plural)
+                    writer.WriteLine("msgid_plural \"" + strDef[1] + "\"");
+
+                writer.WriteLine("msgstr \"\"");
+                writer.WriteLine();
+            }
+        }
+
+        private static Dictionary<string, TranslationUsage> CollectTranslationUsages()
+        {
+            var usages = new Dictionary<string, TranslationUsage>();
+            PrefabScrapper.Run(usages);
+            CodeScrapper.Run(usages);
+            return usages;
+        }
+
+        private static Dictionary<string, string[]> LoadTranslations()
+        {
+            var json = File.ReadAllText(Application.dataPath + "../../../localization/strdef.json");
+            return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
     }
 }

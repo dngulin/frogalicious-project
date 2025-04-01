@@ -9,7 +9,7 @@ namespace Frog.Localization.Editor
     {
         private const int PathPrefixLen = 7; // "Assets/".Length
 
-        public static void Run(Dictionary<string, LocalizationEntry> entries)
+        public static void Run(Dictionary<string, TranslationUsage> entries)
         {
             foreach (var guid in AssetDatabase.FindAssets("t:prefab"))
             {
@@ -28,7 +28,7 @@ namespace Frog.Localization.Editor
                     }
                     else
                     {
-                        entry = new LocalizationEntry(str, false);
+                        entry = new TranslationUsage(str, false);
                         entry.Sources.Add(src);
                         entries.Add(str, entry);
                     }

@@ -1,0 +1,9 @@
+{
+  "buttons/no": ["No"],
+  "buttons/yes": ["Yes"],
+  "splash/tap-to-continue": ["Tap to continue…"],
+  "main-menu/book": ["Book"],
+  "main-menu/continue": ["Continue"],
+  "main-menu/exit": ["Exit"],
+  "level/exit-confirmation/body": ["Do you want to exit the game?"]
+}

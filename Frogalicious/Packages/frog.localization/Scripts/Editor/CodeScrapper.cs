@@ -7,7 +7,7 @@ namespace Frog.Localization.Editor
 {
     public class CodeScrapper
     {
-        public static void Run(Dictionary<string, LocalizationEntry> entries)
+        public static void Run(Dictionary<string, TranslationUsage> entries)
         {
             var reports = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
@@ -31,7 +31,7 @@ namespace Frog.Localization.Editor
                 }
                 else
                 {
-                    locEntry = new LocalizationEntry(repEntry.MsgId, repEntry.IsPlural);
+                    locEntry = new TranslationUsage(repEntry.MsgId, repEntry.IsPlural);
                     locEntry.Sources.Add(source);
                     entries.Add(repEntry.MsgId, locEntry);
                 }

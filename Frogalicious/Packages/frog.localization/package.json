@@ -2,5 +2,8 @@
   "name": "frog.localization",
   "version": "0.0.1",
   "displayName": "[Frog] Localization",
-  "description": "This package provides localization instruments"
+  "description": "This package provides localization instruments",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
 }

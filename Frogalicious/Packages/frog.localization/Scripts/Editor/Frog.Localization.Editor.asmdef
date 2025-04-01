@@ -2,8 +2,8 @@
     "name": "Frog.Localization.Editor",
     "rootNamespace": "Frog.Localization.Editor",
     "references": [
-      "Frog.Localization",
-      "Unity.TextMeshPro"
+        "Frog.Localization",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
@@ -11,7 +11,9 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],

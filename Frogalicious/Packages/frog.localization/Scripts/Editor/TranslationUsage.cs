@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Frog.Localization.Editor
 {
-    public readonly struct LocalizationEntry
+    public readonly struct TranslationUsage
     {
         public readonly string MsgId;
         public readonly bool IsPlural;
         public readonly List<string> Sources;
 
-        public LocalizationEntry(string msgId, bool isPlural)
+        public TranslationUsage(string msgId, bool isPlural)
         {
             MsgId = msgId;
             IsPlural = isPlural;
