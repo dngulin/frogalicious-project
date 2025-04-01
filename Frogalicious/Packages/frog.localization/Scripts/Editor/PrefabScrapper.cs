@@ -20,7 +20,10 @@ namespace Frog.Localization.Editor
                 foreach (var localizer in localizers)
                 {
                     var str = localizer.GetComponent<TextMeshProUGUI>().text;
-                    var src = $"{path.Substring(PathPrefixLen)}:{GetObjectPath(localizer.transform)}";
+
+                    var prefabPath = path[PathPrefixLen..];
+                    var innerPath = GetObjectPath(localizer.transform, skipRootObjName: true);
+                    var src = innerPath == "" ? prefabPath : $"{prefabPath}/{innerPath}";
 
                     if (entries.TryGetValue(str, out var entry))
                     {
@@ -36,17 +39,17 @@ namespace Frog.Localization.Editor
             }
         }
 
-        private static string GetObjectPath(Transform obj)
+        private static string GetObjectPath(Transform obj, bool skipRootObjName)
         {
-            if (obj.parent == null)
-                return obj.name;
-
             var names = new List<string> { obj.name };
             while (obj.parent != null)
             {
                 obj = obj.parent;
                 names.Add(obj.name);
             }
+
+            if (skipRootObjName)
+                names.RemoveAt(names.Count - 1);
 
             names.Reverse();
             return string.Join("/", names);
