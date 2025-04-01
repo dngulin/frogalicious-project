@@ -54,13 +54,18 @@ namespace Frog.Localization.Editor
                     writer.WriteLine("#: " + src);
                 writer.WriteLine("#, csharp-format");
 
-                writer.WriteLine("msgid \"" + strDef[0] + "\"");
+                writer.WriteLine("msgid \"" + Escape(strDef[0]) + "\"");
                 if (plural)
-                    writer.WriteLine("msgid_plural \"" + strDef[1] + "\"");
+                    writer.WriteLine("msgid_plural \"" + Escape(strDef[1]) + "\"");
 
                 writer.WriteLine("msgstr \"\"");
                 writer.WriteLine();
             }
+        }
+
+        private static string Escape(string str)
+        {
+            return str.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
         }
 
         private static Dictionary<string, TranslationUsage> CollectTranslationUsages()
