@@ -76,5 +76,18 @@ namespace Frog.Localization.Editor
             var json = File.ReadAllText(Application.dataPath + "../../../localization/strdef.json");
             return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
+
+        [MenuItem("Tools/Localization/Read Gettext PO File", priority = 21)]
+        public static void ReadPoFile()
+        {
+            var path = Application.dataPath + "/../../localization/ru.po";
+            foreach (var entry in PoFileReader.Open(path))
+            {
+                if (entry.MsgId == "")
+                    continue;
+
+                Debug.Log($"`{entry.MsgId}` => `{entry.MsgStrs[0]}`");
+            }
+        }
     }
 }
