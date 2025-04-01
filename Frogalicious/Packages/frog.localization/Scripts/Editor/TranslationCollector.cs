@@ -28,19 +28,19 @@ namespace Frog.Localization.Editor
             using var writer = new StreamWriter(Application.dataPath + "../../../localization/frog.pot");
             foreach (var usage in usagesList)
             {
-                if (!translations.TryGetValue(usage.MsgId, out var strDef))
+                if (!translations.TryGetValue(usage.MsgId, out var msgStrs))
                 {
                     Debug.LogError($"Translation `{usage.MsgId}` in not defined");
                     continue;
                 }
 
-                if (strDef.Length < 1 || strDef.Length > 2)
+                if (msgStrs.Length < 1 || msgStrs.Length > 2)
                 {
-                    Debug.LogError($"Translation `{usage.MsgId}` definition is invalid ({strDef.Length} forms)");
+                    Debug.LogError($"Translation `{usage.MsgId}` definition is invalid ({msgStrs.Length} forms)");
                     continue;
                 }
 
-                var plural = strDef.Length == 2;
+                var plural = msgStrs.Length == 2;
                 if (plural != usage.IsPlural)
                 {
                     Debug.LogError(plural
@@ -54,9 +54,9 @@ namespace Frog.Localization.Editor
                     writer.WriteLine("#: " + src);
                 writer.WriteLine("#, csharp-format");
 
-                writer.WriteLine("msgid \"" + Escape(strDef[0]) + "\"");
+                writer.WriteLine("msgid \"" + Escape(msgStrs[0]) + "\"");
                 if (plural)
-                    writer.WriteLine("msgid_plural \"" + Escape(strDef[1]) + "\"");
+                    writer.WriteLine("msgid_plural \"" + Escape(msgStrs[1]) + "\"");
 
                 writer.WriteLine("msgstr \"\"");
                 writer.WriteLine();
