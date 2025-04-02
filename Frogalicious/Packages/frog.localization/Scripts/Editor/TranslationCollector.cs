@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Frog.Localization.Editor.Gettext;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;

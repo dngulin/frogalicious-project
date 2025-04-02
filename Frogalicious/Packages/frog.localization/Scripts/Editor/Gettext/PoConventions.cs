@@ -1,4 +1,4 @@
-namespace Frog.Localization.Editor
+namespace Frog.Localization.Editor.Gettext
 {
     internal static class PoConventions
     {
