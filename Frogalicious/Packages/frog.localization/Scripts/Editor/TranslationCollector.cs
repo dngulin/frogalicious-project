@@ -49,7 +49,7 @@ namespace Frog.Localization.Editor
                     continue;
                 }
 
-                writer.WriteLine("#. Translation id: " + usage.MsgId);
+                writer.WriteLine(PoConventions.TrIdCommentPrefix + usage.MsgId);
                 foreach (var src in usage.Sources)
                     writer.WriteLine("#: " + src);
                 writer.WriteLine("#, csharp-format");
@@ -91,7 +91,7 @@ namespace Frog.Localization.Editor
                 if (entry.EngStr == "")
                     continue;
 
-                Debug.Log($"`{entry.EngStr}` => `{entry.Translations[0]}`");
+                Debug.Log($"`{entry.TranslationId}` => `{entry.Translations[0]}`");
             }
         }
     }

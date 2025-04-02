@@ -10,9 +10,10 @@ namespace Frog.Localization.Editor
         public string EngStr;
         public string EngStrPlural;
         public List<string> Translations;
+        public string TranslationId;
 
         public readonly bool IsValid => EngStr != null && Translations != null;
-        public readonly bool HasData => EngStr != null || EngStrPlural != null || Translations != null;
+        public readonly bool HasData => EngStr != null || EngStrPlural != null || Translations != null || TranslationId != null;
     }
 
     public static class PoFileReader
@@ -29,6 +30,13 @@ namespace Frog.Localization.Editor
                 {
                     if (state.TryEmitEntry(out var entry))
                         yield return entry;
+                    continue;
+                }
+
+                const string translationIdPrefix = PoConventions.TrIdCommentPrefix;
+                if (line.StartsWith(translationIdPrefix))
+                {
+                    state.SetTranslationId(line[translationIdPrefix.Length..]);
                     continue;
                 }
 
@@ -156,6 +164,14 @@ namespace Frog.Localization.Editor
 
             Debug.Assert(_currString != null);
             _currString += value;
+        }
+
+        public void SetTranslationId(string id)
+        {
+            if (_entry.TranslationId != null)
+                throw new PoParserException(LineNumber);
+
+            _entry.TranslationId = id;
         }
     }
 }
