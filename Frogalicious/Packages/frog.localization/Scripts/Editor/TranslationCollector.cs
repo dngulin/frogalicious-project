@@ -91,6 +91,7 @@ namespace Frog.Localization.Editor
                 if (entry.EngStr == "")
                     continue;
 
+                Debug.Assert(entry.TranslationId != null);
                 Debug.Log($"`{entry.TranslationId}` => `{entry.Translations[0]}`");
             }
         }
