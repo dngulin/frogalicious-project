@@ -88,10 +88,10 @@ namespace Frog.Localization.Editor
             var path = Application.dataPath + "/../../localization/ru.po";
             foreach (var entry in PoFileReader.Open(path))
             {
-                if (entry.MsgId == "")
+                if (entry.EngStr == "")
                     continue;
 
-                Debug.Log($"`{entry.MsgId}` => `{entry.MsgStrs[0]}`");
+                Debug.Log($"`{entry.EngStr}` => `{entry.Translations[0]}`");
             }
         }
     }

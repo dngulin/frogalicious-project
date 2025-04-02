@@ -7,12 +7,12 @@ namespace Frog.Localization.Editor
 {
     public struct PoEntry
     {
-        public string MsgId;
-        public string MsgIdPlural;
-        public List<string> MsgStrs;
+        public string EngStr;
+        public string EngStrPlural;
+        public List<string> Translations;
 
-        public readonly bool IsValid => MsgId != null && MsgStrs != null;
-        public readonly bool HasData => MsgId != null || MsgIdPlural != null || MsgStrs != null;
+        public readonly bool IsValid => EngStr != null && Translations != null;
+        public readonly bool HasData => EngStr != null || EngStrPlural != null || Translations != null;
     }
 
     public static class PoFileReader
@@ -125,14 +125,14 @@ namespace Frog.Localization.Editor
                 case null:
                     break;
                 case ParsingStrType.MsgId:
-                    _entry.MsgId = _currString;
+                    _entry.EngStr = _currString;
                     break;
                 case ParsingStrType.MsgIdPlural:
-                    _entry.MsgIdPlural = _currString;
+                    _entry.EngStrPlural = _currString;
                     break;
                 case ParsingStrType.MsgStr:
-                    _entry.MsgStrs ??= new List<string>(1);
-                    _entry.MsgStrs.Add(_currString);
+                    _entry.Translations ??= new List<string>(1);
+                    _entry.Translations.Add(_currString);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
