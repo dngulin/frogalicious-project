@@ -9,7 +9,7 @@ namespace Frog.Localization.Editor
     {
         private const int PathPrefixLen = 7; // "Assets/".Length
 
-        public static void Run(Dictionary<string, TranslationUsage> entries)
+        public static void Run(Dictionary<string, TranslationUsage> usages)
         {
             foreach (var guid in AssetDatabase.FindAssets("t:prefab"))
             {
@@ -19,22 +19,13 @@ namespace Frog.Localization.Editor
 
                 foreach (var localizer in localizers)
                 {
-                    var str = localizer.GetComponent<TextMeshProUGUI>().text;
+                    var translationId = localizer.GetComponent<TextMeshProUGUI>().text;
 
                     var prefabPath = path[PathPrefixLen..];
                     var innerPath = GetObjectPath(localizer.transform, skipRootObjName: true);
-                    var src = innerPath == "" ? prefabPath : $"{prefabPath}/{innerPath}";
+                    var source = innerPath == "" ? prefabPath : $"{prefabPath}/{innerPath}";
 
-                    if (entries.TryGetValue(str, out var entry))
-                    {
-                        entry.Sources.Add(src);
-                    }
-                    else
-                    {
-                        entry = new TranslationUsage(str, false);
-                        entry.Sources.Add(src);
-                        entries.Add(str, entry);
-                    }
+                    usages.Add(translationId, source, plural: false);
                 }
             }
         }

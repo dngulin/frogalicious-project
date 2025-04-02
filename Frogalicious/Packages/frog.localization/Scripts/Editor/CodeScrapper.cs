@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Frog.Localization.Editor
 {
-    public class CodeScrapper
+    public static class CodeScrapper
     {
-        public static void Run(Dictionary<string, TranslationUsage> entries)
+        public static void Run(Dictionary<string, TranslationUsage> usages)
         {
             var reports = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
@@ -17,24 +17,14 @@ namespace Frog.Localization.Editor
             var assetsPath = Application.dataPath + "/";
 
             foreach (var report in reports)
-            foreach (var repEntry in report.Entries)
+            foreach (var entry in report.Entries)
             {
-                var path = repEntry.FullPath.StartsWith(assetsPath)
-                    ? repEntry.FullPath[assetsPath.Length..]
-                    : repEntry.FullPath;
-                var source = $"{path}:{repEntry.LineNumber}";
+                var path = entry.FullPath.StartsWith(assetsPath)
+                    ? entry.FullPath[assetsPath.Length..]
+                    : entry.FullPath;
+                var source = $"{path}:{entry.LineNumber}";
 
-                if (entries.TryGetValue(repEntry.MsgId, out var locEntry))
-                {
-                    locEntry.Sources.Add(source);
-                    Debug.Assert(repEntry.IsPlural == locEntry.IsPlural);
-                }
-                else
-                {
-                    locEntry = new TranslationUsage(repEntry.MsgId, repEntry.IsPlural);
-                    locEntry.Sources.Add(source);
-                    entries.Add(repEntry.MsgId, locEntry);
-                }
+                usages.Add(entry.MsgId, source, entry.IsPlural);
             }
         }
     }
