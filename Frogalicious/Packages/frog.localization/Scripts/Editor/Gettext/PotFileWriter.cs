@@ -24,7 +24,8 @@ namespace Frog.Localization.Editor.Gettext
             foreach (var src in entry.Sources)
                 _writer.WriteLine("#: " + src);
 
-            _writer.WriteLine("#, csharp-format");
+            if (entry.EngStr.Contains("{0}") || entry.EngStr.Contains("{0:"))
+                _writer.WriteLine("#, csharp-format");
 
             _writer.WriteLine("msgid \"" + Escape(entry.EngStr) + "\"");
             if (entry.IsPlural)
