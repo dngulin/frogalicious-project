@@ -24,20 +24,20 @@ namespace Frog.Localization.Editor
             }
 
             var usagesList = usagesMap.Values.ToList();
-            usagesList.Sort((a, b) => string.Compare(a.MsgId, b.MsgId, StringComparison.Ordinal));
+            usagesList.Sort((a, b) => string.Compare(a.TranslationId, b.TranslationId, StringComparison.Ordinal));
 
             using var writer = new PotFileWriter(Application.dataPath + "/../../localization/frog.pot");
             foreach (var usage in usagesList)
             {
-                if (!translations.TryGetValue(usage.MsgId, out var msgStrs))
+                if (!translations.TryGetValue(usage.TranslationId, out var msgStrs))
                 {
-                    Debug.LogError($"Translation `{usage.MsgId}` in not defined");
+                    Debug.LogError($"Translation `{usage.TranslationId}` in not defined");
                     continue;
                 }
 
                 if (msgStrs.Length < 1 || msgStrs.Length > 2)
                 {
-                    Debug.LogError($"Translation `{usage.MsgId}` definition is invalid ({msgStrs.Length} forms)");
+                    Debug.LogError($"Translation `{usage.TranslationId}` definition is invalid ({msgStrs.Length} forms)");
                     continue;
                 }
 
@@ -45,14 +45,14 @@ namespace Frog.Localization.Editor
                 if (plural != usage.IsPlural)
                 {
                     Debug.LogError(plural
-                        ? $"Translation `{usage.MsgId}` is plural, but is used as a singular"
-                        : $"Translation `{usage.MsgId}` is singular, but is used as a plural");
+                        ? $"Translation `{usage.TranslationId}` is plural, but is used as a singular"
+                        : $"Translation `{usage.TranslationId}` is singular, but is used as a plural");
                     continue;
                 }
 
                 var potEntry = plural
-                    ? PotEntry.Plural(usage.MsgId, usage.Sources, msgStrs[0], msgStrs[1])
-                    : PotEntry.Singular(usage.MsgId, usage.Sources, msgStrs[0]);
+                    ? PotEntry.Plural(usage.TranslationId, usage.Sources, msgStrs[0], msgStrs[1])
+                    : PotEntry.Singular(usage.TranslationId, usage.Sources, msgStrs[0]);
 
                 writer.Write(potEntry);
             }
