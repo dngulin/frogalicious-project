@@ -57,13 +57,13 @@ namespace Frog.Localization.Editor
                 {
                     state.UpdateCurrentString(strValue);
                 }
-                else if (line.StartsWith("msgid"))
-                {
-                    state.StartString(ParsingStrType.MsgId, strValue);
-                }
                 else if (line.StartsWith("msgid_plural"))
                 {
                     state.StartString(ParsingStrType.MsgIdPlural, strValue);
+                }
+                else if (line.StartsWith("msgid"))
+                {
+                    state.StartString(ParsingStrType.MsgId, strValue);
                 }
                 else if (line.StartsWith("msgstr"))
                 {
