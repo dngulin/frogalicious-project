@@ -26,7 +26,7 @@ namespace Frog.Localization.Editor
             var usagesList = usagesMap.Values.ToList();
             usagesList.Sort((a, b) => string.Compare(a.MsgId, b.MsgId, StringComparison.Ordinal));
 
-            using var writer = new StreamWriter(Application.dataPath + "/../../localization/frog.pot");
+            using var writer = new PotFileWriter(Application.dataPath + "/../../localization/frog.pot");
             foreach (var usage in usagesList)
             {
                 if (!translations.TryGetValue(usage.MsgId, out var msgStrs))
@@ -50,23 +50,12 @@ namespace Frog.Localization.Editor
                     continue;
                 }
 
-                writer.WriteLine(PoConventions.TrIdCommentPrefix + usage.MsgId);
-                foreach (var src in usage.Sources)
-                    writer.WriteLine("#: " + src);
-                writer.WriteLine("#, csharp-format");
+                var potEntry = plural
+                    ? PotEntry.Plural(usage.MsgId, usage.Sources, msgStrs[0], msgStrs[1])
+                    : PotEntry.Singular(usage.MsgId, usage.Sources, msgStrs[0]);
 
-                writer.WriteLine("msgid \"" + Escape(msgStrs[0]) + "\"");
-                if (plural)
-                    writer.WriteLine("msgid_plural \"" + Escape(msgStrs[1]) + "\"");
-
-                writer.WriteLine("msgstr \"\"");
-                writer.WriteLine();
+                writer.Write(potEntry);
             }
-        }
-
-        private static string Escape(string str)
-        {
-            return str.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
         }
 
         private static Dictionary<string, TranslationUsage> CollectTranslationUsages()
