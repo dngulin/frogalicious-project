@@ -24,7 +24,7 @@ namespace Frog.Localization.Editor
                     : entry.FullPath;
                 var source = $"{path}:{entry.LineNumber}";
 
-                usages.Add(entry.MsgId, source, entry.IsPlural);
+                usages.Add(entry.TranslationId, source, entry.IsPlural);
             }
         }
     }

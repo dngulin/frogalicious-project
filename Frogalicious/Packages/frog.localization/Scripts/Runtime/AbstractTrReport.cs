@@ -15,14 +15,14 @@ namespace Frog.Localization
     {
         public string FullPath;
         public int LineNumber;
-        public string MsgId;
+        public string TranslationId;
         public bool IsPlural;
 
-        public TrReportEntry(string fullPath, int lineNumber, string msgId, bool isPlural)
+        public TrReportEntry(string fullPath, int lineNumber, string translationId, bool isPlural)
         {
             FullPath = fullPath;
             LineNumber = lineNumber;
-            MsgId = msgId;
+            TranslationId = translationId;
             IsPlural = isPlural;
         }
     }
