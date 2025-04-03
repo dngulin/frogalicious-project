@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Frog.Localization.Editor
 {
-    public static class CodeScrapper
+    public static class TrUsagesHardcoded
     {
-        public static void Run(Dictionary<string, TranslationUsage> usages)
+        public static void AppendTo(Dictionary<string, TrUsage> usages)
         {
             var reports = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())

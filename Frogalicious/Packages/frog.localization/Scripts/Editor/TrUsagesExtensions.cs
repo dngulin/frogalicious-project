@@ -5,7 +5,7 @@ namespace Frog.Localization.Editor
 {
     public static class TrUsagesExtensions
     {
-        public static void Add(this Dictionary<string, TranslationUsage> self, string id, string src, bool plural)
+        public static void Add(this Dictionary<string, TrUsage> self, string id, string src, bool plural)
         {
             if (self.TryGetValue(id, out var usage))
             {
@@ -14,7 +14,7 @@ namespace Frog.Localization.Editor
             }
             else
             {
-                usage = new TranslationUsage(id, plural);
+                usage = new TrUsage(id, plural);
                 usage.Sources.Add(src);
                 self.Add(id, usage);
             }

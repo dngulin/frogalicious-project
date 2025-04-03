@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Frog.Localization.Editor
 {
-    public static class PrefabScrapper
+    public static class TrUsagesByStaticTextLocalizer
     {
         private const int PathPrefixLen = 7; // "Assets/".Length
 
-        public static void Run(Dictionary<string, TranslationUsage> usages)
+        public static void AppendTo(Dictionary<string, TrUsage> usages)
         {
             foreach (var guid in AssetDatabase.FindAssets("t:prefab"))
             {
