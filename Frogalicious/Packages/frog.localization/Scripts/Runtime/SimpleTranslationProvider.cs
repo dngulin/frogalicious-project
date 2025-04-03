@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Frog.Localization
 {
+    [Serializable]
     public struct Translation
     {
         public readonly string Id;
@@ -18,16 +19,16 @@ namespace Frog.Localization
         }
     }
 
-    public sealed class SimpleTranslationProvider : TranslationProvider
+    public abstract class SimpleTranslationProvider : TranslationProvider
     {
-        public SimpleTranslationProvider(IEnumerable<Translation> translations, Func<int, int> getPluralForm)
+        private readonly Dictionary<(string, int), string> _translations;
+
+        protected SimpleTranslationProvider(IEnumerable<Translation> translations)
         {
             _translations = translations.ToDictionary(t => (t.Id, t.PluralForm), t => t.Value);
-            _getPluralForm = getPluralForm;
         }
 
-        private readonly Dictionary<(string, int), string> _translations;
-        private readonly Func<int, int> _getPluralForm;
+        protected abstract int GetPluralForm(int count);
 
         public override string GetString(string id)
         {
@@ -36,7 +37,7 @@ namespace Frog.Localization
 
         public override string GetPlural(string id, int count)
         {
-            var form = _getPluralForm(count);
+            var form = GetPluralForm(count);
             return _translations.GetValueOrDefault((id, form), id);
         }
     }
