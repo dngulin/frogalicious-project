@@ -144,6 +144,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "frog.gettext": {
+      "version": "file:frog.gettext",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "frog.localization": {
       "version": "file:frog.localization",
       "depth": 0,

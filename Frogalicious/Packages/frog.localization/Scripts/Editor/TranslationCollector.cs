@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Frog.Localization.Editor.Gettext;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -11,7 +10,7 @@ namespace Frog.Localization.Editor
 {
     public static class TranslationCollector
     {
-        [MenuItem("Tools/Localization/Generatre Gettext POT File", priority = 20)]
+        /*[MenuItem("Tools/Localization/Generatre Gettext POT File", priority = 20)]
         public static void CollectTranslations()
         {
             var usagesMap = CollectTranslationUsages();
@@ -56,7 +55,7 @@ namespace Frog.Localization.Editor
 
                 writer.Write(potEntry);
             }
-        }
+        }*/
 
         private static Dictionary<string, TranslationUsage> CollectTranslationUsages()
         {
@@ -72,7 +71,7 @@ namespace Frog.Localization.Editor
             return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
 
-        [MenuItem("Tools/Localization/Read Gettext PO File", priority = 21)]
+        /*[MenuItem("Tools/Localization/Read Gettext PO File", priority = 21)]
         public static void ReadPoFile()
         {
             var path = Application.dataPath + "/../../localization/ru.po";
@@ -84,6 +83,6 @@ namespace Frog.Localization.Editor
                 Debug.Assert(entry.TranslationId != null);
                 Debug.Log($"`{entry.TranslationId}` => `{entry.Translations[0]}`");
             }
-        }
+        }*/
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Frog.Localization.Editor.Gettext
+namespace Frog.Gettext
 {
     public class PoParserException : Exception
     {

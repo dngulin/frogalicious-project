@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Frog.Localization.Editor.Gettext
+namespace Frog.Gettext
 {
     internal enum ParsingStrType
     {
+        MsgCtx,
         MsgId,
         MsgIdPlural,
         MsgStr
@@ -15,7 +15,7 @@ namespace Frog.Localization.Editor.Gettext
     {
         public int LineNumber;
 
-        private PoEntry _entry;
+        private PoEntry _entry = new PoEntry();
         private ParsingStrType? _currStrType;
         private string _currString;
 
@@ -25,14 +25,14 @@ namespace Frog.Localization.Editor.Gettext
             if (_entry.IsValid)
             {
                 entry = _entry;
-                _entry = default;
+                _entry = new PoEntry();
                 return true;
             }
 
-            if (_entry.HasData)
+            if (_entry.HasTranslationData)
                 throw new PoParserException(LineNumber);
 
-            entry = default;
+            entry = null;
             return false;
         }
 
@@ -42,14 +42,19 @@ namespace Frog.Localization.Editor.Gettext
             {
                 case null:
                     break;
+                case ParsingStrType.MsgCtx:
+                    if (_entry.OptContext != null) throw new PoParserException(LineNumber);
+                    _entry.OptContext = _currString;
+                    break;
                 case ParsingStrType.MsgId:
+                    if (_entry.EngStr != null) throw new PoParserException(LineNumber);
                     _entry.EngStr = _currString;
                     break;
                 case ParsingStrType.MsgIdPlural:
-                    _entry.EngStrPlural = _currString;
+                    if (_entry.EngStr != null) throw new PoParserException(LineNumber);
+                    _entry.OptEngStrPlural = _currString;
                     break;
                 case ParsingStrType.MsgStr:
-                    _entry.Translations ??= new List<string>(1);
                     _entry.Translations.Add(_currString);
                     break;
                 default:
@@ -76,10 +81,9 @@ namespace Frog.Localization.Editor.Gettext
             _currString += value;
         }
 
-        public void SetTranslationId(string id)
-        {
-            Debug.Assert(_entry.TranslationId == null);
-            _entry.TranslationId = id;
-        }
+        public void AddTranslatorsComment(string comment) => _entry.TranslatorsComments.Add(comment);
+        public void AddExtractedComment(string comment) => _entry.ExtractedComments.Add(comment);
+        public void AddReference(string comment) => _entry.References.Add(comment);
+        public void AddFlag(string flag) => _entry.Flags.Add(flag);
     }
 }

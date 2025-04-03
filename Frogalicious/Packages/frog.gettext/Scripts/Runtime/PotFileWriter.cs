@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Frog.Localization.Editor.Gettext
+namespace Frog.Gettext
 {
     public class PotFileWriter : IDisposable
     {
@@ -17,19 +17,27 @@ namespace Frog.Localization.Editor.Gettext
             _writer.Dispose();
         }
 
-        public void Write(in PotEntry entry)
+        public void Write(in PoEntry entry)
         {
-            _writer.WriteLine(PoConventions.TrIdCommentPrefix + entry.TranslationId);
+            foreach (var comment in entry.TranslatorsComments)
+                _writer.WriteLine("#  " + comment.Replace("\n", "#  "));
 
-            foreach (var src in entry.Sources)
-                _writer.WriteLine("#: " + src);
+            foreach (var comment in entry.ExtractedComments)
+                _writer.WriteLine("#. " + comment.Replace("\n", "#. "));
 
-            if (entry.EngStr.Contains("{0}") || entry.EngStr.Contains("{0:"))
-                _writer.WriteLine("#, csharp-format");
+            foreach (var reference in entry.References)
+                _writer.WriteLine("#: " + reference.Replace("\n", "#: "));
+
+            foreach (var flag in entry.Flags)
+                _writer.WriteLine("#, " + flag.Replace("\n", "#, "));
+
+            if (entry.OptContext != null)
+                _writer.WriteLine("msgctx \"" + entry.OptContext.Replace("\n", "#: "));
 
             _writer.WriteLine("msgid \"" + Escape(entry.EngStr) + "\"");
+
             if (entry.IsPlural)
-                _writer.WriteLine("msgid_plural \"" + Escape(entry.EngStrPlural) + "\"");
+                _writer.WriteLine("msgid_plural \"" + Escape(entry.OptEngStrPlural) + "\"");
 
             if (entry.IsPlural)
             {
