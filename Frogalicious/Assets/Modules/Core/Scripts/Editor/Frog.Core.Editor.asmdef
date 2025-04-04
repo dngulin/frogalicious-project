@@ -4,7 +4,6 @@
     "references": [
         "Frog.Core",
         "Frog.Gettext",
-        "Frog.Localization",
         "Frog.ProtoPuff.Editor",
         "Frog.Localization.Editor"
     ],
