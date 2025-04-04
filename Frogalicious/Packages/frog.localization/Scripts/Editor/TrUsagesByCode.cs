@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Frog.Localization.Editor
 {
-    public static class TrUsagesHardcoded
+    public static class TrUsagesByCode
     {
         public static void AppendTo(Dictionary<string, TrUsage> usages)
         {
