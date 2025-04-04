@@ -69,6 +69,9 @@ namespace TrReportGenerator
 
             initCtx.RegisterSourceOutput(collected, (ctx, entries) =>
             {
+                if (entries.Length == 0)
+                    return;
+
                 var sb = new StringBuilder();
 
                 sb.AppendLine("#if UNITY_EDITOR");
