@@ -3,7 +3,10 @@
     "rootNamespace": "Frog.Core.Editor",
     "references": [
         "Frog.Core",
-        "Frog.ProtoPuff.Editor"
+        "Frog.Gettext",
+        "Frog.Localization",
+        "Frog.ProtoPuff.Editor",
+        "Frog.Localization.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

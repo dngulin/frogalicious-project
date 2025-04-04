@@ -1,42 +1,35 @@
 #. Translation id: buttons/no
 #: Modules/Level/Prefabs/Ui/LevelExitDialog.prefab/NoButton/Text (TMP)
-#, csharp-format
 msgid "No"
 msgstr ""
 
 #. Translation id: buttons/yes
 #: Modules/Level/Prefabs/Ui/LevelExitDialog.prefab/YesButton/Text (TMP)
-#, csharp-format
 msgid "Yes"
 msgstr ""
 
 #. Translation id: level/exit-confirmation/body
 #: Modules/Level/Prefabs/Ui/LevelExitDialog.prefab/Text (TMP)
-#, csharp-format
 msgid "Do you want to exit the game?"
 msgstr ""
 
 #. Translation id: main-menu/book
 #: Modules/Meta/Prefabs/MainMenuUi.prefab/BookButton/Text (TMP)
-#, csharp-format
 msgid "Book"
 msgstr ""
 
 #. Translation id: main-menu/continue
 #: Modules/Meta/Prefabs/MainMenuUi.prefab/ContinueButton/Text (TMP)
-#, csharp-format
 msgid "Continue"
 msgstr ""
 
 #. Translation id: main-menu/exit
 #: Modules/Meta/Prefabs/MainMenuUi.prefab/ExitButton/Text (TMP)
-#, csharp-format
 msgid "Exit"
 msgstr ""
 
 #. Translation id: splash/tap-to-continue
 #: Modules/Meta/Prefabs/SplashUi.prefab/HintText
-#, csharp-format
 msgid "Tap to continue…"
 msgstr ""
 
