@@ -46,7 +46,5 @@ namespace Frog.Gettext
 
         public bool IsValid => EngStr != null && Translations.Count != 0;
         public bool HasTranslationData => EngStr != null || OptEngStrPlural != null || Translations.Count != 0;
-
-        public bool IsPlural => OptEngStrPlural != null;
     }
 }

@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Frog.Gettext
 {
-    public class PotFileWriter : IDisposable
+    public class PoFileWriter : IDisposable
     {
         private readonly StreamWriter _writer;
 
-        public PotFileWriter(string path)
+        public PoFileWriter(string path)
         {
             _writer = new StreamWriter(path);
         }
@@ -32,24 +32,39 @@ namespace Frog.Gettext
                 _writer.WriteLine("#, " + flag.Replace("\n", "#, "));
 
             if (entry.OptContext != null)
-                _writer.WriteLine("msgctx \"" + entry.OptContext.Replace("\n", "#: "));
+                WriteEscaped("msgctx", entry.OptContext);
 
-            _writer.WriteLine("msgid \"" + Escape(entry.EngStr) + "\"");
+            WriteEscaped("msgid", entry.EngStr);
 
-            if (entry.IsPlural)
-                _writer.WriteLine("msgid_plural \"" + Escape(entry.OptEngStrPlural) + "\"");
+            if (entry.OptEngStrPlural != null)
+                WriteEscaped("msgid_plural", entry.OptEngStrPlural);
 
-            if (entry.IsPlural)
+            if (entry.Translations.Count == 1)
             {
-                _writer.WriteLine("msgstr[0] \"\"");
-                _writer.WriteLine("msgstr[1] \"\"");
+                WriteEscaped("msgstr", entry.Translations[0]);
             }
             else
             {
-                _writer.WriteLine("msgstr \"\"");
+                for (var i = 0; i < entry.Translations.Count; i++)
+                {
+                    _writer.Write("msgstr[");
+                    _writer.Write(i);
+                    _writer.Write("] \"");
+                    _writer.Write(Escape(entry.Translations[i]));
+                    _writer.WriteLine("\"");
+                }
+
             }
 
             _writer.WriteLine();
+        }
+
+        private void WriteEscaped(string key, string value)
+        {
+            _writer.Write(key);
+            _writer.Write(" \"");
+            _writer.Write(Escape(value));
+            _writer.WriteLine("\"");
         }
 
         private static string Escape(string str)
