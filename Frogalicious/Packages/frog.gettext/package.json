@@ -1,6 +1,6 @@
 {
   "name": "frog.gettext",
   "version": "0.0.1",
-  "displayName": "[Frog] gettext",
-  "description": "The package provides API to read and write GNU gettext PO(T) files"
+  "displayName": "[Frog] Gettext",
+  "description": "The package provides API to read and write GNU Gettext PO(T) files"
 }
