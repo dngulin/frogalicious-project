@@ -19,16 +19,17 @@ namespace Frog.Localization
         }
     }
 
-    public abstract class SimpleTranslationProvider : TranslationProvider
+    public sealed class SimpleTranslationProvider : TranslationProvider
     {
         private readonly Dictionary<(string, int), string> _translations;
+        private readonly Func<int, int> _getPluralForm;
 
-        protected SimpleTranslationProvider(IEnumerable<Translation> translations)
+        public SimpleTranslationProvider(IEnumerable<Translation> translations, Func<int, int> getPluralForm)
         {
-            _translations = translations.ToDictionary(t => (t.Id, t.PluralForm), t => t.Value);
-        }
 
-        protected abstract int GetPluralForm(int count);
+            _translations = translations.ToDictionary(t => (t.Id, t.PluralForm), t => t.Value);
+            _getPluralForm = getPluralForm;
+        }
 
         public override string GetString(string id)
         {
@@ -37,7 +38,7 @@ namespace Frog.Localization
 
         public override string GetPlural(string id, int count)
         {
-            var form = GetPluralForm(count);
+            var form = _getPluralForm(count);
             return _translations.GetValueOrDefault((id, form), id);
         }
     }
