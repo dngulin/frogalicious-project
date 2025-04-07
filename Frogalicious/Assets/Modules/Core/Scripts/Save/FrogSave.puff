@@ -1,5 +1,13 @@
+enum LanguageSetting : u16
+{
+    Detect = 0;
+    English = 1;
+    Russian = 2;
+}
+
 struct FrogSave
 {
     00 ChapterIdx : i32;
     01 LevelIdx : i32;
+    02 Language: LanguageSetting;
 }

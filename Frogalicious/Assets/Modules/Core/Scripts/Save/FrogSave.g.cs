@@ -6,15 +6,24 @@ using Frog.ProtoPuff;
 
 namespace Frog.Core.Save
 {
+    public enum LanguageSetting : ushort
+    {
+        Detect = 0,
+        English = 1,
+        Russian = 2,
+    }
+
     public struct FrogSave
     {
         public int ChapterIdx;
         public int LevelIdx;
+        public LanguageSetting Language;
 
         public static bool operator ==(in FrogSave l, in FrogSave r)
         {
             if (l.ChapterIdx != r.ChapterIdx) return false;
             if (l.LevelIdx != r.LevelIdx) return false;
+            if (l.Language != r.Language) return false;
 
             return true;
         }
@@ -31,6 +40,7 @@ namespace Frog.Core.Save
         {
             self.ChapterIdx = default;
             self.LevelIdx = default;
+            self.Language = default;
         }
 
         public static int GetSerialisedSize(this in FrogSave self)
@@ -45,6 +55,11 @@ namespace Frog.Core.Save
             if (self.LevelIdx != default)
             {
                 result += 2 + sizeof(int);
+            }
+
+            if (self.Language != default)
+            {
+                result += 2 + sizeof(ushort);
             }
 
             return result;
@@ -73,6 +88,13 @@ namespace Frog.Core.Save
 
         public static void Prepend(this BinaryWriter bw, in FrogSave data)
         {
+            if (data.Language != default)
+            {
+                bw.Prepend((ushort)data.Language);
+                bw.Prepend(ValueQualifier.PackedU16);
+                bw.Prepend((byte)2);
+            }
+
             if (data.LevelIdx != default)
             {
                 bw.Prepend(data.LevelIdx);
@@ -118,6 +140,13 @@ namespace Frog.Core.Save
                         var fvq = ValueQualifier.Unpack(br.ReadByte());
                         ProtoPuffUtil.EnsureI32(fvq);
                         self.LevelIdx = br.ReadInt32();
+                        break;
+                    }
+                    case 2:
+                    {
+                        var fvq = ValueQualifier.Unpack(br.ReadByte());
+                        ProtoPuffUtil.EnsureU16(fvq);
+                        self.Language = (LanguageSetting)br.ReadUInt16();
                         break;
                     }
                     default:
