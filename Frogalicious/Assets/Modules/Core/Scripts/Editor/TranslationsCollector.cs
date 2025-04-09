@@ -32,55 +32,28 @@ namespace Frog.Core.Editor
             TrUsagesByStaticTextLocalizer.AppendTo(usages);
 
             var engMap = LoadEnglishTranslationMap();
-            foreach (var trId in engMap.Keys)
-            {
-                if (!usages.ContainsKey(trId))
-                    Debug.LogWarning($"Translation `{trId}` is defined but is not used");
-            }
+            ValidateUsages(engMap, usages);
 
             var usagesList = usages.Values.ToList();
             usagesList.Sort((a, b) => string.Compare(a.TranslationId, b.TranslationId, StringComparison.Ordinal));
 
             var engTranslations = new FrogTranslations();
 
-            using (var poWriter = new PoFileWriter(PotPath))
+            using var poWriter = new PoFileWriter(PotPath);
+            foreach (var usage in usagesList)
             {
-                foreach (var usage in usagesList)
-                {
-                    if (!engMap.TryGetValue(usage.TranslationId, out var trForms))
-                    {
-                        Debug.LogError($"Translation `{usage.TranslationId}` is not defined");
-                        continue;
-                    }
+                if (!TryGetEngForms(engMap, usage, out var pluralForms))
+                    continue;
 
-                    if (trForms.Length < 1 || trForms.Length > 2)
-                    {
-                        Debug.LogError(
-                            $"Translation `{usage.TranslationId}` definition is invalid ({trForms.Length} forms)");
-                        continue;
-                    }
+                poWriter.Write(CreatePoEntry(usage, pluralForms));
 
-                    var plural = trForms.Length == 2;
-                    if (plural != usage.IsPlural)
-                    {
-                        Debug.LogError(plural
-                            ? $"Translation `{usage.TranslationId}` is plural, but is used as a singular"
-                            : $"Translation `{usage.TranslationId}` is singular, but is used as a plural");
-                        continue;
-                    }
-
-                    poWriter.Write(CreatePoEntry(usage, trForms));
-
-                    for (var i = 0; i < trForms.Length; i++)
-                        engTranslations.Add(usage.TranslationId, (byte)i, trForms[i]);
-                }
+                for (var i = 0; i < pluralForms.Length; i++)
+                    engTranslations.Add(usage.TranslationId, (byte)i, pluralForms[i]);
             }
 
             var trPath = Path.Combine(ProjectPath, LangMappings.GetLangFileName(GameLanguage.English));
-            using (var trWriter = new BinaryWriter(File.Create(trPath)))
-            {
-                engTranslations.SerialiseTo(trWriter);
-            }
+            using var trWriter = new BinaryWriter(File.Create(trPath));
+            engTranslations.SerialiseTo(trWriter);
         }
 
         private static Dictionary<string, string[]> LoadEnglishTranslationMap()
@@ -89,7 +62,43 @@ namespace Frog.Core.Editor
             return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
 
-        private static PoEntry CreatePoEntry(TrUsage usage, string[] trForms)
+        private static void ValidateUsages(Dictionary<string, string[]> engMap, Dictionary<string, TrUsage> usages)
+        {
+            foreach (var trId in engMap.Keys)
+            {
+                if (!usages.ContainsKey(trId))
+                    Debug.LogWarning($"Translation `{trId}` is defined but is not used");
+            }
+        }
+
+        private static bool TryGetEngForms(Dictionary<string, string[]> engMap, in TrUsage usage, out string[] trForms)
+        {
+            if (!engMap.TryGetValue(usage.TranslationId, out trForms))
+            {
+                Debug.LogError($"Translation `{usage.TranslationId}` is not defined");
+                return false;
+            }
+
+            if (trForms.Length < 1 || trForms.Length > 2)
+            {
+                Debug.LogError(
+                    $"Translation `{usage.TranslationId}` definition is invalid ({trForms.Length} forms)");
+                return false;
+            }
+
+            var plural = trForms.Length == 2;
+            if (plural != usage.IsPlural)
+            {
+                Debug.LogError(plural
+                    ? $"Translation `{usage.TranslationId}` is plural, but is used as a singular"
+                    : $"Translation `{usage.TranslationId}` is singular, but is used as a plural");
+                return false;
+            }
+
+            return true;
+        }
+
+        private static PoEntry CreatePoEntry(TrUsage usage, string[] pluralForms)
         {
             var entry = new PoEntry();
             entry.ExtractedComments.Add(TrIdPrefix + usage.TranslationId);
@@ -98,12 +107,12 @@ namespace Frog.Core.Editor
             if (usage.TranslationId.Contains("{0}") || usage.TranslationId.Contains("{0:"))
                 entry.Flags.Add("csharp-format");
 
-            entry.EngStr = trForms[0];
+            entry.EngStr = pluralForms[0];
             entry.Translations.Add("");
 
-            if (trForms.Length > 1)
+            if (pluralForms.Length > 1)
             {
-                entry.OptEngStrPlural = trForms[1];
+                entry.OptEngStrPlural = pluralForms[1];
                 entry.Translations.Add("");
             }
 
