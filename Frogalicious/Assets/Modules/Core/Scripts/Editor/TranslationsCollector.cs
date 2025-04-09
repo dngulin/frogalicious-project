@@ -30,6 +30,7 @@ namespace Frog.Core.Editor
             var usages = new Dictionary<string, TrUsage>();
             TrUsagesByCode.AppendTo(usages);
             TrUsagesByStaticTextLocalizer.AppendTo(usages);
+            ValidateHashCollisions(usages);
 
             var engMap = LoadEnglishTranslationMap();
             ValidateUsages(engMap, usages);
@@ -54,6 +55,22 @@ namespace Frog.Core.Editor
             var trPath = Path.Combine(ProjectPath, LangMappings.GetLangFileName(GameLanguage.English));
             using var trWriter = new BinaryWriter(File.Create(trPath));
             engTranslations.SerialiseTo(trWriter);
+        }
+
+        private static void ValidateHashCollisions(Dictionary<string, TrUsage> usages)
+        {
+            var hashes = new Dictionary<uint, string>();
+            foreach (var (trId, usage) in usages)
+            {
+                var hash = usage.TranslationId.XxHash32();
+                if (hashes.TryGetValue(hash, out var hashedId))
+                {
+                    Debug.LogError($"TrIds `{hashedId}` and `{usage.TranslationId}` produce the same hash {hash}");
+                    continue;
+                }
+
+                hashes.Add(hash, trId);
+            }
         }
 
         private static Dictionary<string, string[]> LoadEnglishTranslationMap()
