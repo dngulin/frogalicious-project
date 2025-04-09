@@ -1,5 +1,6 @@
 using System;
 using Frog.Core;
+using Frog.Core.Localization;
 using Frog.Core.Save;
 using Frog.Core.Ui;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Frog.Meta
         public readonly Camera Camera;
         public readonly UiSystem Ui;
         public readonly SaveSystem Save;
+        public readonly LocalizationSystem Localization;
         public readonly Transform GameObjectStash;
 
         public RootScope(Camera camera, Canvas canvas, LoadingUi loadingPrefab)
@@ -20,6 +22,7 @@ namespace Frog.Meta
 
             Ui = new UiSystem(canvas, UnityEngine.Object.Instantiate(loadingPrefab, GameObjectStash));
             Save = new SaveSystem();
+            Localization = new LocalizationSystem();
         }
 
         public void Dispose()
@@ -27,6 +30,7 @@ namespace Frog.Meta
             GameObjectStash.DestroyGameObject();
             Ui.Dispose();
             Save.Dispose();
+            Localization.Dispose();
         }
 
         private static Transform CreateGameObjectStash()

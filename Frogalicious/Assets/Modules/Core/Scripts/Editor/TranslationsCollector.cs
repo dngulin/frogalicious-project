@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Frog.Core.Localization;
+using Frog.Core.Save;
 using Frog.Gettext;
 using Frog.Localization.Editor;
 using Newtonsoft.Json;
@@ -14,6 +16,14 @@ namespace Frog.Core.Editor
     {
         private const string TrIdPrefix = "Translation id: ";
 
+        private static readonly string ProjectPath = Directory.GetParent(Application.dataPath)!.FullName;
+        private static readonly string RepoRootPath = Directory.GetParent(ProjectPath)!.FullName;
+
+        private static readonly string GettextDirPath = Path.Combine(RepoRootPath, "localization");
+        private static readonly string StrDefPath = Path.Combine(GettextDirPath, "strdef.json");
+        private static readonly string PotPath = Path.Combine(GettextDirPath, "frog.pot");
+
+
         [MenuItem("Tools/Localization/Build English Translation & Export POT-File", priority = 20)]
         public static void BuildEnglishTranslation()
         {
@@ -21,8 +31,8 @@ namespace Frog.Core.Editor
             TrUsagesByCode.AppendTo(usages);
             TrUsagesByStaticTextLocalizer.AppendTo(usages);
 
-            var eng = LoadEnglishTranslationMap();
-            foreach (var trId in eng.Keys)
+            var engMap = LoadEnglishTranslationMap();
+            foreach (var trId in engMap.Keys)
             {
                 if (!usages.ContainsKey(trId))
                     Debug.LogWarning($"Translation `{trId}` is defined but is not used");
@@ -31,37 +41,51 @@ namespace Frog.Core.Editor
             var usagesList = usages.Values.ToList();
             usagesList.Sort((a, b) => string.Compare(a.TranslationId, b.TranslationId, StringComparison.Ordinal));
 
-            using var writer = new PoFileWriter(Application.dataPath + "/../../localization/frog.pot");
-            foreach (var usage in usagesList)
+            var engTranslations = new FrogTranslations();
+
+            using (var poWriter = new PoFileWriter(PotPath))
             {
-                if (!eng.TryGetValue(usage.TranslationId, out var trForms))
+                foreach (var usage in usagesList)
                 {
-                    Debug.LogError($"Translation `{usage.TranslationId}` is not defined");
-                    continue;
-                }
+                    if (!engMap.TryGetValue(usage.TranslationId, out var trForms))
+                    {
+                        Debug.LogError($"Translation `{usage.TranslationId}` is not defined");
+                        continue;
+                    }
 
-                if (trForms.Length < 1 || trForms.Length > 2)
-                {
-                    Debug.LogError($"Translation `{usage.TranslationId}` definition is invalid ({trForms.Length} forms)");
-                    continue;
-                }
+                    if (trForms.Length < 1 || trForms.Length > 2)
+                    {
+                        Debug.LogError(
+                            $"Translation `{usage.TranslationId}` definition is invalid ({trForms.Length} forms)");
+                        continue;
+                    }
 
-                var plural = trForms.Length == 2;
-                if (plural != usage.IsPlural)
-                {
-                    Debug.LogError(plural
-                        ? $"Translation `{usage.TranslationId}` is plural, but is used as a singular"
-                        : $"Translation `{usage.TranslationId}` is singular, but is used as a plural");
-                    continue;
-                }
+                    var plural = trForms.Length == 2;
+                    if (plural != usage.IsPlural)
+                    {
+                        Debug.LogError(plural
+                            ? $"Translation `{usage.TranslationId}` is plural, but is used as a singular"
+                            : $"Translation `{usage.TranslationId}` is singular, but is used as a plural");
+                        continue;
+                    }
 
-                writer.Write(CreatePoEntry(usage, trForms));
+                    poWriter.Write(CreatePoEntry(usage, trForms));
+
+                    for (var i = 0; i < trForms.Length; i++)
+                        engTranslations.Add(usage.TranslationId, (byte)i, trForms[i]);
+                }
+            }
+
+            var trPath = Path.Combine(ProjectPath, LangMappings.GetLangFileName(GameLanguage.English));
+            using (var trWriter = new BinaryWriter(File.Create(trPath)))
+            {
+                engTranslations.SerialiseTo(trWriter);
             }
         }
 
         private static Dictionary<string, string[]> LoadEnglishTranslationMap()
         {
-            var json = File.ReadAllText(Application.dataPath + "/../../localization/strdef.json");
+            var json = File.ReadAllText(StrDefPath);
             return JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
         }
 
@@ -89,7 +113,9 @@ namespace Frog.Core.Editor
         [MenuItem("Tools/Localization/Import Non-English Translations from PO-Files", priority = 21)]
         public static void ImportNonEnglishTranslations()
         {
-            var path = Application.dataPath + "/../../localization/ru.po";
+            var translations = new FrogTranslations();
+
+            var path = Path.Combine(GettextDirPath, "ru.po");
             foreach (var entry in PoFileReader.Open(path))
             {
                 if (entry.EngStr == "")
@@ -101,8 +127,14 @@ namespace Frog.Core.Editor
                     continue;
                 }
 
-                Debug.Log($"`{trId}` => `{entry.Translations[0]}`");
+                for (var i = 0; i < entry.Translations.Count; i++)
+                    translations.Add(trId, (byte)i, entry.Translations[i]);
             }
+
+            var trPath = Path.Combine(ProjectPath, LangMappings.GetLangFileName(GameLanguage.Russian));
+            using var trWriter = new BinaryWriter(File.Create(trPath));
+
+            translations.SerialiseTo(trWriter);
         }
 
         private static bool TryGetTrId(PoEntry poEntry, out string trId)

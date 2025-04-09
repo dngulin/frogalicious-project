@@ -33,13 +33,13 @@ namespace Frog.Meta.Splash
         {
             using (scope.Ui.InstantUi(_ui))
             {
+                await scope.Localization.LoadLanguage(scope.Save.Data.Language);
+                var mainMenuRes = await MainMenuResources.Load(ct);
+
+                // TODO: Make the "Tap to continue" label invisible until translations are loaded
                 await _poll.ExecuteAsync(ct);
 
-                using (scope.Ui.LoadingUi())
-                {
-                    var resources = await MainMenuResources.Load(ct);
-                    return Transition.Replace(new MainMenuActivity(scope, resources));
-                }
+                return Transition.Replace(new MainMenuActivity(scope, mainMenuRes));
             }
         }
     }

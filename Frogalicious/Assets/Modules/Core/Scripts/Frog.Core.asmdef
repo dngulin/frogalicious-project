@@ -2,12 +2,16 @@
     "name": "Frog.Core",
     "rootNamespace": "Frog.Core",
     "references": [
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "Unity.Mathematics",
         "Frog.Collections",
+        "Frog.Localization",
         "Frog.ProtoPuff"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": false,

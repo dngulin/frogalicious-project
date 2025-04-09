@@ -1,0 +1,11 @@
+struct FrogTranslation
+{
+    00 TranslationIdHash: u32;
+    01 PluralForm : u8;
+    02 Translation: repeated u8;
+}
+
+struct FrogTranslations
+{
+    00 Entries: repeated FrogTranslation;
+}

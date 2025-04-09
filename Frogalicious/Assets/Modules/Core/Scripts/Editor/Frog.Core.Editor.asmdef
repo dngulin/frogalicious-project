@@ -5,7 +5,8 @@
         "Frog.Core",
         "Frog.Gettext",
         "Frog.ProtoPuff.Editor",
-        "Frog.Localization.Editor"
+        "Frog.Localization.Editor",
+        "Frog.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

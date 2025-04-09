@@ -36,5 +36,21 @@ namespace Frog.Core.Editor
             );
             AssetDatabase.Refresh();
         }
+
+        [MenuItem("Tools/Code Generation/Localization System - Translations Representation", priority = 13)]
+        public static void GenerateTranslations()
+        {
+            CodeGenerator.Generate(
+                "Assets/Modules/Core/Scripts/Localization/FrogTranslations.puff",
+                "Assets/Modules/Core/Scripts/Localization/FrogTranslations.g.cs",
+                new CodeGenOptions
+                {
+                    Namespace = "Frog.Core.Save",
+                    DeserialisationApi = ApiTargets.Stream,
+                    SerialisationApi = ApiTargets.Stream,
+                }
+            );
+            AssetDatabase.Refresh();
+        }
     }
 }
