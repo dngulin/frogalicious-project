@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.9433962
       objectReference: {fileID: 0}
+    - target: {fileID: 2330882222447788198, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 4919007352804523480, guid: 7ced612cf7cc8ca61847458bba2c0426, type: 3}
       propertyPath: m_Name
       value: TileButtonYellow
