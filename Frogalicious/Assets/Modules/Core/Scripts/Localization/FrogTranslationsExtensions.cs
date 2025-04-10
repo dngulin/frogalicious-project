@@ -9,7 +9,7 @@ namespace Frog.Core.Localization
         public static void Add(this ref FrogTranslations self, string id, byte form, string value)
         {
             ref var entry = ref self.Entries.RefAdd();
-            entry.TranslationIdHash = id.XxHash32();
+            entry.TranslationIdHash = id.XxHash32Utf16();
             entry.PluralForm = form;
             entry.Translation.AppendUtf8String(value);
         }

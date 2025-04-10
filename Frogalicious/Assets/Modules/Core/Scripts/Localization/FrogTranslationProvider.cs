@@ -17,7 +17,7 @@ namespace Frog.Core.Localization
 
         public TrKey(string trId, byte pluralForm)
         {
-            TrIdHash = trId.XxHash32();
+            TrIdHash = trId.XxHash32Utf16();
             PluralForm = pluralForm;
         }
 

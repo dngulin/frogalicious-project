@@ -62,7 +62,7 @@ namespace Frog.Core.Editor
             var hashes = new Dictionary<uint, string>();
             foreach (var (trId, usage) in usages)
             {
-                var hash = usage.TranslationId.XxHash32();
+                var hash = usage.TranslationId.XxHash32Utf16();
                 if (hashes.TryGetValue(hash, out var hashedId))
                 {
                     Debug.LogError($"TrIds `{hashedId}` and `{usage.TranslationId}` produce the same hash {hash}");
