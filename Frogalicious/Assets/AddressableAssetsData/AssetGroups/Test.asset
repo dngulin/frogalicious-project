@@ -15,23 +15,8 @@ MonoBehaviour:
   m_GroupName: Test
   m_GUID: 70a06253ae932819bbd1a92259f1adff
   m_SerializeEntries:
-  - m_GUID: ba204de3cf158e887b31ad7b2edb586b
-    m_Address: MainMenuUi.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 372136727219e0145b2195eac746e14c
-    m_Address: Assets/Levels/Castle1.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 12e4ae520f0c461549bed72b603c6c90
     m_Address: Assets/Modules/Level/Config/LevelViewConfig.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db1d7e69d71b5a2a08b89cb0d58c887c
-    m_Address: Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -40,28 +25,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 430dbf991dfb15b4fb5350a743e9788c
-    m_Address: Assets/Levels/TutorialTwo.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bd5f2e2c6cd5d014097d2499493a168c
-    m_Address: Assets/Levels/TutorialThree.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9e3d0029c86995146a43e0b9502eb05b
-    m_Address: Assets/Levels/TutorialFour.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 68f15c09d24b1374f9390bdf6229e112
-    m_Address: Assets/Levels/TutorialFive.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: acf94b9e8a16826bab4e57c8564d0d4a
-    m_Address: TutorialChapter.asset
+  - m_GUID: 372136727219e0145b2195eac746e14c
+    m_Address: Assets/Levels/Castle1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,9 +35,54 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 430dbf991dfb15b4fb5350a743e9788c
+    m_Address: Assets/Levels/TutorialTwo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68f15c09d24b1374f9390bdf6229e112
+    m_Address: Assets/Levels/TutorialFive.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e3d0029c86995146a43e0b9502eb05b
+    m_Address: Assets/Levels/TutorialFour.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: acf94b9e8a16826bab4e57c8564d0d4a
+    m_Address: TutorialChapter.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba204de3cf158e887b31ad7b2edb586b
+    m_Address: MainMenuUi.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd5f2e2c6cd5d014097d2499493a168c
+    m_Address: Assets/Levels/TutorialThree.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc9e1be6879b8343fa3a2da38c6f5e97
+    m_Address: Assets/Translations/en.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db1d7e69d71b5a2a08b89cb0d58c887c
+    m_Address: Assets/Modules/Level/Prefabs/Ui/LevelPanelUi.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0bc8500f93f25a50b7e71b3e355fa31
+    m_Address: Assets/Translations/ru.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e9980fa9f2f9adaab99d6483ff9fc70d, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: a7693e7928afcff3ba601de4134dddcc, type: 2}
     - {fileID: 11400000, guid: 165f52880bf3fde5f80ae9fdf79d0cb2, type: 2}
+    - {fileID: 11400000, guid: a7693e7928afcff3ba601de4134dddcc, type: 2}
