@@ -1,11 +1,28 @@
+using System.Threading;
+using Frog.Core;
 using Frog.Core.Ui;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Frog.Meta.Splash
 {
     public class SplashScreenUi : UiEntity, IPointerClickHandler
     {
-        private bool _clicked;
+        [SerializeField]
+        private TMP_Text _text;
+
+        private readonly AwaitableOperation _waitForClick = new AwaitableOperation();
+
+        private void OnDestroy()
+        {
+            _waitForClick.Dispose();
+        }
+
+        private void Awake()
+        {
+            Debug.Assert(!_text.gameObject.activeSelf);
+        }
 
         public override void SetVisible(bool visible) => gameObject.SetActive(visible);
 
@@ -15,9 +32,14 @@ namespace Frog.Meta.Splash
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _clicked = true;
+            if (_waitForClick.IsRunning)
+                _waitForClick.EndAssertive();
         }
 
-        public bool Poll() => _clicked;
+        public Awaitable WaitForTap(CancellationToken ct)
+        {
+            _text.gameObject.SetActive(true);
+            return _waitForClick.ExecuteAsync(ct);
+        }
     }
 }

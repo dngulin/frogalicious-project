@@ -5,6 +5,7 @@
     "references": [
         "Unity.Addressables",
         "Unity.ResourceManager",
+        "Unity.TextMeshPro",
         "Frog.StateTracker",
         "Frog.Core",
         "Frog.Level",
