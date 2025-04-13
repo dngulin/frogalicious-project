@@ -59,7 +59,8 @@ namespace Frog.Core.Ui
                     continue;
 
                 _items.RemoveAt(i);
-                entity.transform.SetParent(parent, false);
+                if (entity.IsGameObjectAlive())
+                    entity.transform.SetParent(parent, false);
 
                 result = entity;
                 return true;

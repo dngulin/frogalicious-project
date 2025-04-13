@@ -4,10 +4,15 @@ namespace Frog.Core
 {
     public static class UnityComponentExtensions
     {
-        public static void DestroyGameObject<T>(this T mb) where T : Component
+        public static void DestroyGameObject<T>(this T component) where T : Component
         {
-            if (mb != null)
-                Object.Destroy(mb.gameObject);
+            if (component != null)
+                Object.Destroy(component.gameObject);
+        }
+
+        public static bool IsGameObjectAlive<T>(this T component) where T : Component
+        {
+            return component.gameObject != null;
         }
     }
 }

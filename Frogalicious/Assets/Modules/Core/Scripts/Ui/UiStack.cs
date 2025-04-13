@@ -50,7 +50,8 @@ namespace Frog.Core.Ui
                 var entity = (AnimatedUiEntity)stackAccessor.FindItemAssertive((uint)id);
                 Debug.Assert(entity.State == AnimatedUiEntityState.Appeared, entity.State);
 
-                await entity.Hide(ct);
+                if (entity.IsGameObjectAlive())
+                    await entity.Hide(ct);
 
                 var removedEntity = stackAccessor.RemoveItemAssertive((uint)id, parent);
                 Debug.Assert(ReferenceEquals(entity, removedEntity));
@@ -75,7 +76,10 @@ namespace Frog.Core.Ui
             using (var stackAccessor = new UiStackAccessor(_root, _items))
             {
                 var entity = stackAccessor.RemoveItemAssertive((uint)id, parent);
-                entity.SetVisible(false);
+
+                if (entity.IsGameObjectAlive())
+                    entity.SetVisible(false);
+
                 return entity;
             }
         }
